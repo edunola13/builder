@@ -1,5 +1,5 @@
 {
-    "base_url": "http://localhost/builder-0.2.1/",
+    "base_url": "http://localhost/builder/",
     "ambiente": "desarrollo",
     "calcular_tiempo": "FALSE",
     "configuracion": "configuracion/",

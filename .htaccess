@@ -1,4 +1,4 @@
 RewriteEngine on 
 RewriteCond $1 !^(index.php|recursos) 
-RewriteRule ^(.*)$ /builder-0.2.1/index.php/$1 [L]
-ErrorDocument 404 /builder-0.2.1/index.php?error_apache_enola=404
+RewriteRule ^(.*)$ /builder/index.php/$1 [L]
+ErrorDocument 404 /builder/index.php?error_apache_enola=404
