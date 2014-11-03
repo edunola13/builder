@@ -1,0 +1,13 @@
+{
+    "bd_actual": "Local",
+          
+    "Local": {
+        "hostname": "localhost",
+        "usuario": "usuario",
+        "clave": "pass",
+        "basededatos": "bd",
+        "driverbd": "mysql",
+        "persistente": "FALSE",
+        "charset": "utf8"
+    }
+}

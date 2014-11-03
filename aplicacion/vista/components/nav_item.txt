@@ -1,0 +1,7 @@
+<li class="{{config.state}}">    
+{% if config.href != null %}
+<a href="{{config.href}}">{{config.label}}</a>
+{% else %}
+{{config.label}}
+{% endif %}
+</li>

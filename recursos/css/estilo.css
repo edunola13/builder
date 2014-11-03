@@ -1,0 +1,13 @@
+root { display: block;}
+#builder {}
+#builder .row {background-color: gainsboro; border-radius:5px; -moz-border-radius:5px; /* Firefox */ -webkit-border-radius:5px; /* Safari y Chrome */ border:1px solid #333; margin-bottom: 10px; margin-top: 10px;}
+#builder .col {background-color: white;}
+.sortable { min-height: 50px; margin-bottom: 10px; margin-top: 10px; border-radius:3px; -moz-border-radius:3px; /* Firefox */ -webkit-border-radius:5px; /* Safari y Chrome */ border:1px solid #333;}
+.col {min-height: 100px;}
+.component-placeholder{height: 50px; border-style: dotted; border-color: red ;border-width: 2px}
+.config{margin: 1px;}
+.config p{margin: 0px;}
+.move:hover{cursor: crosshair;}
+.delete:hover{cursor: pointer;}
+.duplicate:hover{cursor: pointer;}
+.view{padding-top: 25px; }

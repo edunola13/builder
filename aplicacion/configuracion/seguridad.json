@@ -1,0 +1,21 @@
+{
+    "default": {
+        "permisos": {
+            "front": "/*"
+        },
+        "denegar": {
+            "administracion": "admin*"
+        },
+        "error": "login"
+    },
+    
+    "administrador": {
+        "permisos": {
+            "front-back": "/*"
+        },
+        "denegar": {
+            
+        },
+        "error": "sesion/autorizacion"
+    }
+}

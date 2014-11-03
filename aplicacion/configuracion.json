@@ -1,0 +1,43 @@
+{
+    "base_url": "http://localhost/builder-0.2.1/",
+    "ambiente": "desarrollo",
+    "calcular_tiempo": "FALSE",
+    "configuracion": "configuracion/",
+    "charset": "UTF-8",
+      
+    "controladores": {
+        "index": {"ubicacion": "controladores", "clase": "Index", "url": ""},
+        "proxyComponente": {"ubicacion": "controladores", "clase": "ProxyComponente", "url": "proxyComponente"}
+    },
+
+    "filtros": {
+    },
+            
+    "filtros_despues_procesamiento": {
+    },
+            
+    "internacionalizacion": {
+    },
+            
+    "componentes":{
+        
+    },
+            
+    "basededatos": {
+        "configuracion": "basededatos.json",
+        "conexion_encarga": "FALSE"
+    },
+                
+    "librerias": {
+    },
+            
+    "librerias_aplicacion": {
+        "servicioui": {"nombre": "servicioui", "clase": "librerias/ServiciosUI-0.1/servicioui"}
+    },
+     
+    "helpers": {
+    },
+    
+    "helpers_aplicacion": {
+    }
+}
