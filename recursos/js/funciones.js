@@ -436,12 +436,14 @@ function duplicarElemento(elemento) {
 
 function minimizar(elemento){
 	var padre= elemento.parent();
-	if(elemento.html() == "Maximizar"){
-		elemento.html("Minimizar");
+	if(elemento.html() == "+"){
+		elemento.attr('title', 'Minimizar');
+		elemento.html("-");
 		padre.find(".view").children().removeClass("minimizado");
 	}
 	else{
-		elemento.html("Maximizar");
+		elemento.attr('title', 'Maximizar');
+		elemento.html("+");
 		padre.find(".view").children().addClass("minimizado");
 	}
 }
@@ -465,8 +467,8 @@ function load_conexion(){
  * Agrega el HTML al componente para poder manipularlo en el builder
  */
 function add_com_builder(componente, fn_options){
-    var com= '<div class="com-builder"><button type="button" class="btn btn-danger btn-xs config delete pull-right">Delete</button><a href="#" class="btn btn-success btn-xs config move pull-right" role="button">Move</a>\n\
-              <button type="button" class="btn btn-default btn-xs config duplicate pull-right">Duplicate</button><button type="button" class="btn btn-default btn-xs config minimize pull-right">Minimizar</button>';
+    var com= '<div class="com-builder"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
+            <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
     if(fn_options != null){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_options() +'</ul></div>';
     }

@@ -92,10 +92,10 @@
 
       <div class="container sortable" id="builder">
         <div class="com-builder">
-            <button type="button" class="btn btn-danger btn-xs config delete pull-right">Delete</button>
-            <a href="#" class="btn btn-success btn-xs config move pull-right" role="button">Move</a>
-            <button type="button" class="btn btn-default btn-xs config duplicate pull-right">Duplicate</button>
-			<button type="button" class="btn btn-default btn-xs config minimize pull-right">Minimizar</button>
+            <button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button>
+			<button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
+            <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a>
+            <button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>			
             <!--<button type="button" class="btn btn-default btn-xs config pull-right">Personalize</button>-->
             <div class="view">
                 <div class="row">
