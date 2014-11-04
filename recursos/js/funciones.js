@@ -86,6 +86,7 @@ function descargar_html(){
     builder= $("body").find('builder');
     builder.html(builderHtml);
     builder.find(".config").remove();
+	builder.find(".minimizado").removeClass("minimizado");
     builder.find(".com-builder").removeClass("com-builder");
     builder.find(".sortable").removeClass("sortable ui-sortable");
     
@@ -433,6 +434,18 @@ function duplicarElemento(elemento) {
     load_sortable();
 }
 
+function minimizar(elemento){
+	var padre= elemento.parent();
+	if(elemento.html() == "Maximizar"){
+		elemento.html("Minimizar");
+		padre.find(".view").children().removeClass("minimizado");
+	}
+	else{
+		elemento.html("Maximizar");
+		padre.find(".view").children().addClass("minimizado");
+	}
+}
+
 /**
  * Funcion que es llamada cuando la pagina es cargada para realizar la primer conexion con el servicio UI.
  * Esto se hace ya que la primer consulta suele ser lenta
@@ -453,7 +466,7 @@ function load_conexion(){
  */
 function add_com_builder(componente, fn_options){
     var com= '<div class="com-builder"><button type="button" class="btn btn-danger btn-xs config delete pull-right">Delete</button><a href="#" class="btn btn-success btn-xs config move pull-right" role="button">Move</a>\n\
-              <button type="button" class="btn btn-default btn-xs config duplicate pull-right">Duplicate</button>';
+              <button type="button" class="btn btn-default btn-xs config duplicate pull-right">Duplicate</button><button type="button" class="btn btn-default btn-xs config minimize pull-right">Minimizar</button>';
     if(fn_options != null){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_options() +'</ul></div>';
     }

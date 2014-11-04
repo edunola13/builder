@@ -11,3 +11,4 @@ root { display: block;}
 .delete:hover{cursor: pointer;}
 .duplicate:hover{cursor: pointer;}
 .view{padding-top: 25px; }
+.minimizado{display: none;}

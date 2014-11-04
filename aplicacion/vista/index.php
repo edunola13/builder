@@ -95,6 +95,7 @@
             <button type="button" class="btn btn-danger btn-xs config delete pull-right">Delete</button>
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button">Move</a>
             <button type="button" class="btn btn-default btn-xs config duplicate pull-right">Duplicate</button>
+			<button type="button" class="btn btn-default btn-xs config minimize pull-right">Minimizar</button>
             <!--<button type="button" class="btn btn-default btn-xs config pull-right">Personalize</button>-->
             <div class="view">
                 <div class="row">
@@ -134,6 +135,7 @@
         <script id="events">
             $('body').on('click', 'button.delete', function() {$(this).parent().remove();});
             $('body').on('click', 'button.duplicate', function() {duplicarElemento($(this).parent())});
+			$('body').on('click', 'button.minimize', function() {minimizar($(this))});
         </script>
       </div>
   </body>
