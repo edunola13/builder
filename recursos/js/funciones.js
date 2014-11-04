@@ -6,8 +6,8 @@ $(function() {
     load_conexion();
 });
 
-//var url= "http://edunola.com.ar/serviciosui/";
-var url= "http://localhost/serviciosui-0.3.1/";
+var url= "http://edunola.com.ar/serviciosui/";
+//var url= "http://localhost/serviciosui-0.3.1/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -489,6 +489,7 @@ function load_row(){
  * Conexion via Ajax de tipo HTTP JSON
  */
 function carga_ajax(json, fn_options){
+	document.body.style.cursor = 'wait';
     $.ajax({
         type: "POST",
         url: url + "componente",
@@ -504,9 +505,11 @@ function carga_ajax(json, fn_options){
             if(!building){
                 $(".config").hide();
             }
+			document.body.style.cursor = 'auto';
         },
         error: function(msg) {
                alert(msg);
+			   document.body.style.cursor = 'auto';
         }
     });
 }
@@ -516,6 +519,7 @@ function carga_ajax(json, fn_options){
  * Para componentes que soportan hijos
  */
 function carga_ajax_fn(json, fn, fn_options){
+	document.body.style.cursor = 'wait';
     $.ajax({
            type: "POST",
            url: url + "componente",
@@ -533,9 +537,11 @@ function carga_ajax_fn(json, fn, fn_options){
                 }
                //Actualiza el modelo Sortable
                load_sortable();
+			   document.body.style.cursor = 'auto';
            },
            error: function(msg) {
                alert(msg);
+			   document.body.style.cursor = 'auto';
            }
     });
 }
@@ -545,6 +551,7 @@ function carga_ajax_fn(json, fn, fn_options){
  * Para modificar Options y Preferences
  */
 function carga_ajax_preferences(json, viewElement){
+	document.body.style.cursor = 'wait';
     $.ajax({
         type: "POST",
         url: url + "componente",
@@ -554,11 +561,14 @@ function carga_ajax_preferences(json, viewElement){
         success: function (msg) {
             viewElement.empty();
             viewElement.append(msg);
+			document.body.style.cursor = 'auto';
         },
         error: function(msg) {
                alert(msg);
+			   document.body.style.cursor = 'auto';
         }
     });
+	
 }
 
 /**
