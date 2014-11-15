@@ -7,7 +7,7 @@ $(function() {
 });
 
 var url= "http://edunola.com.ar/serviciosui/";
-//var url= "http://localhost/serviciosui-0.3.1/";
+//var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
