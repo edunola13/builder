@@ -1,5 +1,5 @@
 
-{% if config.seccion == null or config.seccion == "cabecera" %}
+<?php if(  $valores["config.seccion"] == NULL || $valores["config.seccion"] == "cabecera"){ ?>
 <nav class="navbar navbar-default" role="navigation">
 <div class="navbar-header">
 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -8,13 +8,13 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="{{config.href}}">{{config.logo}}</a>
+<a class="navbar-brand" href="<?php echo $valores["config.href"]; ?>"><?php echo $valores["config.logo"]; ?></a>
 </div>
 <div class="collapse navbar-collapse navbar-ex1-collapse">    
-{% endif %}
+<?php } ?>
       
-{{components}}
+
       
-{% if config.seccion == null or config.seccion == "pie" %}         
+<?php if(  $valores["config.seccion"] == NULL || $valores["config.seccion"] == "pie"){ ?>         
 </div></nav>
-{% endif %}
+<?php } ?>

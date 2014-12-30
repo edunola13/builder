@@ -1,8 +1,0 @@
-
-{% if config.seccion == null or config.seccion == "cabecera" %}
-<ul class="nav navbar-nav">
-{% endif %}
-   
-{{components}}
-        
-{% if config.seccion == null or config.seccion == "pie" %}</ul>{% endif %}

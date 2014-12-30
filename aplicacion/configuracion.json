@@ -32,7 +32,7 @@
     },
             
     "librerias_aplicacion": {
-        "servicioui": {"nombre": "servicioui", "clase": "librerias/ServiciosUI-0.1/servicioui"}
+        "servicioui": {"nombre": "servicioui", "clase": "librerias/ServiciosUI-0.2/servicioui"}
     },
      
     "helpers": {
