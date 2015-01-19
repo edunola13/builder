@@ -1,0 +1,27 @@
+{
+    "base_url": "http://localhost/builder/",
+    "environment": "development",
+    "calculate_performance": "FALSE",
+    "configuration": "configuration/",
+    "charset": "UTF-8",
+      
+    "controllers": {
+        "index": {"class": "Index", "url": ""},
+        "forms": {"class": "Configuracion", "url": "forms"}
+    },
+
+    "filters": {
+        "authorization": {"class": "Authorization", "filtered": "/*"}        
+    },
+            
+    "filters_after_processing": {
+    },
+       
+    "url-components": "enola-widgets",
+    "components":{
+    },
+                
+    "libraries": {
+        "servicioui": {"class": "ServiciosUI-0.2/servicioui"}
+    }
+}

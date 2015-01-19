@@ -1,0 +1,28 @@
+[2014-12-10 18:25:33.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined function maps_components()
+----------\n[2015-01-15 19:34:05.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:05.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 19:34:05.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:05.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 19:34:11.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:11.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-01-15 19:34:48.000000 127.0.0.1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-01-15 20:42:18.000000 127.0.0.1  - Unknown ] include(C:\wamp\www\builder\aplication/source/view/forms/form.php.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory
+----------\n[2015-01-15 20:42:18.000000 127.0.0.1  - Unknown ] include() [<a href='function.include'>function.include</a>]: Failed opening 'C:\wamp\www\builder\aplication/source/view/forms/form.php.php' for inclusion (include_path='.;C:\php\pear')
+----------\n
