@@ -191,7 +191,7 @@ function load_conexion(){
  * Agrega el HTML al componente para poder manipularlo en el builder
  */
 function add_com_builder(componente, fn_options, fn_components){
-    var com= '<div class="com-builder"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
+    var com= '<div class="com-builder" id="' + nameId + actualId + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
     if(fn_options != null){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_options() +'</ul></div>';
@@ -200,10 +200,12 @@ function add_com_builder(componente, fn_options, fn_components){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_components() +'</ul></div>';
     }
     //Todavia no va ya que no hay personalizacion
-    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="nueva_configuracion()">Personalize</button>';
-    com+= '<p class="config">Nombre Component</p><div class="view" id="' + nameId + actualId + '">';
-    com += componente;
-    com += '</div></div>';
+    var comId= nameId + actualId;
+    var form= 'form';
+    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="nueva_configuracion(\'' + form + '\',\'' + comId + '\')">Personalize</button>';
+    com+= '<p class="config">Nombre Component</p><div class="view">';
+    com+= componente;
+    com+= '</div></div>';
     return com;
 }
 
@@ -286,7 +288,40 @@ function carga_ajax_fn(json, fn, fn_options, fn_components){
            success: function (msg) {
                msg= add_com_builder(msg, fn_options, fn_components);
                $("#builder").append(msg);
-               fn();             
+               fn(nameId + actualId);             
+               $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+               //Si esta en Vista Previa Oculto los botones
+               if(!building){
+                   $(".config").hide();
+               }
+               incrementarId();
+               //Actualiza el modelo Sortable
+               load_sortable();
+               document.body.style.cursor = 'auto';
+           },
+           error: function(msg) {
+                alert(msg);
+		document.body.style.cursor = 'auto';
+           }
+    });
+}
+
+/**
+ * Conexion via Ajax de tipo HTTP JSON que luego llama a funcion
+ * Para componentes que soportan hijos
+ */
+function carga_ajax_fn_same(json, componentId, fn){
+    document.body.style.cursor = 'wait';
+    $.ajax({
+           type: "POST",
+           url: url + "componente",
+           data: json,
+           contentType: "application/json",
+           dataType: "html",
+           success: function (msg) {
+               $("#" + componentId).find(".view").empty();
+               $("#" + componentId).find(".view").append(msg);
+               fn(componentId);             
                $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
                //Si esta en Vista Previa Oculto los botones
                if(!building){
@@ -334,13 +369,15 @@ function cancelar_configuracion(){
     $('#modalConfiguracion').modal('hide');
 }
 
-function nueva_configuracion(){
-    var form= 'form';
+function nueva_configuracion(form, componentId){
+    if(componentId == null){
+        componentId= 0;
+    }
     $('#modalConfiguracion .modal-body').empty();
     document.body.style.cursor = 'wait';
     $.ajax({
         type: "GET",
-        url: "forms?form=" + form,
+        url: "forms?form=" + form + "&componentId=" + componentId,
         dataType: "html",
         success: function (msg) {
             $('#modalConfiguracion .modal-body').append(msg);
@@ -354,8 +391,31 @@ function nueva_configuracion(){
     $('#modalConfiguracion').modal('show');
 }
 
-function form_config(){
+function form_config(componentId){
+    var elem= $("#modalConfiguracion");
+    var id= elem.find("input[name='id']").val(); 
+    var method= elem.find("input[name='method']").val(); 
+    var action= elem.find("input[name='action']").val();
+    var legend= elem.find("input[name='legend']").is(':checked');
+    var label= elem.find("input[name='label']").val(); 
+     
+    var json= '{\n\
+           "nombre": "formulario",\n\
+           "configuracion": {\n\
+                "id": "' + id + '",\n\
+                "method": "' + method + '",\n\
+                "action": "' + action + '"';
+    if(legend){
+         json += ',"label": "' + label + '"';
+    }
+    json += '}}';
     
+    if(componentId == '0'){
+        carga_ajax_fn(json, load_form_sortable, load_form_options, load_form_components);
+    }
+    else{
+        carga_ajax_fn_same(json, componentId, load_form_sortable, load_form_options, load_form_components);
+    }
 }
 
 //OPCIONES DE LOS COMPONENTES
@@ -651,8 +711,8 @@ function load_form(){
     
         carga_ajax_fn(json, load_form_sortable, load_form_options, load_form_components);
 }
-function load_form_sortable(){
-    $("#builder").children().last().find(".hijos-fieldset").addClass("sortable");
+function load_form_sortable(componentId){
+    $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
 }
 function load_form_options(){
     return '<li class="active"><a onclick="legend(event)">Legend</a></li>';

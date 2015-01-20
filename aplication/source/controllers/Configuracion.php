@@ -15,6 +15,7 @@ class Configuracion extends En_Controller{
     }
     //ver de llamar directamente a la vista y no a una funcion
     private function form(){
+        $this->id= $this->request->param_get('componentId');
         $this->load_view('forms/form');
     }
 }

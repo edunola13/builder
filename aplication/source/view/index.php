@@ -29,7 +29,7 @@
                 <?php echo Tags::menu_item("item_onclick", "Grilla 8-4", "load_row(8,4)"); ?>
             <?php echo Tags::end_nav_item_drop_down();?>
             <?php echo Tags::nav_item_drop_down("Compuestos");?>
-                <?php echo Tags::menu_item("item_onclick", "Form", "load_form()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Form", "nueva_configuracion('form')"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Login", "load_login()"); ?>
                 <?php echo Tags::menu_item('divider');?>
                 <?php echo Tags::menu_item("item_onclick", "Drop Down Menu", "load_drop_down_menu()"); ?>
@@ -79,14 +79,14 @@
       <?php echo Tags::end_navigation_bar();?>
 
       <div class="container sortable" id="builder">
-        <div class="com-builder">            
+        <div class="com-builder" id="component1">            
             <button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button>
 			<button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a>
             <button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>			
             <button type="button" class="btn btn-default btn-xs config pull-right" onclick="nueva_configuracion()">Personalize</button>
             <p class="config">Nombre Component</p>
-            <div class="view" id="component1">
+            <div class="view">
                 <div class="row">
                     <div class="col col-md-12 sortable"></div>
                 </div>

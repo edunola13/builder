@@ -25,4 +25,7 @@
  ] general_error
 ----------\n[2015-01-15 20:42:18.000000 127.0.0.1  - Unknown ] include(C:\wamp\www\builder\aplication/source/view/forms/form.php.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory
 ----------\n[2015-01-15 20:42:18.000000 127.0.0.1  - Unknown ] include() [<a href='function.include'>function.include</a>]: Failed opening 'C:\wamp\www\builder\aplication/source/view/forms/form.php.php' for inclusion (include_path='.;C:\php\pear')
+----------\n[2015-01-20 20:17:50.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
+----------\n[2015-01-20 20:22:27.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
+----------\n[2015-01-20 20:22:45.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
 ----------\n
