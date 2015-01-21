@@ -6,8 +6,8 @@ $(function() {
     load_conexion();
 });
 
-//var url= "http://edunola.com.ar/serviciosui/";
-var url= "http://localhost/uiservices/";
+var url= "http://edunola.com.ar/serviciosui/";
+//var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -190,20 +190,17 @@ function load_conexion(){
 /**
  * Agrega el HTML al componente para poder manipularlo en el builder
  */
-function add_com_builder(componente, fn_options, fn_components){
+function add_com_builder(componente, datos){
     var com= '<div class="com-builder" id="' + nameId + actualId + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
-    if(fn_options != null){
-        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_options() +'</ul></div>';
+    if(datos["options"]){
+        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_options"]() +'</ul></div>';
     }
-    if(fn_components != null){
-        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + fn_components() +'</ul></div>';
+    if(datos["components"]){
+        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_components"]() +'</ul></div>';
     }
-    //Todavia no va ya que no hay personalizacion
-    var comId= nameId + actualId;
-    var form= 'form';
-    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="nueva_configuracion(\'' + form + '\',\'' + comId + '\')">Personalize</button>';
-    com+= '<p class="config">Nombre Component</p><div class="view">';
+    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="formulario_configuracion(\'' + datos["form"] + '\',\'' + datos["componentId"] + '\')">Personalize</button>';
+    com+= '<p class="config">' + datos["nombre"] + '</p><div class="view">';
     com+= componente;
     com+= '</div></div>';
     return com;
@@ -227,7 +224,7 @@ function load_row(){
     row += '</div>';
     row= add_com_builder(row);
     $("#builder").append(row);
-	$('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+    $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
     //Si esta en Vista Previa Oculto los botones
     if(!building){
         $(".config").hide();
@@ -277,7 +274,7 @@ function carga_ajax(json, inComponent, fn_options, fn_components){
  * Conexion via Ajax de tipo HTTP JSON que luego llama a funcion
  * Para componentes que soportan hijos
  */
-function carga_ajax_fn(json, fn, fn_options, fn_components){
+function carga_ajax_fn(json, datos){
     document.body.style.cursor = 'wait';
     $.ajax({
            type: "POST",
@@ -286,9 +283,9 @@ function carga_ajax_fn(json, fn, fn_options, fn_components){
            contentType: "application/json",
            dataType: "html",
            success: function (msg) {
-               msg= add_com_builder(msg, fn_options, fn_components);
+               msg= add_com_builder(msg, datos);
                $("#builder").append(msg);
-               fn(nameId + actualId);             
+               datos["fn_sortable"](nameId + actualId);             
                $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
                //Si esta en Vista Previa Oculto los botones
                if(!building){
@@ -307,35 +304,85 @@ function carga_ajax_fn(json, fn, fn_options, fn_components){
 }
 
 /**
- * Conexion via Ajax de tipo HTTP JSON que luego llama a funcion
- * Para componentes que soportan hijos
+ * Consigue el elemento correspondiente del Servidor UI, segun si va a adentro de un componente o no realizar el append de
+ * una manera u otra, agregar las opciones de modificacion, etc, analiza si es sortable, esconde los botones si es necesario e
+ * incrementa el ID
  */
-function carga_ajax_fn_same(json, componentId, fn){
+function carga_ajax_nuevo(json, datos){
     document.body.style.cursor = 'wait';
     $.ajax({
-           type: "POST",
-           url: url + "componente",
-           data: json,
-           contentType: "application/json",
-           dataType: "html",
-           success: function (msg) {
-               $("#" + componentId).find(".view").empty();
-               $("#" + componentId).find(".view").append(msg);
-               fn(componentId);             
-               $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
-               //Si esta en Vista Previa Oculto los botones
-               if(!building){
-                   $(".config").hide();
-               }
-               incrementarId();
-               //Actualiza el modelo Sortable
-               load_sortable();
-               document.body.style.cursor = 'auto';
-           },
-           error: function(msg) {
-                alert(msg);
-		document.body.style.cursor = 'auto';
-           }
+        type: "POST",
+        url: url + "componente",
+        data: json,
+        contentType: "application/json",
+        dataType: "html",
+        success: function (msg) {
+            msg= add_com_builder(msg, datos);
+            
+            if(! datos["inComponent"]){
+                $("#builder").append(msg);
+                //Paro sobre el componente
+                $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+            }
+            else{
+                var find= "#" + datos["componentPadre"];
+                $(find).find(".sortable:first").append(msg);
+            }
+            
+            if(datos["sortable"]){
+                datos["fn_sortable"](datos["componentId"]);
+                //Actualiza el modelo Sortable
+                load_sortable();
+            }            
+            //Si esta en Vista Previa Oculto los botones
+            if(!building){
+               $(".config").hide();
+            }
+            //Incremento el ID
+            incrementarId();            
+            document.body.style.cursor = 'auto';
+        },
+        error: function(msg) {
+            alert(msg);
+            document.body.style.cursor = 'auto';
+        }
+    });
+}
+
+/**
+ * Para componentes ya existentes, se los mnodifica
+ * Consigue el elemento correspondiente del Servidor UI, agregar las opciones de modificacion, etc, analiza si es 
+ * sortable, esconde los botones si es necesario y guarda los sub componentes y los vuelve a cargar en el componente
+ */
+function carga_ajax_existe(json, datos){
+    document.body.style.cursor = 'wait';
+    $.ajax({
+        type: "POST",
+        url: url + "componente",
+        data: json,
+        contentType: "application/json",
+        dataType: "html",
+        success: function (msg) {
+            /*
+             * Falta guardar los datos del sortable
+             */
+            $("#" + datos["componentId"]).find(".view").empty();
+            $("#" + datos["componentId"]).find(".view").append(msg);
+            if(datos["sortable"]){
+                datos["fn_sortable"](datos["componentId"]);
+                //Actualiza el modelo Sortable
+                load_sortable();
+            }
+            //Si esta en Vista Previa Oculto los botones
+            if(!building){
+                $(".config").hide();
+            }
+            document.body.style.cursor = 'auto';
+        },
+        error: function(msg) {
+            alert(msg);
+            document.body.style.cursor = 'auto';
+        }
     });
 }
 
@@ -369,15 +416,20 @@ function cancelar_configuracion(){
     $('#modalConfiguracion').modal('hide');
 }
 
-function nueva_configuracion(form, componentId){
+function formulario_configuracion(form, componentId){
+    parametros= "";
     if(componentId == null){
         componentId= 0;
+    }
+    else{
+        //Segun el form voy a tener que sacar los datos actuales y pasarselos al form PHP
+        parametros= "";
     }
     $('#modalConfiguracion .modal-body').empty();
     document.body.style.cursor = 'wait';
     $.ajax({
         type: "GET",
-        url: "forms?form=" + form + "&componentId=" + componentId,
+        url: "forms?form=" + form + "&componentId=" + componentId + parametros,
         dataType: "html",
         success: function (msg) {
             $('#modalConfiguracion .modal-body').append(msg);
@@ -391,6 +443,7 @@ function nueva_configuracion(form, componentId){
     $('#modalConfiguracion').modal('show');
 }
 
+/** Cargar del componente Formulario */
 function form_config(componentId){
     var elem= $("#modalConfiguracion");
     var id= elem.find("input[name='id']").val(); 
@@ -410,12 +463,76 @@ function form_config(componentId){
     }
     json += '}}';
     
+    var datos = {nombre:"Formulario", form:"form", inComponent:false, sortable: true, fn_sortable:load_form_sortable, components: true, fn_components: load_form_components, options: true, fn_options: load_form_options};
+    
     if(componentId == '0'){
-        carga_ajax_fn(json, load_form_sortable, load_form_options, load_form_components);
+        datos["componentId"]= nameId + actualId;
+        carga_ajax_nuevo(json, datos);
     }
     else{
-        carga_ajax_fn_same(json, componentId, load_form_sortable, load_form_options, load_form_components);
+        datos["componentId"]= componentId;
+        carga_ajax_existe(json, datos);
     }
+    
+    cancelar_configuracion();
+}
+function load_form_sortable(componentId){
+    $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
+}
+function load_form_options(){
+    return '<li class="active"><a onclick="legend(event)">Legend</a></li>';
+}
+function load_form_components(){
+    return '<li><a onclick="load_input(\'' + nameId + actualId + '\')">Input</a></li>\n\
+            <li><a onclick="load_textArea(\'' + nameId + actualId + '\')">Text Area</a></li>\n\
+            <li><a onclick="load_select(\'' + nameId + actualId + '\')">Select</a></li>\n\
+            <li><a onclick="load_checkbox(\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
+            <li><a onclick="load_radio(\'' + nameId + actualId + '\')">Radio</a></li>\n\
+            <li><a onclick="load_button(\'' + nameId + actualId + '\')">Button</a></li>\n\
+            <li><a onclick="load_buttons(\'' + nameId + actualId + '\')">Buttons</a></li>';
+}
+
+/**
+ * Login
+ */
+function login_config(componentId){
+    var json= '{\n\
+        "nombre": "login",\n\
+        "configuracion": {\n\
+                "method": "POST",\n\
+                "action": "url",\n\
+                "title": "Super Loguin",\n\
+                "labelButton": "Ingresar" \n\
+        },\n\
+        "datos": {\n\
+            "user": {\n\
+                "placeholder": "Ingrese su Email",\n\
+                "name": "email"\n\
+            },\n\
+            "pass": {\n\
+                "placeholder": "Ingrese su Contraseña",\n\
+                "name": "pass"\n\
+            },\n\
+            "check": {\n\
+                "name": "check",\n\
+                "value": "check",\n\
+                "label": "Recordarme"\n\
+            }\n\
+        }\n\
+    }';
+        
+    var datos = {nombre:"Formulario Loguin", form:"form_login", inComponent:false, sortable: false, components: false, options: false};
+    
+    if(componentId == '0' || componentId == null){
+        datos["componentId"]= nameId + actualId;
+        carga_ajax_nuevo(json, datos);
+    }
+    else{
+        datos["componentId"]= componentId;
+        carga_ajax_existe(json, datos);
+    }
+    
+    cancelar_configuracion();
 }
 
 //OPCIONES DE LOS COMPONENTES
@@ -696,71 +813,10 @@ function inline_radio(event){
     }
 }
 
-/**
- * Realiza la carga del formulario
- */
-function load_form(){
-        var json= '{\n\
-           "nombre": "formulario",\n\
-           "configuracion": {\n\
-                "label": "Formulario",\n\
-                "method": "POST",\n\
-                "action": "url" \n\
-           }\n\
-        }';
-    
-        carga_ajax_fn(json, load_form_sortable, load_form_options, load_form_components);
-}
-function load_form_sortable(componentId){
-    $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
-}
-function load_form_options(){
-    return '<li class="active"><a onclick="legend(event)">Legend</a></li>';
-}
-function load_form_components(){
-    return '<li><a onclick="load_input(\'' + nameId + actualId + '\')">Input</a></li>\n\
-            <li><a onclick="load_textArea(\'' + nameId + actualId + '\')">Text Area</a></li>\n\
-            <li><a onclick="load_select(\'' + nameId + actualId + '\')">Select</a></li>\n\
-            <li><a onclick="load_checkbox(\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
-            <li><a onclick="load_radio(\'' + nameId + actualId + '\')">Radio</a></li>\n\
-            <li><a onclick="load_button(\'' + nameId + actualId + '\')">Button</a></li>\n\
-            <li><a onclick="load_buttons(\'' + nameId + actualId + '\')">Buttons</a></li>';
-}
+
 /**
  * Campos del Formulario
  */
-
-/**
- * Login
- */
-function load_login(inComponent){
-    var json= '{\n\
-        "nombre": "login",\n\
-        "configuracion": {\n\
-                "method": "POST",\n\
-                "action": "url",\n\
-                "title": "Super Loguin",\n\
-                "labelButton": "Ingresar" \n\
-        },\n\
-        "datos": {\n\
-            "user": {\n\
-                "placeholder": "Ingrese su Email",\n\
-                "name": "email"\n\
-            },\n\
-            "pass": {\n\
-                "placeholder": "Ingrese su Contraseña",\n\
-                "name": "pass"\n\
-            },\n\
-            "check": {\n\
-                "name": "check",\n\
-                "value": "check",\n\
-                "label": "Recordarme"\n\
-            }\n\
-        }\n\
-    }';
-        
-    carga_ajax(json, inComponent);
-}
 
 /**
  * Input
