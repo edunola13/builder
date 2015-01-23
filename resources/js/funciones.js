@@ -3,7 +3,7 @@
  */
 $(function() {
     load_sortable();
-    load_conexion();
+    //load_conexion();
 });
 
 var url= "http://edunola.com.ar/serviciosui/";
@@ -148,28 +148,32 @@ function load_sortable(){
         }).disableSelection();
 }
 
-/**
- * Duplica un elemento con todos sus hijos
- */
+/** Duplica un elemento con todos sus hijos */
 function duplicarElemento(elemento) {
     var componente= elemento.html();
     elemento.parent().append('<div class="com-builder">' + componente + '</div>');
     $('html,body').animate({scrollTop: elemento.parent().children().last().offset().top});
     load_sortable();
 }
-
+/** Minimiza el componente */
 function minimizar(elemento){
-	var padre= elemento.parent();
-	if(elemento.html() == "+"){
-		elemento.attr('title', 'Minimizar');
-		elemento.html("-");
-		padre.find(".view").children().removeClass("minimizado");
-	}
-	else{
-		elemento.attr('title', 'Maximizar');
-		elemento.html("+");
-		padre.find(".view").children().addClass("minimizado");
-	}
+    var padre= elemento.parent();
+    if(elemento.html() == "+"){
+	elemento.attr('title', 'Minimizar');
+	elemento.html("-");
+	padre.find(".view:first").children().removeClass("minimizado");
+    }
+    else{
+	elemento.attr('title', 'Maximizar');
+	elemento.html("+");
+	padre.find(".view:first").children().addClass("minimizado");
+    }
+}
+/** Elimina el componente */
+function eliminar(elemento){
+    if(confirm('Esta seguro que desea eliminar el Componente?')){
+        elemento.remove();
+    }    
 }
 
 /**
@@ -235,75 +239,6 @@ function load_row(){
 }
 
 /**
- * Conexion via Ajax de tipo HTTP JSON
- */
-function carga_ajax(json, inComponent, fn_options, fn_components){
-    document.body.style.cursor = 'wait';
-    $.ajax({
-        type: "POST",
-        url: url + "componente",
-        data: json,
-        contentType: "application/json",
-        dataType: "html",
-        success: function (msg) {
-            msg= add_com_builder(msg, fn_options, fn_components);
-            if(inComponent == null){
-                $("#builder").append(msg);
-                //$("#builder").children().last().children().last().children().eq(0).attr("contenteditable", true);
-                $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
-            }
-            else{
-                var find= "#" + inComponent;
-                $(find).find(".sortable:first").append(msg);
-            }
-            //Si esta en Vista Previa Oculto los botones
-            if(!building){
-                $(".config").hide();
-            }
-            incrementarId();
-            document.body.style.cursor = 'auto';            
-        },
-        error: function(msg) {
-            alert(msg);
-            document.body.style.cursor = 'auto';
-        }
-    });
-}
-
-/**
- * Conexion via Ajax de tipo HTTP JSON que luego llama a funcion
- * Para componentes que soportan hijos
- */
-function carga_ajax_fn(json, datos){
-    document.body.style.cursor = 'wait';
-    $.ajax({
-           type: "POST",
-           url: url + "componente",
-           data: json,
-           contentType: "application/json",
-           dataType: "html",
-           success: function (msg) {
-               msg= add_com_builder(msg, datos);
-               $("#builder").append(msg);
-               datos["fn_sortable"](nameId + actualId);             
-               $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
-               //Si esta en Vista Previa Oculto los botones
-               if(!building){
-                   $(".config").hide();
-               }
-               incrementarId();
-               //Actualiza el modelo Sortable
-               load_sortable();
-               document.body.style.cursor = 'auto';
-           },
-           error: function(msg) {
-                alert(msg);
-		document.body.style.cursor = 'auto';
-           }
-    });
-}
-
-/**
  * Consigue el elemento correspondiente del Servidor UI, segun si va a adentro de un componente o no realizar el append de
  * una manera u otra, agregar las opciones de modificacion, etc, analiza si es sortable, esconde los botones si es necesario e
  * incrementa el ID
@@ -324,7 +259,7 @@ function carga_ajax_nuevo(json, datos){
                 //Paro sobre el componente
                 $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
             }
-            else{
+            else{                
                 var find= "#" + datos["componentPadre"];
                 $(find).find(".sortable:first").append(msg);
             }
@@ -363,13 +298,19 @@ function carga_ajax_existe(json, datos){
         contentType: "application/json",
         dataType: "html",
         success: function (msg) {
-            /*
-             * Falta guardar los datos del sortable
-             */
+            //Guardo los datos sotable del componente, si es que tiene
+            var hijos= '';
+            if(datos["sortable"]){
+                hijos= datos["fn_sortable_hijos"](datos["componentId"]);
+                confirm(hijos);
+            }
+            
             $("#" + datos["componentId"]).find(".view").empty();
             $("#" + datos["componentId"]).find(".view").append(msg);
             if(datos["sortable"]){
                 datos["fn_sortable"](datos["componentId"]);
+                //Cargo los hijos
+                datos["fn_sortable_cargar_hijos"](datos["componentId"], hijos);
                 //Actualiza el modelo Sortable
                 load_sortable();
             }
@@ -443,7 +384,25 @@ function formulario_configuracion(form, componentId){
     $('#modalConfiguracion').modal('show');
 }
 
-/** Cargar del componente Formulario */
+function configurar_y_llamar(json, datos, componentId, componentPadre){
+    if(componentPadre != null){
+        datos['inComponent']= true;
+        datos["componentPadre"]= componentPadre;
+    }
+    
+    if(componentId == '0' || componentId == null){
+        datos["componentId"]= nameId + actualId;
+        carga_ajax_nuevo(json, datos);
+    }
+    else{        
+        datos["componentId"]= componentId;
+        carga_ajax_existe(json, datos);
+    }
+    
+    cancelar_configuracion();
+}
+
+/** Carga del componente Formulario */
 function form_config(componentId){
     var elem= $("#modalConfiguracion");
     var id= elem.find("input[name='id']").val(); 
@@ -463,28 +422,27 @@ function form_config(componentId){
     }
     json += '}}';
     
-    var datos = {nombre:"Formulario", form:"form", inComponent:false, sortable: true, fn_sortable:load_form_sortable, components: true, fn_components: load_form_components, options: true, fn_options: load_form_options};
+    var datos = {nombre:"Formulario", form:"form", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
+        fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: true, fn_options: load_form_options};
     
-    if(componentId == '0'){
-        datos["componentId"]= nameId + actualId;
-        carga_ajax_nuevo(json, datos);
-    }
-    else{
-        datos["componentId"]= componentId;
-        carga_ajax_existe(json, datos);
-    }
-    
-    cancelar_configuracion();
+    configurar_y_llamar(json, datos, componentId, null);
 }
 function load_form_sortable(componentId){
     $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
+}
+function form_sortable_hijos(componentId){
+    return $("#" + componentId).children().last().find(".hijos-fieldset").html();
+}
+function form_sortable_cargar_hijos(componentId,hijos){
+    $("#" + componentId).children().last().find(".hijos-fieldset").append(hijos);
+    $("#" + componentId).children().last().find(".hijos-fieldset legend:nth-child(2)").remove();
 }
 function load_form_options(){
     return '<li class="active"><a onclick="legend(event)">Legend</a></li>';
 }
 function load_form_components(){
-    return '<li><a onclick="load_input(\'' + nameId + actualId + '\')">Input</a></li>\n\
-            <li><a onclick="load_textArea(\'' + nameId + actualId + '\')">Text Area</a></li>\n\
+    return '<li><a onclick="input_config(0,\'' + nameId + actualId + '\')">Input</a></li>\n\
+            <li><a onclick="textArea_config(0,\'' + nameId + actualId + '\')">Text Area</a></li>\n\
             <li><a onclick="load_select(\'' + nameId + actualId + '\')">Select</a></li>\n\
             <li><a onclick="load_checkbox(\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
             <li><a onclick="load_radio(\'' + nameId + actualId + '\')">Radio</a></li>\n\
@@ -492,16 +450,14 @@ function load_form_components(){
             <li><a onclick="load_buttons(\'' + nameId + actualId + '\')">Buttons</a></li>';
 }
 
-/**
- * Login
- */
+/** Carga del componente Login */
 function login_config(componentId){
     var json= '{\n\
         "nombre": "login",\n\
         "configuracion": {\n\
                 "method": "POST",\n\
                 "action": "url",\n\
-                "title": "Super Loguin",\n\
+                "title": "Super Login",\n\
                 "labelButton": "Ingresar" \n\
         },\n\
         "datos": {\n\
@@ -521,19 +477,41 @@ function login_config(componentId){
         }\n\
     }';
         
-    var datos = {nombre:"Formulario Loguin", form:"form_login", inComponent:false, sortable: false, components: false, options: false};
+    var datos = {nombre:"Formulario Login", form:"form_login", inComponent:false, sortable: false, components: false, options: false};
     
-    if(componentId == '0' || componentId == null){
-        datos["componentId"]= nameId + actualId;
-        carga_ajax_nuevo(json, datos);
-    }
-    else{
-        datos["componentId"]= componentId;
-        carga_ajax_existe(json, datos);
-    }
-    
-    cancelar_configuracion();
+    configurar_y_llamar(json, datos, componentId, null);
 }
+
+/** Carga del componente Input */
+function input_config(componentId, componentPadre){
+    var json= '{\n\
+        "nombre": "input",\n\
+        "configuracion": {\n\
+            "label": "Campo Input",\n\
+            "type": "text",\n\
+            "name": "name",\n\
+            "placeholder": "Es un Input"\n\
+        }\n\
+    }';    
+    var datos = {nombre:"Input", form:"form_input", inComponent:false, sortable: false, components: false, options: false};    
+    configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+
+/** Carga del componente TextArea */
+function textArea_config(componentId, componentPadre){
+    var json= '{\n\
+        "nombre": "textarea",\n\
+        "configuracion": {\n\
+            "label": "Campo Text Area",\n\
+            "name": "name",\n\
+            "placeholder": "Descripcion del campo Text Area",\n\
+            "rows": "10"\n\
+        }\n\
+    }';
+    var datos = {nombre:"Text Area", form:"form_textarea", inComponent:false, sortable: false, components: false, options: false};    
+    configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+
 
 //OPCIONES DE LOS COMPONENTES
 /**
@@ -628,6 +606,10 @@ function image_type(event, type){
        target.parent().addClass("active");
    }
 }
+/**
+ * Agrega estilo a un boton
+ * utilizado por: button
+ */
 function style_button(event, style){
    var target = $(event.target);
    var div= target.parent().parent().parent().parent();
@@ -813,44 +795,6 @@ function inline_radio(event){
     }
 }
 
-
-/**
- * Campos del Formulario
- */
-
-/**
- * Input
- */
-function load_input(inComponent){
-    var json= '{\n\
-        "nombre": "input",\n\
-        "configuracion": {\n\
-            "label": "Campo Input",\n\
-            "type": "text",\n\
-            "name": "name",\n\
-            "placeholder": "Es un Input"\n\
-        }\n\
-    }';
-        
-    carga_ajax(json, inComponent);
-}
-
-/**
- * TextArea
- */
-function load_textArea(inComponent){
-    var json= '{\n\
-        "nombre": "textarea",\n\
-        "configuracion": {\n\
-            "label": "Campo Text Area",\n\
-            "name": "name",\n\
-            "placeholder": "Descripcion del campo Text Area",\n\
-            "rows": "10"\n\
-        }\n\
-    }';
-        
-    carga_ajax(json, inComponent);
-}
 
 /**
  * Select

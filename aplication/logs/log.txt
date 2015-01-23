@@ -28,4 +28,5 @@
 ----------\n[2015-01-20 20:17:50.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
 ----------\n[2015-01-20 20:22:27.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
 ----------\n[2015-01-20 20:22:45.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::null()
+----------\n[2015-01-23 19:05:18.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::form_input()
 ----------\n

@@ -140,7 +140,7 @@
         <script src="<?php echo base()?>resources/js/jquery-ui.min.js"></script>
         <script src="<?php echo base()?>resources/js/funciones.js"></script>
         <script id="events">
-            $('body').on('click', 'button.delete', function() {$(this).parent().remove();});
+            $('body').on('click', 'button.delete', function() {eliminar($(this).parent());});
             $('body').on('click', 'button.duplicate', function() {duplicarElemento($(this).parent())});
             $('body').on('click', 'button.minimize', function() {minimizar($(this))});
         </script>
