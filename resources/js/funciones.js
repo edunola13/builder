@@ -6,8 +6,8 @@ $(function() {
     //load_conexion();
 });
 
-var url= "http://edunola.com.ar/serviciosui/";
-//var url= "http://localhost/uiservices/";
+//var url= "http://edunola.com.ar/serviciosui/";
+var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -204,7 +204,7 @@ function add_com_builder(componente, datos){
     if(datos["components"]){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_components"]() +'</ul></div>';
     }
-    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="formulario_configuracion(\'' + datos["form"] + '\',\'' + datos["componentId"] + '\')">Personalize</button>';
+    com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="formulario_configuracion(\'' + datos["form"] + '\',\'' + datos["componentId"] + '\',' + datos["fn_datos"] + ')">Personalize</button>';
     com+= '<p class="config">' + datos["nombre"] + '</p><div class="view">';
     com+= componente;
     com+= '</div></div>';
@@ -335,15 +335,15 @@ function cancelar_configuracion(){
     $('#modalConfiguracion .modal-body').empty();
     $('#modalConfiguracion').modal('hide');
 }
-
-function formulario_configuracion(form, componentId){
+/** Arma el formulario de configuracion en base a un componente */
+function formulario_configuracion(form, componentId, fn_datos){
     var parametros= "";
     if(componentId == null){
         componentId= '0';
     }
     else{
         //Segun el form voy a tener que sacar los datos actuales y pasarselos al form PHP
-        parametros= form_datos(componentId);        
+        parametros= fn_datos(componentId);        
     }
     $('#modalConfiguracion .modal-body').empty();
     document.body.style.cursor = 'wait';
@@ -423,7 +423,7 @@ function form_config(componentId){
     }
     json += '}}';
     
-    var datos = {nombre:"Formulario", form:"form", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
+    var datos = {nombre:"Formulario", form:"form", fn_datos:"form_datos", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
         fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: true, fn_options: load_form_options};
     
     configurar_y_llamar(json, datos, componentId, null);

@@ -10,10 +10,8 @@
         "forms": {"class": "Configuracion", "url": "forms"}
     },
 
-    "filters": {
-        "authorization": {"class": "Authorization", "filtered": "/*"}        
-    },
-            
+    "filters": {       
+    },            
     "filters_after_processing": {
     },
        
