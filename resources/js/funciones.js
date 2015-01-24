@@ -14,9 +14,7 @@ var building= true;
 var estilo= "";
 var nameId= "component";
 var actualId= 2;
-/**
- * Pasa al estado Vista Previa
- */
+/** Pasa al estado Vista Previa */
 function vista_previa(){
     if(building){
         $(".config").hide();
@@ -28,9 +26,7 @@ function vista_previa(){
         $("body").children().eq(1).find(".navbar-right").children().eq(1).addClass("active");
     }
 }
-/**
- * Pasa al estado construyendo HTML
- */
+/** Pasa al estado construyendo HTML */
 function builder(){
     if(!building){
         $(".config").show();
@@ -42,6 +38,7 @@ function builder(){
     }
    
 }
+/** Descarga el modelo para continuar en otro momento */
 function descargar_modelo(){
     var reader = new FileReader();
     reader.onload = function (event) {
@@ -62,6 +59,7 @@ function descargar_modelo(){
     var blob= new Blob(texto, {type: 'text/plain'});
     reader.readAsDataURL(blob);
 }
+/** Descarga el HTML listo para usar */
 function descargar_html(){
     var reader = new FileReader();
     reader.onload = function (event) {
@@ -103,9 +101,11 @@ function descargar_html(){
     /*No es necesario
     load_sortable();*/
 }
+/** Abre el dialogo para cargar el modelo ya descargado */
 function cargar_modelo(){
     $('#modalModelo').modal('show');
 }
+/** Levanta el modelo indicado y lo carga en el builder */
 function form_cargar_modelo() {
     var fileInput = document.getElementById('fileInput');
 
@@ -131,6 +131,7 @@ function form_cargar_modelo() {
         fileDisplayArea.innerText = "File not supported!";
     }
 }
+/** Limpia el builder */
 function clear(){
     $("body").find('#builder').empty();
 }
@@ -158,7 +159,7 @@ function duplicarElemento(elemento) {
 /** Minimiza el componente */
 function minimizar(elemento){
     var padre= elemento.parent();
-    if(elemento.html() == "+"){
+    if(elemento.html() === "+"){
 	elemento.attr('title', 'Minimizar');
 	elemento.html("-");
 	padre.find(".view:first").children().removeClass("minimizado");
@@ -195,7 +196,7 @@ function load_conexion(){
  * Agrega el HTML al componente para poder manipularlo en el builder
  */
 function add_com_builder(componente, datos){
-    var com= '<div class="com-builder" id="' + nameId + actualId + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
+    var com= '<div class="com-builder" id="' + datos["componentId"] + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
     if(datos["options"]){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_options"]() +'</ul></div>';
@@ -215,27 +216,6 @@ function add_com_builder(componente, datos){
  */
 function incrementarId(){
     actualId++;
-}
-
-/**
- * Crea una nueva fila con columnas
- */
-function load_row(){
-    var row= '<div class="row">';
-    for (x=0;x<arguments.length;x++){
-        row += '<div class="col col-md-' + arguments[x] + ' sortable"></div>';
-    }
-    row += '</div>';
-    row= add_com_builder(row);
-    $("#builder").append(row);
-    $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
-    //Si esta en Vista Previa Oculto los botones
-    if(!building){
-        $(".config").hide();
-    }
-    incrementarId();
-    //Actualiza el modelo Sortable
-    load_sortable();
 }
 
 /**
@@ -302,7 +282,6 @@ function carga_ajax_existe(json, datos){
             var hijos= '';
             if(datos["sortable"]){
                 hijos= datos["fn_sortable_hijos"](datos["componentId"]);
-                confirm(hijos);
             }
             
             $("#" + datos["componentId"]).find(".view").empty();
@@ -358,13 +337,13 @@ function cancelar_configuracion(){
 }
 
 function formulario_configuracion(form, componentId){
-    parametros= "";
+    var parametros= "";
     if(componentId == null){
-        componentId= 0;
+        componentId= '0';
     }
     else{
         //Segun el form voy a tener que sacar los datos actuales y pasarselos al form PHP
-        parametros= "";
+        parametros= form_datos(componentId);        
     }
     $('#modalConfiguracion .modal-body').empty();
     document.body.style.cursor = 'wait';
@@ -382,6 +361,28 @@ function formulario_configuracion(form, componentId){
         }
     });    
     $('#modalConfiguracion').modal('show');
+}
+
+/**
+ * Crea una nueva fila con columnas
+ */
+function load_row(){
+    var row= '<div class="row">';
+    for (x=0;x<arguments.length;x++){
+        row += '<div class="col col-md-' + arguments[x] + ' sortable"></div>';
+    }
+    row += '</div>';    
+    var datos = {nombre:"Grilla " + arguments.length, inComponent:false, sortable: false, components: false, options: false};    
+    row= add_com_builder(row, datos);    
+    $("#builder").append(row);
+    $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+    //Si esta en Vista Previa Oculto los botones
+    if(!building){
+        $(".config").hide();
+    }
+    incrementarId();
+    //Actualiza el modelo Sortable
+    load_sortable();
 }
 
 function configurar_y_llamar(json, datos, componentId, componentPadre){
@@ -431,11 +432,19 @@ function load_form_sortable(componentId){
     $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
 }
 function form_sortable_hijos(componentId){
-    return $("#" + componentId).children().last().find(".hijos-fieldset").html();
+    return $("#" + componentId).children().last().find(".hijos-fieldset:first").html();
 }
 function form_sortable_cargar_hijos(componentId,hijos){
-    $("#" + componentId).children().last().find(".hijos-fieldset").append(hijos);
-    $("#" + componentId).children().last().find(".hijos-fieldset legend:nth-child(2)").remove();
+    if($("#" + componentId).children().last().find(".hijos-fieldset legend").length > 0){
+        $("#" + componentId).children().last().find(".hijos-fieldset").append(hijos);
+        //Si viene con legend, si antes tenia elimino el viejo
+        $("#" + componentId).children().last().find(".hijos-fieldset legend:nth-child(2)").remove();        
+    }
+    else{
+        $("#" + componentId).children().last().find(".hijos-fieldset").append(hijos);
+        //El form viene sin legend, entonces elimino si antes tenia
+        $("#" + componentId).children().last().find(".hijos-fieldset legend").remove();
+    }
 }
 function load_form_options(){
     return '<li class="active"><a onclick="legend(event)">Legend</a></li>';
@@ -443,11 +452,11 @@ function load_form_options(){
 function load_form_components(){
     return '<li><a onclick="input_config(0,\'' + nameId + actualId + '\')">Input</a></li>\n\
             <li><a onclick="textArea_config(0,\'' + nameId + actualId + '\')">Text Area</a></li>\n\
-            <li><a onclick="load_select(\'' + nameId + actualId + '\')">Select</a></li>\n\
-            <li><a onclick="load_checkbox(\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
-            <li><a onclick="load_radio(\'' + nameId + actualId + '\')">Radio</a></li>\n\
-            <li><a onclick="load_button(\'' + nameId + actualId + '\')">Button</a></li>\n\
-            <li><a onclick="load_buttons(\'' + nameId + actualId + '\')">Buttons</a></li>';
+            <li><a onclick="select_config(0,\'' + nameId + actualId + '\')">Select</a></li>\n\
+            <li><a onclick="checkbox_config(0,\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
+            <li><a onclick="radio_config(0,\'' + nameId + actualId + '\')">Radio</a></li>\n\
+            <li><a onclick="button_config(0,\'' + nameId + actualId + '\')">Button</a></li>\n\
+            <li><a onclick="buttons_config(0,\'' + nameId + actualId + '\')">Buttons</a></li>';
 }
 
 /** Carga del componente Login */
@@ -511,6 +520,185 @@ function textArea_config(componentId, componentPadre){
     var datos = {nombre:"Text Area", form:"form_textarea", inComponent:false, sortable: false, components: false, options: false};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
+
+/** Select */
+function select_config(componentId, componentPadre){
+    var componentes= '"componentes": [';
+    for(var i= 1; i < 4; i++){
+        componentes += '{\n\
+            "nombre": "select_option",\n\
+            "configuracion": {\n\
+                "label": "opcion ' + i + '"\n\
+            }';
+        if(i != 3){
+            componentes += '},';
+        }
+        else{
+            componentes += '}';
+        }
+    }
+    componentes += ']';
+    var json= '{\n\
+        "nombre": "select",\n\
+        "configuracion": {\n\
+            "label": "Seleccione",\n\
+            "name": "name",\n\
+            "multiple": "no"\n\
+        },';
+    json += componentes + '}';
+    
+    var datos = {nombre:"Select", form:"form_select", inComponent:false, sortable: false, components: false, options: true, fn_options:load_select_options};    
+    configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_select_options(){
+    return '<li><a onclick="select_multiple(event)">Multiple</a></li>';
+}
+
+/** CheckBox */
+function checkbox(inline){
+    var val= "no";
+    if(inline){
+        val= "si";
+    }
+    var componentes= '"componentes": [';
+    var cant= 2;
+    for(var i= 0; i < 2; i++){
+        componentes += '{\n\
+            "nombre": "checkbox_option",\n\
+            "configuracion": {\n\
+                "label": "opcion ' + i + '",\n\
+                "name": "name",\n\
+                "inline": "' + val + '",\n\
+                "numCheckbox": "' + i + '",\n\
+                "checked": "no"\n\
+            }';
+        if(i < cant - 1){
+            componentes += '},';
+        }
+        else{
+            componentes += '}';
+        }
+    }
+    componentes += ']';
+    var json= '{\n\
+        "nombre": "checkbox",\n\
+        "configuracion": {\n\
+            "label": "Elija opciones",\n\
+            "inline": "' + val + '"\n\
+        },';
+    json += componentes + '}';
+    
+    return json;
+}
+function checkbox_config(componentId, componentPadre){
+    var datos = {nombre:"CheckBox", form:"form_checkbox", inComponent:false, sortable: false, components: false, options: true, fn_options: load_checkbox_options};    
+    configurar_y_llamar(checkbox(true), datos, componentId, componentPadre);
+}
+function load_checkbox_options(){
+    return '<li class="active"><a onclick="inline_checkbox(event)">Inline</a></li>';
+}
+
+/** Radio Button */
+function radio(inline){
+    var val= "no";
+    if(inline){
+        val= "si";
+    }
+    var componentes= '"componentes": [';
+    var cant= 2;
+    for(var i= 0; i < 2; i++){
+        componentes += '{\n\
+            "nombre": "radio_option",\n\
+            "configuracion": {\n\
+                "label": "opcion ' + i + '",\n\
+                "name": "name",\n\
+                "inline": "' + val + '",\n\
+                "numRadio": "' + i + '",\n\
+                "checked": "no"\n\
+            }';
+        if(i < cant - 1){
+            componentes += '},';
+        }
+        else{
+            componentes += '}';
+        }
+    }
+    componentes += ']';
+    var json= '{\n\
+        "nombre": "radio",\n\
+        "configuracion": {\n\
+            "label": "Elija una opcion",\n\
+            "inline": "' + val + '"\n\
+        },';
+    json += componentes + '}';
+    
+    return json;
+}
+function radio_config(componentId, componentPadre){
+    var datos = {nombre:"Radio Button", form:"form_radio", inComponent:false, sortable: false, components: false, options: true, fn_options:load_radio_options};    
+    configurar_y_llamar(radio(false), datos, componentId, componentPadre);
+}
+function load_radio_options(){
+    return '<li><a onclick="inline_radio(event)">Inline</a></li>';
+}
+
+/** Button */
+function button_config(componentId, componentPadre){
+    var json= '{\n\
+        "nombre": "button",\n\
+        "configuracion": {\n\
+            "label": "Boton",\n\
+            "type": "button",\n\
+            "style": "default"\n\
+        }\n\
+    }';
+    var datos = {nombre:"Button", form:"form_button", inComponent:false, sortable: false, components: false, options: true, fn_options:load_button_options};    
+    configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_button_options(){
+    return '<li class="option-style active"><a onclick="style_button(event, &#39;default&#39;)">Default</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;primary&#39;)">Primary</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;success&#39;)">Success</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;warning&#39;)">Warning</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;danger&#39;)">Danger</a></li>';
+}
+
+/** Buttons */
+function buttons_config(componentId, componentPadre){
+    var componentes= '"componentes": [';
+    var cant= 2;
+    for(var i= 0; i < 2; i++){
+        if(i < cant - 1){
+            componentes += '{\n\
+                "nombre": "button",\n\
+                "configuracion": {\n\
+                    "label": "Enviar",\n\
+                    "type": "submit",\n\
+                    "style": "default"\n\
+                }\n\
+            },';
+        }
+        else{
+            componentes += '{\n\
+                "nombre": "button",\n\
+                "configuracion": {\n\
+                    "label": "Borrar",\n\
+                    "type": "reset",\n\
+                    "style": "default"\n\
+                }\n\
+            }';
+        }
+    }
+    componentes += ']';
+    var json= '{\n\
+        "nombre": "botonera",';
+    json += componentes + '}';
+
+    var datos = {nombre:"Buttons Form", inComponent:false, sortable: false, components: false, options: false};    
+    configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+
 
 
 //OPCIONES DE LOS COMPONENTES
@@ -795,169 +983,7 @@ function inline_radio(event){
     }
 }
 
-
-/**
- * Select
- */
-function load_select(inComponent){
-    var componentes= '"componentes": [';
-    for(var i= 1; i < 4; i++){
-        componentes += '{\n\
-            "nombre": "select_option",\n\
-            "configuracion": {\n\
-                "label": "opcion ' + i + '"\n\
-            }';
-        if(i != 3){
-            componentes += '},';
-        }
-        else{
-            componentes += '}';
-        }
-    }
-    componentes += ']';
-    var json= '{\n\
-        "nombre": "select",\n\
-        "configuracion": {\n\
-            "label": "Seleccione",\n\
-            "name": "name",\n\
-            "multiple": "no"\n\
-        },';
-     json += componentes + '}';
-     
-    carga_ajax(json, inComponent, load_select_options);
-}
-function load_select_options(){
-    return '<li><a onclick="select_multiple(event)">Multiple</a></li>';
-}
-
-/**
- * CheckBox
- */
-function checkbox(inline){
-    var val= "no";
-    if(inline){
-        val= "si";
-    }
-    var componentes= '"componentes": [';
-    var cant= 2;
-    for(var i= 0; i < 2; i++){
-        componentes += '{\n\
-            "nombre": "checkbox_option",\n\
-            "configuracion": {\n\
-                "label": "opcion ' + i + '",\n\
-                "name": "name",\n\
-                "inline": "' + val + '",\n\
-                "numCheckbox": "' + i + '",\n\
-                "checked": "no"\n\
-            }';
-        if(i < cant - 1){
-            componentes += '},';
-        }
-        else{
-            componentes += '}';
-        }
-    }
-    componentes += ']';
-    var json= '{\n\
-        "nombre": "checkbox",\n\
-        "configuracion": {\n\
-            "label": "Elija opciones",\n\
-            "inline": "' + val + '"\n\
-        },';
-    json += componentes + '}';
-    
-    return json;
-}
-
-function load_checkbox(inComponent){        
-    carga_ajax(checkbox(true), inComponent, load_checkbox_options);
-}
-function load_checkbox_options(){
-    return '<li class="active"><a onclick="inline_checkbox(event)">Inline</a></li>';
-}
-
-/**
- * Radio Button
- */
-function radio(inline){
-    var val= "no";
-    if(inline){
-        val= "si";
-    }
-    var componentes= '"componentes": [';
-    var cant= 2;
-    for(var i= 0; i < 2; i++){
-        componentes += '{\n\
-            "nombre": "radio_option",\n\
-            "configuracion": {\n\
-                "label": "opcion ' + i + '",\n\
-                "name": "name",\n\
-                "inline": "' + val + '",\n\
-                "numRadio": "' + i + '",\n\
-                "checked": "no"\n\
-            }';
-        if(i < cant - 1){
-            componentes += '},';
-        }
-        else{
-            componentes += '}';
-        }
-    }
-    componentes += ']';
-    var json= '{\n\
-        "nombre": "radio",\n\
-        "configuracion": {\n\
-            "label": "Elija una opcion",\n\
-            "inline": "' + val + '"\n\
-        },';
-    json += componentes + '}';
-    
-    return json;
-}
-
-function load_radio(inComponent){
-    carga_ajax(radio(false), inComponent, load_radio_options);
-}
-function load_radio_options(){
-    return '<li><a onclick="inline_radio(event)">Inline</a></li>';
-}
-
-
-/**
- * Buttons
- */
-function load_buttons(inComponent){
-    var componentes= '"componentes": [';
-    var cant= 2;
-    for(var i= 0; i < 2; i++){
-        if(i < cant - 1){
-            componentes += '{\n\
-                "nombre": "button",\n\
-                "configuracion": {\n\
-                    "label": "Enviar",\n\
-                    "type": "submit",\n\
-                    "style": "default"\n\
-                }\n\
-            },';
-        }
-        else{
-            componentes += '{\n\
-                "nombre": "button",\n\
-                "configuracion": {\n\
-                    "label": "Borrar",\n\
-                    "type": "reset",\n\
-                    "style": "default"\n\
-                }\n\
-            }';
-        }
-    }
-    componentes += ']';
-    var json= '{\n\
-        "nombre": "botonera",';
-    json += componentes + '}';
-
-    carga_ajax(json, inComponent);
-}
+//------------
 
 /**
  * Realia la carga del formulario de busqueda
@@ -1564,26 +1590,6 @@ function load_blockquote(inComponent){
         }\n\
     }';        
     carga_ajax(json, inComponent);
-}
-
-function load_button(inComponent){
-    var json= '{\n\
-        "nombre": "button",\n\
-        "configuracion": {\n\
-            "label": "Boton",\n\
-            "type": "button",\n\
-            "style": "default"\n\
-        }\n\
-    }';
-    carga_ajax(json, inComponent, load_button_options);
-}
-function load_button_options(){
-    return '<li class="option-style active"><a onclick="style_button(event, &#39;default&#39;)">Default</a></li>\n\
-            <li class="option-style"><a onclick="style_button(event, &#39;primary&#39;)">Primary</a></li>\n\
-            <li class="option-style"><a onclick="style_button(event, &#39;success&#39;)">Success</a></li>\n\
-            <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
-            <li class="option-style"><a onclick="style_button(event, &#39;warning&#39;)">Warning</a></li>\n\
-            <li class="option-style"><a onclick="style_button(event, &#39;danger&#39;)">Danger</a></li>';
 }
 
 /**

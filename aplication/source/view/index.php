@@ -84,7 +84,6 @@
 			<button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a>
             <button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>			
-            <button type="button" class="btn btn-default btn-xs config pull-right" onclick="nueva_configuracion()">Personalize</button>
             <p class="config">Grilla 12</p>
             <div class="view">
                 <div class="row">
@@ -139,6 +138,7 @@
       <div class="jsBuilder">
         <script src="<?php echo base()?>resources/js/jquery-ui.min.js"></script>
         <script src="<?php echo base()?>resources/js/funciones.js"></script>
+        <script src="<?php echo base()?>resources/js/form_config.js"></script>
         <script id="events">
             $('body').on('click', 'button.delete', function() {eliminar($(this).parent());});
             $('body').on('click', 'button.duplicate', function() {duplicarElemento($(this).parent())});
