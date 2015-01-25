@@ -23,6 +23,16 @@ class Configuracion extends En_Controller{
         $this->label= $this->request->param_get('label');
         $this->load_view('forms/form');
     }
+    
+    private function form_input(){
+        $this->id= $this->request->param_get('componentId');
+        $this->idVal= $this->request->param_get('id');
+        $this->name= $this->request->param_get('name');
+        $this->type= $this->request->param_get('type');
+        $this->label= $this->request->param_get('label');
+        $this->placeholder= $this->request->param_get('placeholder');        
+        $this->load_view('forms/input');
+    }
 }
 
 ?>

@@ -14,3 +14,14 @@ function form_datos(componentId){
     return params;
 }
 
+/** Lee los datos del componente input */
+function input_datos(componentId){
+    var params= "";
+    params += "&label=" + $("#" + componentId).find("label").html();
+    var elem= $("#" + componentId).find("input");
+    params += "&id=" + elem.attr('id');
+    params += "&name=" + elem.attr('name');
+    params += "&type=" + elem.attr('type');
+    params += "&placeholder=" + elem.attr('placeholder');    
+    return params;
+}

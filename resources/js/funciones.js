@@ -492,17 +492,31 @@ function login_config(componentId){
 }
 
 /** Carga del componente Input */
-function input_config(componentId, componentPadre){
+function input_config(componentId, componentPadre){    
+    var id= ""; 
+    var name= "nameInput"; 
+    var type= "text";
+    var label= "Input";
+    var placeholder= "Placeholder Input";  
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        id= elem.find("input[name='id']").val(); 
+        name= elem.find("input[name='name']").val(); 
+        type= elem.find("input[name='type']").val();
+        label= elem.find("input[name='label']").val();
+        placeholder= elem.find("input[name='placeholder']").val();  
+    }
     var json= '{\n\
         "nombre": "input",\n\
         "configuracion": {\n\
-            "label": "Campo Input",\n\
-            "type": "text",\n\
-            "name": "name",\n\
-            "placeholder": "Es un Input"\n\
+            "id": "' + id + '",\n\
+            "label": "' + label + '",\n\
+            "type": "' + type + '",\n\
+            "name": "' + name + '",\n\
+            "placeholder": "' + placeholder + '"\n\
         }\n\
-    }';    
-    var datos = {nombre:"Input", form:"form_input", inComponent:false, sortable: false, components: false, options: false};    
+    }';
+    var datos = {nombre:"Input", form:"form_input", fn_datos:"input_datos", inComponent:false, sortable: false, components: false, options: false};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
