@@ -32,4 +32,6 @@
 ----------\n[2015-01-25 14:18:06.000000 ::1  - Unknown ] Undefined property: Configuracion::$method
 ----------\n[2015-01-25 14:18:06.000000 ::1  - Unknown ] Undefined property: Configuracion::$action
 ----------\n[2015-01-25 14:18:06.000000 ::1  - Unknown ] Undefined property: Configuracion::$legend
+----------\n[2015-01-27 19:44:58.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Configuracion::form_select()
+----------\n[2015-01-27 20:13:25.000000 127.0.0.1  - Unknown ] Undefined property: Configuracion::$inline
 ----------\n

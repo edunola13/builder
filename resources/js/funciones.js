@@ -424,7 +424,7 @@ function form_config(componentId){
     json += '}}';
     
     var datos = {nombre:"Formulario", form:"form", fn_datos:"form_datos", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
-        fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: true, fn_options: load_form_options};
+        fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: false};
     
     configurar_y_llamar(json, datos, componentId, null);
 }
@@ -445,9 +445,6 @@ function form_sortable_cargar_hijos(componentId,hijos){
         //El form viene sin legend, entonces elimino si antes tenia
         $("#" + componentId).children().last().find(".hijos-fieldset legend").remove();
     }
-}
-function load_form_options(){
-    return '<li class="active"><a onclick="legend(event)">Legend</a></li>';
 }
 function load_form_components(){
     return '<li><a onclick="input_config(0,\'' + nameId + actualId + '\')">Input</a></li>\n\
@@ -497,14 +494,14 @@ function input_config(componentId, componentPadre){
     var name= "nameInput"; 
     var type= "text";
     var label= "Input";
-    var placeholder= "Placeholder Input";  
+    var placeholder= "Placeholder Input";
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
         name= elem.find("input[name='name']").val(); 
         type= elem.find("input[name='type']").val();
         label= elem.find("input[name='label']").val();
-        placeholder= elem.find("input[name='placeholder']").val();  
+        placeholder= elem.find("input[name='placeholder']").val();
     }
     var json= '{\n\
         "nombre": "input",\n\
@@ -514,24 +511,38 @@ function input_config(componentId, componentPadre){
             "type": "' + type + '",\n\
             "name": "' + name + '",\n\
             "placeholder": "' + placeholder + '"\n\
-        }\n\
-    }';
+            }\n\
+        }';
     var datos = {nombre:"Input", form:"form_input", fn_datos:"input_datos", inComponent:false, sortable: false, components: false, options: false};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Carga del componente TextArea */
 function textArea_config(componentId, componentPadre){
+    var id= ""; 
+    var name= "nameTextArea"; 
+    var rows= 10;
+    var label= "Text Area";
+    var placeholder= "Placeholder TextArea";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        id= elem.find("input[name='id']").val(); 
+        name= elem.find("input[name='name']").val(); 
+        rows= elem.find("input[name='rows']").val();
+        label= elem.find("input[name='label']").val();
+        placeholder= elem.find("input[name='placeholder']").val();
+    }
     var json= '{\n\
         "nombre": "textarea",\n\
         "configuracion": {\n\
-            "label": "Campo Text Area",\n\
-            "name": "name",\n\
-            "placeholder": "Descripcion del campo Text Area",\n\
-            "rows": "10"\n\
+            "id": "' + id + '",\n\
+            "label": "' + label + '",\n\
+            "name": "' + name + '",\n\
+            "placeholder": "' + placeholder +'",\n\
+            "rows": "' + rows + '"\n\
         }\n\
     }';
-    var datos = {nombre:"Text Area", form:"form_textarea", inComponent:false, sortable: false, components: false, options: false};    
+    var datos = {nombre:"Text Area", form:"form_textarea", fn_datos:"textarea_datos", inComponent:false, sortable: false, components: false, options: false};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
@@ -552,27 +563,48 @@ function select_config(componentId, componentPadre){
         }
     }
     componentes += ']';
+    
+    var id= ""; 
+    var name= "nameSelect";
+    var label= "Select";
+    var multiple= "no";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        id= elem.find("input[name='id']").val(); 
+        name= elem.find("input[name='name']").val();
+        label= elem.find("input[name='label']").val();
+        if(elem.find("input[name='multiple']").is(':checked')){
+            multiple= "si";
+        }
+    }
     var json= '{\n\
         "nombre": "select",\n\
         "configuracion": {\n\
-            "label": "Seleccione",\n\
-            "name": "name",\n\
-            "multiple": "no"\n\
+            "id": "' + id + '",\n\
+            "label": "' + label + '",\n\
+            "name": "' + name + '",\n\
+            "multiple": "' + multiple + '"\n\
         },';
     json += componentes + '}';
     
-    var datos = {nombre:"Select", form:"form_select", inComponent:false, sortable: false, components: false, options: true, fn_options:load_select_options};    
+    var datos = {nombre:"Select", form:"form_select", fn_datos:"select_datos", inComponent:false, sortable: false, components: false, options: false};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
-}
-function load_select_options(){
-    return '<li><a onclick="select_multiple(event)">Multiple</a></li>';
 }
 
 /** CheckBox */
-function checkbox(inline){
-    var val= "no";
-    if(inline){
-        val= "si";
+function checkbox(componentId){
+    var id= "checkOp"; 
+    var name= "nameCheck";
+    var label= "CheckBox";
+    var enlinea= "no";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        id= elem.find("input[name='id']").val(); 
+        name= elem.find("input[name='name']").val();
+        label= elem.find("input[name='label']").val();
+        if(elem.find("input[name='inline']").is(':checked')){
+            enlinea= "si";
+        }
     }
     var componentes= '"componentes": [';
     var cant= 2;
@@ -581,9 +613,9 @@ function checkbox(inline){
             "nombre": "checkbox_option",\n\
             "configuracion": {\n\
                 "label": "opcion ' + i + '",\n\
-                "name": "name",\n\
-                "inline": "' + val + '",\n\
-                "numCheckbox": "' + i + '",\n\
+                "name": "' + name + '",\n\
+                "inline": "' + enlinea + '",\n\
+                "id": "' + id + i + '",\n\
                 "checked": "no"\n\
             }';
         if(i < cant - 1){
@@ -597,26 +629,31 @@ function checkbox(inline){
     var json= '{\n\
         "nombre": "checkbox",\n\
         "configuracion": {\n\
-            "label": "Elija opciones",\n\
-            "inline": "' + val + '"\n\
+            "label": "' + label + '"\n\
         },';
     json += componentes + '}';
     
     return json;
 }
 function checkbox_config(componentId, componentPadre){
-    var datos = {nombre:"CheckBox", form:"form_checkbox", inComponent:false, sortable: false, components: false, options: true, fn_options: load_checkbox_options};    
-    configurar_y_llamar(checkbox(true), datos, componentId, componentPadre);
-}
-function load_checkbox_options(){
-    return '<li class="active"><a onclick="inline_checkbox(event)">Inline</a></li>';
+    var datos = {nombre:"CheckBox", form:"form_checkbox", fn_datos: "checkbox_datos", inComponent:false, sortable: false, components: false, options: false};    
+    configurar_y_llamar(checkbox(componentId), datos, componentId, componentPadre);
 }
 
 /** Radio Button */
-function radio(inline){
-    var val= "no";
-    if(inline){
-        val= "si";
+function radio(componentId){
+    var id= "RadioOp"; 
+    var name= "nameRadio";
+    var label= "Radio";
+    var enlinea= "no";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        id= elem.find("input[name='id']").val(); 
+        name= elem.find("input[name='name']").val();
+        label= elem.find("input[name='label']").val();
+        if(elem.find("input[name='inline']").is(':checked')){
+            enlinea= "si";
+        }
     }
     var componentes= '"componentes": [';
     var cant= 2;
@@ -625,9 +662,9 @@ function radio(inline){
             "nombre": "radio_option",\n\
             "configuracion": {\n\
                 "label": "opcion ' + i + '",\n\
-                "name": "name",\n\
-                "inline": "' + val + '",\n\
-                "numRadio": "' + i + '",\n\
+                "name": "' + name + '",\n\
+                "inline": "' + enlinea + '",\n\
+                "id": "' + id + i + '",\n\
                 "checked": "no"\n\
             }';
         if(i < cant - 1){
@@ -641,19 +678,15 @@ function radio(inline){
     var json= '{\n\
         "nombre": "radio",\n\
         "configuracion": {\n\
-            "label": "Elija una opcion",\n\
-            "inline": "' + val + '"\n\
+            "label": "' + label + '"\n\
         },';
     json += componentes + '}';
     
     return json;
 }
 function radio_config(componentId, componentPadre){
-    var datos = {nombre:"Radio Button", form:"form_radio", inComponent:false, sortable: false, components: false, options: true, fn_options:load_radio_options};    
-    configurar_y_llamar(radio(false), datos, componentId, componentPadre);
-}
-function load_radio_options(){
-    return '<li><a onclick="inline_radio(event)">Inline</a></li>';
+    var datos = {nombre:"Radio Button", form:"form_radio", fn_datos:"radio_datos", inComponent:false, sortable: false, components: false, options: false};    
+    configurar_y_llamar(radio(componentId), datos, componentId, componentPadre);
 }
 
 /** Button */
@@ -713,7 +746,44 @@ function buttons_config(componentId, componentPadre){
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
-
+/** Carga del componente Formulario */
+function form_inline_config(componentId){
+    var elem= $("#modalConfiguracion");
+    var id= elem.find("input[name='id']").val(); 
+    var method= elem.find("input[name='method']").val(); 
+    var action= elem.find("input[name='action']").val();
+     
+    var json= '{\n\
+           "nombre": "form_inline",\n\
+           "configuracion": {\n\
+                "id": "' + id + '",\n\
+                "method": "' + method + '",\n\
+                "action": "' + action + '"\n\
+            }}';
+    
+    var datos = {nombre:"Formulario en Linea", form:"form_inline", fn_datos:"form_inline_datos", inComponent:false, sortable: true, fn_sortable:load_form_inline_sortable, fn_sortable_hijos: form_inline_sortable_hijos,
+        fn_sortable_cargar_hijos: form_inline_sortable_cargar_hijos, components: true, fn_components: load_form_inline_components, options: false};
+    
+    configurar_y_llamar(json, datos, componentId, null);
+}
+function load_form_inline_sortable(componentId){
+    $("#" + componentId).children().last().find("form:first").addClass("sortable");
+}
+function form_inline_sortable_hijos(componentId){
+    return $("#" + componentId).children().last().find("form:first").html();
+}
+function form_inline_sortable_cargar_hijos(componentId,hijos){
+    $("#" + componentId).children().last().find("form:first").append(hijos);
+}
+function load_form_inline_components(){
+    return '<li><a onclick="input_config(0,\'' + nameId + actualId + '\')">Input</a></li>\n\
+            <li><a onclick="textArea_config(0,\'' + nameId + actualId + '\')">Text Area</a></li>\n\
+            <li><a onclick="select_config(0,\'' + nameId + actualId + '\')">Select</a></li>\n\
+            <li><a onclick="checkbox_config(0,\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
+            <li><a onclick="radio_config(0,\'' + nameId + actualId + '\')">Radio</a></li>\n\
+            <li><a onclick="button_config(0,\'' + nameId + actualId + '\')">Button</a></li>\n\
+            <li><a onclick="buttons_config(0,\'' + nameId + actualId + '\')">Buttons</a></li>';
+}
 
 //OPCIONES DE LOS COMPONENTES
 /**

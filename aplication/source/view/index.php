@@ -30,6 +30,7 @@
             <?php echo Tags::end_nav_item_drop_down();?>
             <?php echo Tags::nav_item_drop_down("Compuestos");?>
                 <?php echo Tags::menu_item("item_onclick", "Form", "formulario_configuracion('form')"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Form InLine", "formulario_configuracion('form_inline')"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Login", "login_config()"); ?>
                 <?php echo Tags::menu_item('divider');?>
                 <?php echo Tags::menu_item("item_onclick", "Drop Down Menu", "load_drop_down_menu()"); ?>
