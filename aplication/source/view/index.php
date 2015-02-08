@@ -30,40 +30,42 @@
             <?php echo Tags::end_nav_item_drop_down();?>
             <?php echo Tags::nav_item_drop_down("Compuestos");?>
                 <?php echo Tags::menu_item("item_onclick", "Form", "formulario_configuracion('form')"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Form InLine", "formulario_configuracion('form_inline')"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Login", "login_config()"); ?>
                 <?php echo Tags::menu_item('divider');?>
-                <?php echo Tags::menu_item("item_onclick", "Drop Down Menu", "load_drop_down_menu()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Navigation Menu", "load_navigation_menu()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Navigation Bar", "load_navigation_bar()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Breadcrumb", "load_breadcrumb()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Drop Down Menu", "drop_down_menu_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Navigation Menu", "navigation_menu_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Navigation Bar", "navigation_bar_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Breadcrumb", "breadcrumb_config()"); ?>
                 <?php echo Tags::menu_item('divider');?>
-                <?php echo Tags::menu_item("item_onclick", "List", "load_list()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "List A", "load_listA()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Media Object", "load_mediaObject()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Paginator", "load_paginator()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Panel", "load_panel()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Paragraph", "load_paragraph()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Table", "load_table()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "List", "list_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "List A", "listA_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Media Object", "mediaObject_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button Group", "button_group_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button Toolbar", "button_toolbar_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Paginator", "paginator_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Panel", "panel_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Paragraph", "paragraph_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Table", "table_config()"); ?>
             <?php echo Tags::end_nav_item_drop_down();?>
             <?php echo Tags::nav_item_drop_down("Estaticos");?>
-                <?php echo Tags::menu_item("item_onclick", "Address", "load_address()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Alert Message", "load_alertMessage()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Badge", "load_badge()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Blockquote", "load_blockquote()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button", "load_button()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Fixed Footer", "load_fixed_footer()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Form Search", "load_searchForm()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Iframe", "load_iframe()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Image", "load_image()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Jumbotron", "load_jumbotron()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Paginator", "load_simplePaginator()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Progress Bar", "load_progressBar()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Footer", "load_simple_footer()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Header", "load_simpleHeader()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Thumbnail", "load_thumbnail()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Title", "load_title()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Well", "load_well()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Address", "address_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Alert Message", "alertMessage_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Badge", "badge_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button Badge", "button_badge_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button", "button_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Form Search", "searchForm_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Iframe", "iframe_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Image", "image_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Jumbotron", "jumbotron_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Simple Paginator", "simplePaginator_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Progress Bar", "progressBar_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Simple Footer", "simple_footer_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Simple Header", "simpleHeader_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Thumbnail", "thumbnail_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Title", "title_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Well", "well_config()"); ?>
             <?php echo Tags::end_nav_item_drop_down();?>
         <?php echo Tags::end_nav_bar_left();?>
       

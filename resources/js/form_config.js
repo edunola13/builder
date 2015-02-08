@@ -14,6 +14,21 @@ function form_datos(componentId){
     return params;
 }
 
+/** Lee los datos del componente formulario */
+function login_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find("fieldset");
+    params += "&title=" + elem.find('h2').html();
+    params += "&placeholderUser=" + elem.find("input:first").attr('placeholder');
+    params += "&placeholderPass=" + elem.find("input[type=password]").attr('placeholder');
+    var html= elem.find("label").html();
+    elem.find("label input").remove();
+    params += "&labelCheck=" + elem.find("label").html();
+    elem.find("label").html(html);
+    params += "&labelButton=" + elem.find('button').html();
+    return params;
+}
+
 /** Lee los datos del componente input */
 function input_datos(componentId){
     var params= "";
@@ -62,7 +77,7 @@ function checkbox_datos(componentId){
     id= id.substr(0, id.length - 1);
     params += "&id=" + id;
     params += "&name=" + elem.attr('name');    
-    if($("#" + componentId).find("input:nth-child(2)").hasClass('checkbox-inline')){
+    if($("#" + componentId).find("label:nth-child(2)").hasClass('checkbox-inline')){
         params += "&inline=1";
     } else{
         params += "&inline=0";
@@ -79,19 +94,10 @@ function radio_datos(componentId){
     id= id.substr(0, id.length - 1);
     params += "&id=" + id;
     params += "&name=" + elem.attr('name');    
-    if($("#" + componentId).find("input:nth-child(2)").hasClass('checkbox-inline')){
+    if($("#" + componentId).find("label:nth-child(2)").hasClass('radio-inline')){
         params += "&inline=1";
     } else{
         params += "&inline=0";
     }
-    return params;
-}
-/** Lee los datos del componente formulario en linea */
-function form_inline_datos(componentId){
-    var params= "";
-    var elem= $("#" + componentId).find("form:first");
-    params += "&id=" + elem.attr('id');
-    params += "&method=" + elem.attr('method');
-    params += "&action=" + elem.attr('action');
     return params;
 }

@@ -21,7 +21,16 @@ class Configuracion extends En_Controller{
         $this->legend= $this->request->param_get('legend');
         $this->label= $this->request->param_get('label');
         $this->load_view('forms/form');
-    }    
+    }
+    private function form_login(){
+        $this->id= $this->request->param_get('componentId');
+        $this->title= $this->request->param_get('title');
+        $this->placeholderUser= $this->request->param_get('placeholderUser');
+        $this->placeholderPass= $this->request->param_get('placeholderPass');
+        $this->labelCheck= $this->request->param_get('labelCheck');
+        $this->labelButton= $this->request->param_get('labelButton');
+        $this->load_view('forms/form_login');
+    }
     private function form_input(){
         $this->id= $this->request->param_get('componentId');
         $this->idVal= $this->request->param_get('id');
@@ -63,14 +72,7 @@ class Configuracion extends En_Controller{
         $this->label= $this->request->param_get('label');
         $this->inline= $this->request->param_get('inline');        
         $this->load_view('forms/radio');
-    }
-    private function form_inline(){
-        $this->id= $this->request->param_get('componentId');
-        $this->idVal= $this->request->param_get('id');
-        $this->method= $this->request->param_get('method');
-        $this->action= $this->request->param_get('action');
-        $this->load_view('forms/form_inline');
-    }    
+    }  
 }
 
 ?>
