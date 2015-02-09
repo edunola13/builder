@@ -37,7 +37,15 @@ function input_datos(componentId){
     params += "&id=" + elem.attr('id');
     params += "&name=" + elem.attr('name');
     params += "&type=" + elem.attr('type');
-    params += "&placeholder=" + elem.attr('placeholder');    
+    params += "&placeholder=" + elem.attr('placeholder');
+    if(elem.hasClass('input-sm')){
+         params += "&size=sm";
+    }else if(elem.hasClass('input-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
     return params;
 }
 
@@ -49,7 +57,15 @@ function textarea_datos(componentId){
     params += "&id=" + elem.attr('id');
     params += "&name=" + elem.attr('name');
     params += "&rows=" + elem.attr('rows');
-    params += "&placeholder=" + elem.attr('placeholder');    
+    params += "&placeholder=" + elem.attr('placeholder');
+    if(elem.hasClass('input-sm')){
+         params += "&size=sm";
+    }else if(elem.hasClass('input-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
     return params;
 }
 
@@ -64,6 +80,14 @@ function select_datos(componentId){
         params += "&multiple=1";
     } else{
         params += "&multiple=0";
+    }
+    if(elem.hasClass('input-sm')){
+         params += "&size=sm";
+    }else if(elem.hasClass('input-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
     }
     return params;
 }
@@ -82,6 +106,14 @@ function checkbox_datos(componentId){
     } else{
         params += "&inline=0";
     }
+    if($("#" + componentId).find("label:first").hasClass('input-sm')){
+         params += "&size=sm";
+    }else if($("#" + componentId).find("label:first").hasClass('input-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
     return params;
 }
 
@@ -98,6 +130,42 @@ function radio_datos(componentId){
         params += "&inline=1";
     } else{
         params += "&inline=0";
+    }
+    if($("#" + componentId).find("label:first").hasClass('input-sm')){
+         params += "&size=sm";
+    }else if($("#" + componentId).find("label:first").hasClass('input-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    return params;
+}
+
+/** Lee los datos del componente drop down menu */
+function drop_down_menu_form(componentId){
+    var params= "";
+    var elem= $("#" + componentId).children().last().find("button:first");
+    if(elem.hasClass('btn-sm')){
+         params += "&size=sm";
+    }else if(elem.hasClass('btn-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    if(elem.hasClass('btn-default')){
+         params += "&style=default";
+    }else if(elem.hasClass('btn-primary')){
+         params += "&style=primary";
+    }else if(elem.hasClass('btn-success')){
+         params += "&style=success";
+    }else if(elem.hasClass('btn-info')){
+         params += "&style=info";
+    }else if(elem.hasClass('btn-warning')){
+         params += "&style=warning";
+    }else{
+         params += "&style=danger";
     }
     return params;
 }

@@ -409,7 +409,7 @@ function configurar_y_llamar(json, datos, componentId, componentPadre){
 function form_config(componentId){
     var elem= $("#modalConfiguracion");
     var id= elem.find("input[name='id']").val(); 
-    var method= elem.find("input[name='method']").val(); 
+    var method= elem.find("select[name='method']").val(); 
     var action= elem.find("input[name='action']").val();
     var legend= elem.find("input[name='legend']").is(':checked');
     var label= elem.find("input[name='label']").val(); 
@@ -510,6 +510,7 @@ function input_config(componentId, componentPadre){
     var type= "text";
     var label= "Input";
     var placeholder= "Placeholder Input";
+    var size= 'md';
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
@@ -517,6 +518,7 @@ function input_config(componentId, componentPadre){
         type= elem.find("input[name='type']").val();
         label= elem.find("input[name='label']").val();
         placeholder= elem.find("input[name='placeholder']").val();
+        size= elem.find("select[name='size']").val();
     }
     var json= '{\n\
         "nombre": "input",\n\
@@ -525,7 +527,8 @@ function input_config(componentId, componentPadre){
             "label": "' + label + '",\n\
             "type": "' + type + '",\n\
             "name": "' + name + '",\n\
-            "placeholder": "' + placeholder + '"\n\
+            "placeholder": "' + placeholder + '",\n\
+            "size": "' + size + '"\n\
             }\n\
         }';
     var datos = {nombre:"Input", form:"form_input", fn_datos:"input_datos", inComponent:false, sortable: false, 
@@ -540,6 +543,7 @@ function textArea_config(componentId, componentPadre){
     var rows= 10;
     var label= "Text Area";
     var placeholder= "Placeholder TextArea";
+    var size= "md";
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
@@ -547,6 +551,7 @@ function textArea_config(componentId, componentPadre){
         rows= elem.find("input[name='rows']").val();
         label= elem.find("input[name='label']").val();
         placeholder= elem.find("input[name='placeholder']").val();
+        size= elem.find("select[name='size']").val();
     }
     var json= '{\n\
         "nombre": "textarea",\n\
@@ -555,7 +560,8 @@ function textArea_config(componentId, componentPadre){
             "label": "' + label + '",\n\
             "name": "' + name + '",\n\
             "placeholder": "' + placeholder +'",\n\
-            "rows": "' + rows + '"\n\
+            "rows": "' + rows + '",\n\
+            "size": "' + size + '"\n\
         }\n\
     }';
     var datos = {nombre:"Text Area", form:"form_textarea", fn_datos:"textarea_datos", inComponent:false, 
@@ -585,6 +591,7 @@ function select_config(componentId, componentPadre){
     var name= "nameSelect";
     var label= "Select";
     var multiple= "no";
+    var size= "md";
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
@@ -593,6 +600,7 @@ function select_config(componentId, componentPadre){
         if(elem.find("input[name='multiple']").is(':checked')){
             multiple= "si";
         }
+        size= elem.find("select[name='size']").val();
     }
     var json= '{\n\
         "nombre": "select",\n\
@@ -600,7 +608,8 @@ function select_config(componentId, componentPadre){
             "id": "' + id + '",\n\
             "label": "' + label + '",\n\
             "name": "' + name + '",\n\
-            "multiple": "' + multiple + '"\n\
+            "multiple": "' + multiple + '",\n\
+            "size": "' + size + '"\n\
         },';
     json += componentes + '}';
     
@@ -615,6 +624,7 @@ function checkbox(componentId){
     var name= "nameCheck";
     var label= "CheckBox";
     var enlinea= "no";
+    var size= "md";
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
@@ -623,6 +633,7 @@ function checkbox(componentId){
         if(elem.find("input[name='inline']").is(':checked')){
             enlinea= "si";
         }
+        size= elem.find("select[name='size']").val();
     }
     var componentes= '"componentes": [';
     var cant= 2;
@@ -647,7 +658,8 @@ function checkbox(componentId){
     var json= '{\n\
         "nombre": "checkbox",\n\
         "configuracion": {\n\
-            "label": "' + label + '"\n\
+            "label": "' + label + '",\n\
+            "size": "' + size + '"\n\
         },';
     json += componentes + '}';
     
@@ -665,6 +677,7 @@ function radio(componentId){
     var name= "nameRadio";
     var label= "Radio";
     var enlinea= "no";
+    var size= "md";
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         id= elem.find("input[name='id']").val(); 
@@ -673,6 +686,7 @@ function radio(componentId){
         if(elem.find("input[name='inline']").is(':checked')){
             enlinea= "si";
         }
+        size= elem.find("select[name='size']").val();
     }
     var componentes= '"componentes": [';
     var cant= 2;
@@ -697,7 +711,8 @@ function radio(componentId){
     var json= '{\n\
         "nombre": "radio",\n\
         "configuracion": {\n\
-            "label": "' + label + '"\n\
+            "label": "' + label + '",\n\
+            "size": "' + size + '"\n\
         },';
     json += componentes + '}';
     
@@ -1050,6 +1065,14 @@ function load_paragraph_options(){
 
 /** Drop down Menu */
 function drop_down_menu_config(componentId, componentPadre){
+    var label= "Desplegar Opciones";
+    var style= "default";
+    var size= "md";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        style= elem.find("select[name='style']").val();
+        size= elem.find("select[name='size']").val();
+    }
     var componentes= '"componentes": [';
     var cant= 3;
     for(var i= 1; i <= cant; i++){
@@ -1081,14 +1104,14 @@ function drop_down_menu_config(componentId, componentPadre){
     var json= '{\n\
         "nombre": "drop_down_menu",\n\
         "configuracion": {\n\
-            "label": "Desplegar Opciones",\n\
-            "style": "default",\n\
-            "size": "md"\n\
+            "label": "' + label + '",\n\
+            "style": "' + style +'",\n\
+            "size": "' + size + '"\n\
         },';
     json += componentes + '}';
 
-    var datos = {nombre:"Drop Down Menu", inComponent:false, sortable: false, 
-                components: false, options: true, fn_options:load_drop_down_menu_options, preferences: false};
+    var datos = {nombre:"Drop Down Menu", form:"form_drop_down_menu", fn_datos:"drop_down_menu_form", inComponent:false, sortable: false, 
+                components: false, options: true, fn_options:load_drop_down_menu_options, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_drop_down_menu_options(){

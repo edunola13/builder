@@ -37,7 +37,8 @@ class Configuracion extends En_Controller{
         $this->name= $this->request->param_get('name');
         $this->type= $this->request->param_get('type');
         $this->label= $this->request->param_get('label');
-        $this->placeholder= $this->request->param_get('placeholder');        
+        $this->placeholder= $this->request->param_get('placeholder');  
+        $this->size= $this->request->param_get('size');  
         $this->load_view('forms/input');
     }    
     public function form_textarea(){
@@ -46,7 +47,8 @@ class Configuracion extends En_Controller{
         $this->name= $this->request->param_get('name');
         $this->rows= $this->request->param_get('rows');
         $this->label= $this->request->param_get('label');
-        $this->placeholder= $this->request->param_get('placeholder');        
+        $this->placeholder= $this->request->param_get('placeholder');  
+        $this->size= $this->request->param_get('size'); 
         $this->load_view('forms/textarea');
     }    
     public function form_select(){
@@ -54,7 +56,8 @@ class Configuracion extends En_Controller{
         $this->idVal= $this->request->param_get('id');
         $this->name= $this->request->param_get('name');
         $this->label= $this->request->param_get('label');
-        $this->multiple= $this->request->param_get('multiple');        
+        $this->multiple= $this->request->param_get('multiple');
+        $this->size= $this->request->param_get('size'); 
         $this->load_view('forms/select');
     }    
     public function form_checkbox(){
@@ -62,7 +65,8 @@ class Configuracion extends En_Controller{
         $this->idVal= $this->request->param_get('id');
         $this->name= $this->request->param_get('name');
         $this->label= $this->request->param_get('label');
-        $this->inline= $this->request->param_get('inline');        
+        $this->inline= $this->request->param_get('inline');
+        $this->size= $this->request->param_get('size'); 
         $this->load_view('forms/checkbox');
     }    
     public function form_radio(){
@@ -70,9 +74,16 @@ class Configuracion extends En_Controller{
         $this->idVal= $this->request->param_get('id');
         $this->name= $this->request->param_get('name');
         $this->label= $this->request->param_get('label');
-        $this->inline= $this->request->param_get('inline');        
+        $this->inline= $this->request->param_get('inline');
+        $this->size= $this->request->param_get('size'); 
         $this->load_view('forms/radio');
-    }  
+    }
+    public function form_drop_down_menu(){
+        $this->id= $this->request->param_get('componentId');
+        $this->style= $this->request->param_get('style');
+        $this->size= $this->request->param_get('size'); 
+        $this->load_view('forms/drop_down_menu');
+    }
 }
 
 ?>

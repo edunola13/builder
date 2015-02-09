@@ -1,0 +1,1 @@
+<button type="<?php echo $valores["config.type"];?>" class="btn btn-<?php echo $valores["config.style"];?> btn-<?php echo $valores["config.size"];?>" id="<?php echo $valores["config.id"];?>" onclick="<?php echo $valores["config.onclick"];?>"> <?php echo $valores["config.label"];?> </button>

@@ -20,6 +20,6 @@
     },
                 
     "libraries": {
-        "servicioui": {"class": "ServiciosUI-0.2/servicioui"}
+        "servicioui": {"class": "ServiciosUI-1.0/servicioui"}
     }
 }
