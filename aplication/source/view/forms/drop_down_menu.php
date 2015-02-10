@@ -5,7 +5,7 @@
         <?php Tags::select_option('Grande', 'lg');?>
     <?php Tags::end_select(); ?>
     <?php Tags::select('Style', 'style','style', $this->style); ?>
-        <?php Tags::select_option('Defualt', 'defualt');?>
+        <?php Tags::select_option('Default', 'default');?>
         <?php Tags::select_option('Primary', 'primary');?>
         <?php Tags::select_option('Success', 'success');?>
         <?php Tags::select_option('Info', 'info');?>

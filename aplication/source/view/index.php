@@ -33,6 +33,7 @@
                 <?php echo Tags::menu_item("item_onclick", "Grilla 2-10", "load_row(2,10)"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 10-2", "load_row(10,2)"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 4-4-4", "load_row(4,4,4)"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Grilla 3-6-3", "load_row(3,6,3)"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 2-8-2", "load_row(2,8,2)"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 3-3-3-3", "load_row(3,3,3,3)"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 2-4-4-2", "load_row(2,4,4,2)"); ?>
