@@ -84,6 +84,47 @@ class Configuracion extends En_Controller{
         $this->size= $this->request->param_get('size'); 
         $this->load_view('forms/drop_down_menu');
     }
+    public function form_blockquote(){
+        $this->id= $this->request->param_get('componentId');
+        $this->texto= $this->request->param_get('texto');
+        $this->fuente= $this->request->param_get('fuente'); 
+        $this->load_view('forms/blockquote');
+    }
+    public function form_jumbotron(){
+        $this->id= $this->request->param_get('componentId');
+        $this->titulo= $this->request->param_get('titulo');
+        $this->contenido= $this->request->param_get('contenido');
+        $this->label= $this->request->param_get('label');
+        $this->style= $this->request->param_get('style');
+        $this->size= $this->request->param_get('size'); 
+        $this->load_view('forms/jumbotron');
+    }
+    public function form_simpleHeader(){
+        $this->id= $this->request->param_get('componentId');
+        $this->primario= $this->request->param_get('primario');
+        $this->secundario= $this->request->param_get('secundario'); 
+        $this->load_view('forms/simple_header');
+    }
+    public function form_thumbnail(){
+        $this->id= $this->request->param_get('componentId');
+        $this->titulo= $this->request->param_get('titulo');
+        $this->contenido= $this->request->param_get('contenido');
+        $this->label= $this->request->param_get('label');
+        $this->src= $this->request->param_get('src');
+        $this->style= $this->request->param_get('style');
+        $this->size= $this->request->param_get('size'); 
+        $this->load_view('forms/thumbnail');
+    }
+    public function form_title(){
+        $this->id= $this->request->param_get('componentId');
+        $this->titulo= $this->request->param_get('titulo');
+        $this->load_view('forms/title');
+    }
+    public function form_well(){
+        $this->id= $this->request->param_get('componentId');
+        $this->contenido= $this->request->param_get('contenido');
+        $this->load_view('forms/well');
+    }
 }
 
 ?>

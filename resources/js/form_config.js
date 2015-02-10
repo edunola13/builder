@@ -169,3 +169,101 @@ function drop_down_menu_form(componentId){
     }
     return params;
 }
+
+/** Lee los datos del componente blockquote */
+function blockquote_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find("blockquote");
+    params += "&texto=" + elem.find('p').text();
+    params += "&fuente=" + elem.find('small').text();
+    return params;
+}
+
+/** Lee los datos del componente jumbotron */
+function jumbotron_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".jumbotron");
+    params += "&titulo=" + elem.find('h1').text();
+    params += "&contenido=" + elem.find('p:first').text();
+    var elemA= elem.find('a');
+    params += "&label=" + elemA.text();
+    if(elemA.hasClass('btn-sm')){
+         params += "&size=sm";
+    }else if(elemA.hasClass('btn-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    if(elemA.hasClass('btn-default')){
+         params += "&style=default";
+    }else if(elemA.hasClass('btn-primary')){
+         params += "&style=primary";
+    }else if(elemA.hasClass('btn-success')){
+         params += "&style=success";
+    }else if(elemA.hasClass('btn-info')){
+         params += "&style=info";
+    }else if(elemA.hasClass('btn-warning')){
+         params += "&style=warning";
+    }else{
+         params += "&style=danger";
+    }
+    return params;
+}
+/** Lee los datos del componente simpleHeader */
+function simpleHeader_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".page-header");    
+    params += "&secundario=" + elem.find('h1 small').text();
+    var texto= elem.find('h1').html();
+    elem.find('h1 small').remove();
+    params += "&primario=" + elem.find('h1').text();
+    elem.find('h1').html(texto);    
+    return params;
+}
+/** Lee los datos del componente Thumbnail */
+function thumbnail_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".thumbnail");
+    params += "&src=" + elem.find('img').attr('src');
+    params += "&titulo=" + elem.find('h3').text();
+    params += "&contenido=" + elem.find('p:first').text();
+    var elemA= elem.find('a');
+    params += "&label=" + elemA.text();
+    if(elemA.hasClass('btn-sm')){
+         params += "&size=sm";
+    }else if(elemA.hasClass('btn-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    if(elemA.hasClass('btn-default')){
+         params += "&style=default";
+    }else if(elemA.hasClass('btn-primary')){
+         params += "&style=primary";
+    }else if(elemA.hasClass('btn-success')){
+         params += "&style=success";
+    }else if(elemA.hasClass('btn-info')){
+         params += "&style=info";
+    }else if(elemA.hasClass('btn-warning')){
+         params += "&style=warning";
+    }else{
+         params += "&style=danger";
+    }
+    return params;
+}
+/** Lee los datos del componente Title */
+function title_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".view");
+    params += "&titulo=" + elem.find('h3').text();
+    return params;
+}
+/** Lee los datos del componente Well */
+function well_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".well");
+    params += "&contenido=" + elem.text();
+    return params;
+}

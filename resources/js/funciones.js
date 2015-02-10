@@ -739,7 +739,8 @@ function button_config(componentId, componentPadre){
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_button_options(){
-    return '<li class="option-style active"><a onclick="style_button(event, &#39;default&#39;)">Default</a></li>\n\
+    return '<li><a onclick="pull_right(event)">Right</a></li>\n\
+            <li class="option-style active"><a onclick="style_button(event, &#39;default&#39;)">Default</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;primary&#39;)">Primary</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;success&#39;)">Success</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
@@ -1574,8 +1575,11 @@ function address_config(componentId, componentPadre){
     }';
         
     var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+                components: false, options:true, fn_options:load_address_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_address_options(){
+    return '<li><a onclick="pull_right(event)">Right</a></li>';
 }
 
 /** Badge */
@@ -1610,70 +1614,83 @@ function button_badge_config(componentId, componentPadre){
         }\n\
     }';
     var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
-                components: false, options:true, fn_options:load_badge_options, preferences: false};
+                components: false, options:true, fn_options:load_button_badge_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_button_badge_options(){
-    return '<li><a onclick="pull_right(event)">Right</a></li>';
+    return '<li><a onclick="pull_right(event)">Right</a></li>\n\
+            <li class="option-style active"><a onclick="style_button(event, &#39;default&#39;)">Default</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;primary&#39;)">Primary</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;success&#39;)">Success</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;warning&#39;)">Warning</a></li>\n\
+            <li class="option-style"><a onclick="style_button(event, &#39;danger&#39;)">Danger</a></li>';
 }
 
 /** Blockquote */
 function blockquote_config(componentId, componentPadre){
+    var texto= "Este es un texto de una fuente externa a esta pagina. Por eso se encierra en Blockquotes."; 
+    var fuente= "La fuente del texto es Federico.";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        texto= elem.find("input[name='texto']").val(); 
+        fuente= elem.find("input[name='fuente']").val();
+    }
     var json= '{\n\
         "nombre": "blockquote",\n\
         "configuracion": {\n\
-            "texto": "Este es un texto de una fuente externa a esta pagina. Por eso se encierra en Blockquotes.",\n\
-            "fuente": "La fuente del texto es Federico."\n\
+            "texto": "' + texto + '",\n\
+            "fuente": "' + fuente + '"\n\
         }\n\
     }';        
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Blockquote", form:"form_blockquote", fn_datos:"blockquote_datos", inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Fixed footer */
 function fixed_footer_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
-    componentes += '{\n\
-            "nombre": "text",\n\
-            "configuracion": {\n\
-                "value": "Esto es un Pie de Pagina."\n\
-            }\n\
-    }';    
-    componentes += ']';
-    var paragraph= '{\n\
-        "nombre": "parrafo",\n\
-        "configuracion": {\n\
-            "align": "center"\n\
-        },';
-    paragraph += componentes + '}';
-    
     var json= '{\n\
-        "nombre": "fixed_footer",\n\
-        "componentes": [';
-    json += paragraph + ']}';
-        
-    var datos = {nombre:"Fixed Footer", inComponent:false, sortable: false, 
+        "nombre": "fixed_footer"\n\
+        }';        
+    var datos = {nombre:"Fixed Footer", inComponent:false, sortable: true, fn_sortable:load_fixed_footer_sortable, 
                 components: false, options:false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_fixed_footer_sortable(componentId){
+    $("#" + componentId).children().last().find(".fixedFooter").addClass("sortable");
 }
 
 /** Jumbotron */
 function jumbotron_config(componentId, componentPadre){
+    var titulo= "Esto es un Jumbotron"; 
+    var contenido= "Este es el contenido principal del Jumbotron, donde usted realizara toda la descripcion denecesaria de la noticia.";
+    var href= "#";
+    var label= "Leer Más";
+    var buttonStyle= "primary";
+    var buttonSize= "md";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        titulo= elem.find("input[name='titulo']").val(); 
+        contenido= elem.find("input[name='contenido']").val();
+        label= elem.find("input[name='label']").val();
+        buttonStyle= elem.find("select[name='style']").val(); 
+        buttonSize= elem.find("select[name='size']").val();
+    }
     var json= '{\n\
         "nombre": "jumbotron",\n\
         "configuracion": {\n\
-            "titulo": "Esto es un Jumbotron",\n\
-            "contenido": "Este es el contenido principal del Jumbotron, donde usted realizara toda la descripcion denecesaria de la noticia.",\n\
-            "href": "#",\n\
-            "label": "Leer Más",\n\
-            "buttonStyle": "primary",\n\
-            "buttonSize": "md"\n\
+            "titulo": "' + titulo + '",\n\
+            "contenido": "'+contenido+'",\n\
+            "href": "'+href+'",\n\
+            "label": "'+label+'",\n\
+            "buttonStyle": "'+buttonStyle+'",\n\
+            "buttonSize": "'+buttonSize+'"\n\
         }\n\
     }';
         
-    var datos = {nombre:"Jumbotron", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Jumbotron", form:"form_jumbotron", fn_datos:"jumbotron_datos", inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
@@ -1716,87 +1733,106 @@ function load_progressBar_options(){
 
 /** Well */
 function well_config(componentId, componentPadre){
+    var contenido= "Este es el contenido del pozo/well. Escriba aqui lo que desee.";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        contenido= elem.find("input[name='contenido']").val();
+    }
     var json= '{\n\
         "nombre": "well",\n\
         "configuracion": {\n\
-            "contenido": "Este es el contenido del pozo/well. Escriba aqui lo que desee."\n\
+            "contenido": "'+contenido+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Progress Bar", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Well", form:"form_well", fn_datos:"well_datos", inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Simple Header */
 function simpleHeader_config(componentId, componentPadre){
+    var primario= "Este es el Titulo"; 
+    var secundario= "Texto secundario menos importante";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        primario= elem.find("input[name='primario']").val(); 
+        secundario= elem.find("input[name='secundario']").val();
+    }
     var json= '{\n\
         "nombre": "simple_header",\n\
         "configuracion": {\n\
-            "primario": "Este es el Titulo",\n\
-            "secundario": "Texto secundario no importante"\n\
+            "primario": "'+primario+'",\n\
+            "secundario": "'+secundario+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Simple Header", form:"form_simpleHeader", fn_datos:"simpleHeader_datos", inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Fixed footer */
 function simple_footer_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
-    componentes += '{\n\
-            "nombre": "text",\n\
-            "configuracion": {\n\
-                "value": "Este es el Pie de Pagina."\n\
-            }\n\
-    }';    
-    componentes += ']';
-    var paragraph= '{\n\
-        "nombre": "parrafo",\n\
-        "configuracion": {\n\
-            "align": "left"\n\
-        },';
-    paragraph += componentes + '}';
-    
     var json= '{\n\
-        "nombre": "simple_footer",\n\
-        "componentes": [';
-    json += paragraph + ']}';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+        "nombre": "simple_footer"\n\
+        }';
+    var datos = {nombre:"Simple Header", inComponent:false, sortable: true, fn_sortable:load_simple_footer_sortable,
+        components: false, options:false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_simple_footer_sortable(componentId){
+    $("#" + componentId).children().last().find(".simpleFooter").addClass("sortable");
 }
 
 /** Title */
 function title_config(componentId, componentPadre){
+    var titulo= "Este es el Titulo";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        titulo= elem.find("input[name='titulo']").val();
+    }
     var json= '{\n\
         "nombre": "title",\n\
         "configuracion": {\n\
-            "title": "Este es el Titulo"\n\
+            "title": "'+titulo+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Title", form:"form_title", fn_datos:"title_datos",inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Thumbnail */
 function thumbnail_config(componentId, componentPadre){
+    var titulo= "Esto es un Jumbotron"; 
+    var contenido= "Aqui se debe escribir todo el contenido del Thumbnail. Es la descripdion bien definida.";
+    var label= "Leer Más";
+    var buttonStyle= "primary";
+    var buttonSize= "md";
+    var src= "http://www.apetitoenlinea.com/wp-content/uploads/2012/06/happy-face-istock-300x200.jpg"
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        titulo= elem.find("input[name='titulo']").val(); 
+        contenido= elem.find("input[name='contenido']").val();
+        label= elem.find("input[name='label']").val();
+        buttonStyle= elem.find("select[name='style']").val(); 
+        buttonSize= elem.find("select[name='size']").val();
+        src= elem.find("input[name='src']").val();
+    }
     var json= '{\n\
         "nombre": "thumbnail",\n\
         "configuracion": {\n\
-            "src": "http://www.apetitoenlinea.com/wp-content/uploads/2012/06/happy-face-istock-300x200.jpg",\n\
+            "src": "'+src+'",\n\
             "alt": "Imagen",\n\
-            "titulo": "Este es el Titulo",\n\
-            "contenido": "Aqui se debe escribir todo el contenido del Thumbnail. Es la descripdion bien definida.",\n\
+            "titulo": "'+titulo+'",\n\
+            "contenido": "'+contenido+'",\n\
             "href": "#",\n\
-            "label": "Ver mas",\n\
-            "buttonStyle": "primary",\n\
-            "buttonSize": "md"\n\
+            "label": "'+label+'",\n\
+            "buttonStyle": "'+buttonStyle+'",\n\
+            "buttonSize": "'+buttonSize+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: false, 
-                components: false, options:false, preferences: false};
+    var datos = {nombre:"Thumbnail", form:"form_thumbnail", fn_datos:"thumbnail_datos", inComponent:false, sortable: false, 
+                components: false, options:false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 

@@ -61,9 +61,9 @@
                 <?php echo Tags::menu_item("item_onclick", "Address", "address_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Alert Message", "alertMessage_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Badge", "badge_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button Badge", "button_badge_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Button", "button_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button Badge", "button_badge_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>                
                 <?php echo Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Form Search", "searchForm_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Iframe", "iframe_config()"); ?>
