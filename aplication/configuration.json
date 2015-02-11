@@ -7,6 +7,7 @@
       
     "controllers": {
         "index": {"class": "Index", "url": ""},
+        "index2": {"class": "Index", "url": "theme/(theme)"},
         "forms": {"class": "Configuracion", "url": "forms"}
     },
 

@@ -14,6 +14,8 @@ var building= true;
 var estilo= "";
 var nameId= "component";
 var actualId= 2;
+var sortableActual= $(".sort-selected");
+
 /** Pasa al estado Vista Previa */
 function vista_previa(){
     if(building){
@@ -24,6 +26,7 @@ function vista_previa(){
         
         $("body").children().eq(1).find(".navbar-right").children().eq(0).removeClass("active");
         $("body").children().eq(1).find(".navbar-right").children().eq(1).addClass("active");
+        $("body").css("padding-top","70px");
     }
 }
 /** Pasa al estado construyendo HTML */
@@ -138,6 +141,14 @@ function clear(){
 
 //FUNCIONES DE CREACION
 /**
+ * Actualiza la variable con el sortable sobre el que se deben agregar los componentes
+ */
+function actualizarSortable(elem){
+    $(".sort-selected").removeClass('sort-selected');
+    elem.addClass('sort-selected');
+    sortableActual= elem;
+}
+/**
  * Encuentra las clases que son sortables y las actualiza.
  * Se ejecuta al principio y cuando algun elemento es sortable dentro de si
  */
@@ -237,13 +248,14 @@ function carga_ajax_nuevo(json, datos){
             msg= add_com_builder(msg, datos);
             
             if(! datos["inComponent"]){
-                $("#builder").append(msg);
+                sortableActual.append(msg);
                 //Paro sobre el componente
-                $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+                $('html,body').animate({scrollTop: sortableActual.children().last().offset().top});
             }
             else{                
                 var find= "#" + datos["componentPadre"];
                 $(find).find(".sortable:first").append(msg);
+                $('html,body').animate({scrollTop: $(find).find(".sortable:first").children().last().offset().top});
             }
             
             if(datos["sortable"]){
@@ -430,7 +442,7 @@ function form_config(componentId, componentPadre){
     }
     json += '}}';
     
-    var datos = {nombre:"Formulario", form:"form", fn_datos:"form_datos", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
+    var datos = {nombre:"Form", form:"form", fn_datos:"form_datos", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
         fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: false, preferences: true};
     
     configurar_y_llamar(json, datos, componentId, componentPadre);
@@ -503,7 +515,7 @@ function login_config(componentId, componentPadre){
         }\n\
     }';
         
-    var datos = {nombre:"Formulario Login", form:"form_login", fn_datos:"login_datos", inComponent:false, sortable: false, 
+    var datos = {nombre:"Login Form", form:"form_login", fn_datos:"login_datos", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -898,7 +910,7 @@ function button_toolbar_config(componentId, componentPadre){
             ]}\n\
         ]\n\
     }';    
-    var datos = {nombre:"Button Group", inComponent:false, sortable: false,
+    var datos = {nombre:"Button Toolbar", inComponent:false, sortable: false,
                 components: false, options: true, fn_options:load_button_toolbar_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -952,7 +964,7 @@ function paginator_config(componentId, componentPadre){
         "nombre": "paginador",';
     json += componentes + '}';
 
-    var datos = {nombre:"Paginador", inComponent:false, sortable: false, 
+    var datos = {nombre:"Paginator", inComponent:false, sortable: false, 
                 components: false, options: true, fn_options:load_paginator_options , preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -996,7 +1008,7 @@ function list_config(componentId, componentPadre){
         },';
     json += componentes + '}';
 
-    var datos = {nombre:"Lista", inComponent:false, sortable: false, 
+    var datos = {nombre:"List", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1039,7 +1051,7 @@ function listA_config(componentId, componentPadre){
         },';
     json += componentes + '}';
 
-    var datos = {nombre:"Lista de A", inComponent:false, sortable: false, 
+    var datos = {nombre:"List of A", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1223,8 +1235,7 @@ function load_navigation_menu_options(){
 /** Navigation Bar */
 function navigation_bar_config(componentId, componentPadre){
     //Componentes del navigation Bar
-    var componentes= '"componentes": [';
-    
+    var componentes= '"componentes": [';    
     /**
      * Empieza componente Nav Bar Left
      */
@@ -1380,8 +1391,11 @@ function navigation_bar_config(componentId, componentPadre){
     json += componentes + '}';
 
     var datos = {nombre:"Navigation Bar", inComponent:false, sortable: false, 
-                components: false, options: false, preferences: false};
+                components: false, options: true, fn_options:load_navigation_bar_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_navigation_bar_options(){
+    return '<li><a onclick="inverse(event)">Inverse</a></li>';
 }
 
 /** Breadcrumb */
@@ -1438,8 +1452,8 @@ function panel_config(componentId, componentPadre){
                 fn_sortable_cargar_hijos: panel_sortable_cargar_hijos, components: false, options: false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
-function load_panel_sortable(){
-    $("#builder").children().last().find(".panel-body").addClass("sortable");
+function load_panel_sortable(componentId){
+    $("#" + componentId).find(".panel-body:first").addClass("sortable");
 }
 function panel_sortable_hijos(componentId){
     return $("#" + componentId).children().last().find(".panel-body:first").html();
@@ -1551,7 +1565,7 @@ function table_config(componentId, componentPadre){
         "nombre": "table",';
     json += componentes + '}';
 
-    var datos = {nombre:"Media Object", inComponent:false, sortable: false,
+    var datos = {nombre:"Table", inComponent:false, sortable: false,
                 components: false, options: false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre); 
 }
@@ -1566,7 +1580,7 @@ function searchForm_config(componentId, componentPadre){
                 "label": "Formulario de Busqueda"\n\
            }\n\
     }';
-    var datos = {nombre:"Formulario de Busqueda", inComponent:false, sortable: false, 
+    var datos = {nombre:"Form Search", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1586,7 +1600,7 @@ function simplePaginator_config(componentId, componentPadre){
             }\n\
         }\n\
     }';
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
+    var datos = {nombre:"Simple Paginator", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1632,7 +1646,7 @@ function address_config(componentId, componentPadre){
         }\n\
     }';
         
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
+    var datos = {nombre:"Address", inComponent:false, sortable: false, 
                 components: false, options:true, fn_options:load_address_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1650,7 +1664,7 @@ function badge_config(componentId, componentPadre){
             "badge": "15"\n\
         }\n\
     }';
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
+    var datos = {nombre:"Badge", inComponent:false, sortable: false, 
                 components: false, options:true, fn_options:load_badge_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1775,7 +1789,7 @@ function alertMessage_config(componentId, componentPadre){
             "message": "La actividad se realizo correctamente."\n\
         }\n\
     }';
-    var datos = {nombre:"Jumbotron", inComponent:false, sortable: false, 
+    var datos = {nombre:"Alert Message", inComponent:false, sortable: false, 
                 components: false, options:true, fn_options:load_alertMessage_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1846,7 +1860,7 @@ function simple_footer_config(componentId, componentPadre){
     var json= '{\n\
         "nombre": "simple_footer"\n\
         }';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: true, fn_sortable:load_simple_footer_sortable,
+    var datos = {nombre:"Simple Footer", inComponent:false, sortable: true, fn_sortable:load_simple_footer_sortable,
         components: false, options:false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -1916,7 +1930,7 @@ function iframe_config(componentId, componentPadre){
             "ratio": "16:9"\n\
         }\n\
     }';
-    var datos = {nombre:"Simple Header", inComponent:false, sortable: false, 
+    var datos = {nombre:"Iframe", inComponent:false, sortable: false, 
                 components: false, options:false, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
@@ -2147,4 +2161,23 @@ function pull_right_menu(event){
         sub_com.addClass("pull-right");
         target.parent().addClass("active");
     }
+}
+/**
+ * Agrega la clase navbar-inverse en el nodo principal del componente
+ * utilizado por: navigation_bar
+ */
+function inverse(event){
+   var target = $(event.target);
+   var div= target.parent().parent().parent().parent();
+   var view= div.children().last();
+   var componente= view.children().first();
+   
+   if(target.parent().hasClass("active")){
+       componente.removeClass("navbar-inverse");
+       target.parent().removeClass("active");
+   }
+   else{
+       componente.addClass("navbar-inverse");
+       target.parent().addClass("active");
+   }
 }

@@ -81,7 +81,14 @@ class Tags {
         $api= ApiUi::getInstance();
         $valores= array('config.titulo' => $title, 'config.contenido' => $content, 'config.href' => $href, 'config.label' => $label, 'config.buttonStyle' => $buttonStyle, 'config.buttonSize' => $buttonSize);
         $api->componente('jumbotron', $valores);
-    }    
+    }
+    public static function link($id, $href, $label, $button=FALSE, $style = 'default', $size = 'md'){
+        $api= ApiUi::getInstance();
+        $valores= array('config.id' => $id, 'config.href' => $href, 'config.label' => $label, 'config.style' => $style, 'config.size' => $size);
+        $valores['config.button']='no';
+        if($button)$valores['config.button']='si';
+        $api->componente('link', $valores);
+    } 
     public static function paginador_simple($preState, $preHref, $preLabel, $nextState, $nextHref, $nextLabel){
         $api= ApiUi::getInstance();
         $valores= array('config.previous.state' => $preState, 'config.previous.href' => $preHref, 'config.previous.label' => $preLabel,
@@ -565,9 +572,11 @@ class Tags {
         $valores= array('config.type' => $type, 'config.label' => $label, 'config.disabled' => ($disabled ? 'si' : 'no'), 'config.href' => $href);
         $api->componente('nav_item_list', $valores);
     }    
-    public static function navigation_bar($logo, $href){
+    public static function navigation_bar($logo, $href, $position='', $inverse=FALSE){
         $api= ApiUi::getInstance();
-        $valores= array('config.seccion' => 'cabecera', 'config.logo' => $logo, 'config.href' => $href);
+        $valores= array('config.seccion' => 'cabecera', 'config.logo' => $logo, 'config.href' => $href, 'config.position' => $position);
+        $valores['config.inverse']= '';
+        if($inverse)$valores['config.inverse']='navbar-inverse';
         $api->componente('navigation_bar', $valores);
     }    
     public static function end_navigation_bar(){
@@ -630,6 +639,26 @@ class Tags {
         $api= ApiUi::getInstance();
         $valores= array('config.seccion' => 'pie');
         $api->componente('button_toolbar', $valores);
+    }
+    public static function carousel(){
+        $api= ApiUi::getInstance();
+        $valores= array('config.seccion' => 'cabecera');
+        $api->componente('carousel', $valores);
+    }    
+    public static function end_carousel(){
+        $api= ApiUi::getInstance();
+        $valores= array('config.seccion' => 'pie');
+        $api->componente('carousel', $valores);
+    }
+    public static function carousel_item($src, $alt, $state=''){
+        $api= ApiUi::getInstance();
+        $valores= array('config.seccion' => 'cabecera', 'config.src'=>$src,'config.alt'=>$alt,'config.state'=>$state);
+        $api->componente('carousel_item', $valores);
+    }    
+    public static function end_carousel_item(){
+        $api= ApiUi::getInstance();
+        $valores= array('config.seccion' => 'pie');
+        $api->componente('carousel_item', $valores);
     }
     public static function em($value){
         $api= ApiUi::getInstance();

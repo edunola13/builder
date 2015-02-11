@@ -7,7 +7,7 @@
     <title>Builder HTML</title>
 
     <!-- Servicios UI - CSS-->
-    <?php echo Tags::theme();?>
+    <?php echo Tags::theme($this->theme);?>
      
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,7 +19,7 @@
   </head>
   <body>
       <link class="estiloBuilder" href="<?php echo base()?>resources/css/estilo.css" rel="stylesheet">
-      <?php echo Tags::navigation_bar("Builder", base())?>
+      <?php echo Tags::navigation_bar("Builder", base(), 'navbar-fixed-top')?>
         <?php echo Tags::nav_bar_left();?>
             <?php echo Tags::nav_item_drop_down("Grillas");?>
                 <?php echo Tags::menu_item("item_onclick", "Grilla 12", "load_row(12)"); ?>                
@@ -91,7 +91,7 @@
         <?php echo Tags::end_nav_bar_right();?>
       <?php echo Tags::end_navigation_bar();?>
 
-      <div class="container sortable" id="builder">
+      <div class="container sortable sort-selected" id="builder">
         <div class="com-builder" id="component1">            
             <button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button>
             <button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
@@ -156,6 +156,10 @@
             $('body').on('click', 'button.delete', function() {eliminar($(this).parent());});
             $('body').on('click', 'button.duplicate', function() {duplicarElemento($(this).parent())});
             $('body').on('click', 'button.minimize', function() {minimizar($(this))});
+            $('body').on('mouseup', '.sortable', function() {
+                actualizarSortable($(this));
+                return false;
+            });
         </script>
       </div>
   </body>
