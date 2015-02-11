@@ -62,7 +62,7 @@
                 <?php echo Tags::menu_item("item_onclick", "Alert Message", "alertMessage_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Badge", "badge_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Button", "button_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button Badge", "button_badge_config()"); ?>
+                <?php echo Tags::menu_item("item_onclick", "Button Badge", "buttonBadge_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>                
                 <?php echo Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
                 <?php echo Tags::menu_item("item_onclick", "Form Search", "searchForm_config()"); ?>
@@ -94,7 +94,7 @@
       <div class="container sortable" id="builder">
         <div class="com-builder" id="component1">            
             <button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button>
-			<button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
+            <button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a>
             <button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>			
             <p class="config">Grilla 12</p>

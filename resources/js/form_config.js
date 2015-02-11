@@ -267,3 +267,84 @@ function well_datos(componentId){
     params += "&contenido=" + elem.text();
     return params;
 }
+/** Lee los datos del componente Panel */
+function panel_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".panel:first");
+    params += "&titulo=" + elem.find('.panel-title:first').text();
+    params += "&pie=" + elem.find('.panel-footer:first').text();
+    return params;
+}
+/** Lee los datos del componente Media Object */
+function mediaObject_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find(".media:first");
+    params += "&src=" + elem.find('.media-object').attr('src');
+    params += "&titulo=" + elem.find('.media-body').children().eq(0).text();
+    var html= elem.find('.media-body').html();
+    elem.find('.media-body .media-heading').remove();
+    elem.find('.media-body .hijos-media').remove();
+    params += "&contenido=" + elem.find('.media-body').text();
+    elem.find('.media-body').html(html);
+    return params;
+}
+/** Lee los datos del componente Image */
+function image_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).find("img");
+    params += "&src=" + elem.attr('src');
+    return params;
+}
+/** Lee los datos del componente Button */
+function button_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).children().last();
+    params += "&label=" + elem.find("button").text();
+    if(elem.find("button").hasClass('btn-sm')){
+         params += "&size=sm";
+    }else if(elem.find("button").hasClass('btn-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    return params;
+}
+/** Lee los datos del componente Button Badge */
+function buttonBadge_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).children().last();
+    params += "&badge=" + elem.find("button span").text();
+    var html= elem.find("button").html();
+    elem.find("button span").remove();
+    params += "&label=" + elem.find("button").text();
+    elem.find("button").html(html);
+    if(elem.find("button").hasClass('btn-sm')){
+         params += "&size=sm";
+    }else if(elem.find("button").hasClass('btn-md')){
+         params += "&size=md";
+    }
+    else{
+         params += "&size=lg";
+    }
+    return params;
+}
+/** Lee los datos del componente Paragraph */
+function paragraph_datos(componentId){
+    var params= "";
+    var elem= $("#" + componentId).children().last().find('p:first');
+    if(elem.find("small").length > 0){
+        params += "&type=small";
+        params += "&texto=" + elem.find('small').text();
+    }else if(elem.find("strong").length > 0){
+        params += "&type=strong";
+        params += "&texto=" + elem.find('strong').text();
+    }else if(elem.find("em").length > 0){
+        params += "&type=em";
+        params += "&texto=" + elem.find('em').text();
+    }else{
+        params += "&type=text";
+        params += "&texto=" + elem.text();
+    }
+    return params;
+}

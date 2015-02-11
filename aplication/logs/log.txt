@@ -44,4 +44,6 @@
 ----------\n[2015-02-09 19:49:14.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Tags::end_formulario()
 ----------\n[2015-02-09 20:00:00.000000 127.0.0.1  - Error Fatal - Parse - Strict ] Call to undefined method Tags::end_formulario()
 ----------\n[2015-02-09 20:05:26.000000 127.0.0.1  - Unknown ] Undefined property: Configuracion::$size
+----------\n[2015-02-10 20:44:36.000000 127.0.0.1  - Unknown ] include(C:\wamp\www\builder\aplication/source/view/form/paragraph.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory
+----------\n[2015-02-10 20:44:36.000000 127.0.0.1  - Unknown ] include() [<a href='function.include'>function.include</a>]: Failed opening 'C:\wamp\www\builder\aplication/source/view/form/paragraph.php' for inclusion (include_path='.;C:\php\pear')
 ----------\n

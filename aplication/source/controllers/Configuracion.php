@@ -125,6 +125,43 @@ class Configuracion extends En_Controller{
         $this->contenido= $this->request->param_get('contenido');
         $this->load_view('forms/well');
     }
+    public function form_panel(){
+        $this->id= $this->request->param_get('componentId');
+        $this->titulo= $this->request->param_get('titulo');
+        $this->pie= $this->request->param_get('pie');
+        $this->load_view('forms/panel');
+    }
+    public function form_mediaObject(){
+        $this->id= $this->request->param_get('componentId');
+        $this->titulo= $this->request->param_get('titulo');
+        $this->contenido= $this->request->param_get('contenido');
+        $this->src= $this->request->param_get('src');
+        $this->load_view('forms/media_object');
+    }
+    public function form_image(){
+        $this->id= $this->request->param_get('componentId');
+        $this->src= $this->request->param_get('src');
+        $this->load_view('forms/image');
+    }
+    public function form_button(){
+        $this->id= $this->request->param_get('componentId');
+        $this->label= $this->request->param_get('label');
+        $this->size= $this->request->param_get('size'); 
+        $this->load_view('forms/button');
+    }
+    public function form_buttonBadge(){
+        $this->id= $this->request->param_get('componentId');
+        $this->label= $this->request->param_get('label');
+        $this->badge= $this->request->param_get('badge');
+        $this->size= $this->request->param_get('size'); 
+        $this->load_view('forms/button_badge');
+    }
+    public function form_paragraph(){
+        $this->id= $this->request->param_get('componentId');
+        $this->texto= $this->request->param_get('texto');
+        $this->type= $this->request->param_get('type'); 
+        $this->load_view('forms/paragraph');
+    }
 }
 
 ?>

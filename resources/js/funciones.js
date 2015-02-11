@@ -199,7 +199,7 @@ function add_com_builder(componente, datos){
     var com= '<div class="com-builder" id="' + datos["componentId"] + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
     if(datos["options"]){
-        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_options"]() +'</ul></div>';
+        com+= '<div class="btn-group config options pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_options"]() +'</ul></div>';
     }
     if(datos["components"]){
         com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_components"]() +'</ul></div>';
@@ -282,7 +282,7 @@ function carga_ajax_existe(json, datos){
         success: function (msg) {
             //Guardo los datos sotable del componente, si es que tiene
             var hijos= '';
-            if(datos["sortable"]){
+            if(datos["sortable"]){                
                 hijos= datos["fn_sortable_hijos"](datos["componentId"]);
             }
             
@@ -294,6 +294,11 @@ function carga_ajax_existe(json, datos){
                 datos["fn_sortable_cargar_hijos"](datos["componentId"], hijos);
                 //Actualiza el modelo Sortable
                 load_sortable();
+            }
+            if(datos['options']){
+                if(datos['reset_options'] != null){
+                    datos['reset_options'](datos["componentId"]);
+                }
             }
             //Si esta en Vista Previa Oculto los botones
             if(!building){
@@ -406,7 +411,7 @@ function configurar_y_llamar(json, datos, componentId, componentPadre){
 }
 
 /** Carga del componente Formulario */
-function form_config(componentId){
+function form_config(componentId, componentPadre){
     var elem= $("#modalConfiguracion");
     var id= elem.find("input[name='id']").val(); 
     var method= elem.find("select[name='method']").val(); 
@@ -428,7 +433,7 @@ function form_config(componentId){
     var datos = {nombre:"Formulario", form:"form", fn_datos:"form_datos", inComponent:false, sortable: true, fn_sortable:load_form_sortable, fn_sortable_hijos: form_sortable_hijos,
         fn_sortable_cargar_hijos: form_sortable_cargar_hijos, components: true, fn_components: load_form_components, options: false, preferences: true};
     
-    configurar_y_llamar(json, datos, componentId, null);
+    configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_form_sortable(componentId){
     $("#" + componentId).children().last().find(".hijos-fieldset").addClass("sortable");
@@ -459,7 +464,7 @@ function load_form_components(){
 }
 
 /** Carga del componente Login */
-function login_config(componentId){
+function login_config(componentId, componentPadre){
     var title= "Login";
     var labelButton = "Ingresar";
     var placeholderUser= "Ingrese su Email";
@@ -500,7 +505,7 @@ function login_config(componentId){
         
     var datos = {nombre:"Formulario Login", form:"form_login", fn_datos:"login_datos", inComponent:false, sortable: false, 
                 components: false, options: false, preferences: true};
-    configurar_y_llamar(json, datos, componentId, null);
+    configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 
 /** Carga del componente Input */
@@ -726,16 +731,24 @@ function radio_config(componentId, componentPadre){
 
 /** Button */
 function button_config(componentId, componentPadre){
+    var label= "Button";
+    var size= "md";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        label= elem.find("input[name='label']").val();
+        size= elem.find("select[name='size']").val();
+    }
     var json= '{\n\
         "nombre": "button",\n\
         "configuracion": {\n\
-            "label": "Boton",\n\
+            "label": "'+label+'",\n\
             "type": "button",\n\
-            "style": "default"\n\
+            "style": "default",\n\
+            "size": "'+size+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Button", form:"form_button", inComponent:false, sortable: false, components: false, 
-                options: true, fn_options:load_button_options, preferences:false};    
+    var datos = {nombre:"Button", form:"form_button", fn_datos:"button_datos", inComponent:false, sortable: false, components: false, 
+                options: true, fn_options:load_button_options, reset_options: button_reset_options, preferences:true};    
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_button_options(){
@@ -746,6 +759,10 @@ function load_button_options(){
             <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;warning&#39;)">Warning</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;danger&#39;)">Danger</a></li>';
+}
+function button_reset_options(componentId){
+    $("#" + componentId).find('.options').find('li').removeClass('active');
+    $("#" + componentId).find('.options').find('li:nth-child(2)').addClass('active');
 }
 
 /** Buttons */
@@ -814,8 +831,12 @@ function button_group_config(componentId, componentPadre){
          ]\n\
     }';    
     var datos = {nombre:"Button Group", inComponent:false, sortable: false,
-                components: false, options: false, preferences: false};
+                components: false, options: true, fn_options:load_button_group_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_button_group_options(){
+    return '<li><a onclick="pull_right(event)">Right</a></li>\n\
+            <li><a onclick="vertical_group(event)">Vertical</a></li>';
 }
 
 /** Button Toolbar */
@@ -878,8 +899,12 @@ function button_toolbar_config(componentId, componentPadre){
         ]\n\
     }';    
     var datos = {nombre:"Button Group", inComponent:false, sortable: false,
-                components: false, options: false, preferences: false};
+                components: false, options: true, fn_options:load_button_toolbar_options, preferences: false};
     configurar_y_llamar(json, datos, componentId, componentPadre);
+}
+function load_button_toolbar_options(){
+    return '<li><a onclick="pull_right(event)">Right</a></li>\n\
+            <li><a onclick="vertical_group(event)">Vertical</a></li>';
 }
 
 /** Paginator */
@@ -1021,29 +1046,18 @@ function listA_config(componentId, componentPadre){
 
 /** Paragraph */
 function paragraph_config(componentId, componentPadre){
+    var texto= "Este es el texto por defecto del Parrafo";
+    var type= "text";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        texto= elem.find("textarea[name='texto']").val();
+        type= elem.find("select[name='type']").val();
+    }
     var componentes= '"componentes": [';
     componentes += '{\n\
-            "nombre": "text",\n\
+            "nombre": "'+type+'",\n\
             "configuracion": {\n\
-                "value": "Esto es un texto normal dentro del parrafo."\n\
-            }\n\
-    },';
-    componentes += '{\n\
-            "nombre": "small",\n\
-            "configuracion": {\n\
-                "value": "Esto es un texto chico dentro del parrafo."\n\
-            }\n\
-    },';
-    componentes += '{\n\
-            "nombre": "strong",\n\
-            "configuracion": {\n\
-                "value": "Esto es un texto fuerte dentro del parrafo."\n\
-            }\n\
-    },';
-    componentes += '{\n\
-            "nombre": "em",\n\
-            "configuracion": {\n\
-                "value": "Esto es un texto EM dentro del parrafo."\n\
+                "value": "'+texto+'"\n\
             }\n\
     }';
     
@@ -1055,13 +1069,17 @@ function paragraph_config(componentId, componentPadre){
         },';
     json += componentes + '}';
 
-    var datos = {nombre:"Paragraph", inComponent:false, sortable: false, 
-                components: false, options: true, fn_options:load_paragraph_options, preferences: false};
+    var datos = {nombre:"Paragraph", form:"form_paragraph", fn_datos:"paragraph_datos",inComponent:false, sortable: false, 
+                components: false, options: true, fn_options:load_paragraph_options, reset_options:paragraph_reset_options, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_paragraph_options(){
     return '<li><a onclick="lead(event)">Lead</a></li>\n\
             <li class="option-align active"><a onclick="align(event, &#39;center&#39;)">Align Center</a></li><li class="option-align"><a onclick="align(event, &#39;left&#39;)">Align Left</a></li></li><li class="option-align"><a onclick="align(event, &#39;right&#39;)">Align Right</a></li>';
+}
+function paragraph_reset_options(componentId){
+    $("#" + componentId).find('.options').find('li').removeClass('active');
+    $("#" + componentId).find('.options').find('li:nth-child(2)').addClass('active');
 }
 
 /** Drop down Menu */
@@ -1112,11 +1130,14 @@ function drop_down_menu_config(componentId, componentPadre){
     json += componentes + '}';
 
     var datos = {nombre:"Drop Down Menu", form:"form_drop_down_menu", fn_datos:"drop_down_menu_form", inComponent:false, sortable: false, 
-                components: false, options: true, fn_options:load_drop_down_menu_options, preferences: true};
+                components: false, options: true, fn_options:load_drop_down_menu_options, reset_options:drop_down_menu_reset_options, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_drop_down_menu_options(){
     return '<li><a onclick="pull_right(event)">Right</a></li>';
+}
+function drop_down_menu_reset_options(componentId){
+    $("#" + componentId).find('.options:first').find('li').removeClass('active');
 }
 
 /** Navigation Menu */
@@ -1396,42 +1417,70 @@ function breadcrumb_config(componentId, componentPadre){
 }
 
 /** Panel */
-function panel_config(componentId, componentPadre){
+function panel_config(componentId, componentPadre){    
+    var titulo= 'Titulo del Panel'; 
+    var pie= 'Pie de Panel';
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        titulo= elem.find("input[name='titulo']").val(); 
+        pie= elem.find("input[name='pie']").val();
+    }
+    
     var json= '{\n\
         "nombre": "panel",\n\
         "configuracion": {\n\
-            "titulo": "Panel",\n\
-            "contenido": "Este es el contenido principal del Panel. La descripcion del articulo",\n\
-            "pie": "Pie del Panel"\n\
+            "titulo": "'+titulo+'",\n\
+            "pie": "'+pie+'"\n\
         }\n\
     }';
     
-    var datos = {nombre:"Panel", inComponent:false, sortable: true, fn_sortable: load_panel_sortable,
-                components: false, options: false, preferences: false};
+    var datos = {nombre:"Panel", form:"form_panel", fn_datos:"panel_datos", inComponent:false, sortable: true, fn_sortable: load_panel_sortable, fn_sortable_hijos: panel_sortable_hijos,
+                fn_sortable_cargar_hijos: panel_sortable_cargar_hijos, components: false, options: false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_panel_sortable(){
     $("#builder").children().last().find(".panel-body").addClass("sortable");
 }
+function panel_sortable_hijos(componentId){
+    return $("#" + componentId).children().last().find(".panel-body:first").html();
+}
+function panel_sortable_cargar_hijos(componentId,hijos){
+    $("#" + componentId).children().last().find(".panel-body:first").append(hijos);
+}
 
 /** Media Object */
 function mediaObject_config(componentId, componentPadre){
+    var titulo= 'Este es el titulo'; 
+    var contenido= 'Aqui se debe escribir todo el contenido del Thumbnail. Es la descripdion bien definida.';
+    var src= 'http://upload.wikimedia.org/wikipedia/commons/1/12/Openshareicon-128x128.png';
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        titulo= elem.find("input[name='titulo']").val(); 
+        contenido= elem.find("input[name='contenido']").val();
+        src= elem.find("input[name='src']").val();
+    }
     var json= '{\n\
         "nombre": "media_object",\n\
         "configuracion": {\n\
             "href": "#",\n\
-            "src": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDSIPDQwMGSUUFRAWICguIiAdHx8oNDAsJCYxLCooMjotMTU3NDwyLyU0Pz81Ny0xLzcBCgoKDg0OGxAQGy0kICQ3LDIvMSwrLTQ3NCwuLDAsLzc3LC81MSwsLCwyLCwwLywsLCwtLC8sLy4sLCwsLC0sLP/AABEIAEAAQAMBEQACEQEDEQH/xAAcAAACAwADAQAAAAAAAAAAAAAGBwMEBQABAgj/xAA2EAACAQIDBAgFAgcBAAAAAAABAgMABAURMQYHEiETIjJBUWGBoRRCcZHBYrFSU2NygtHxQ//EABoBAAIDAQEAAAAAAAAAAAAAAAMEAAEFBgL/xAAyEQABAwIEAwcDAwUAAAAAAAABAAIDBBEFEiExE0FhMlGBkbHR8CJCcRQjoUNSweHx/9oADAMBAAIRAxEAPwBG1FFfwTBsQx2/Sxwq1e4uH+VdFHiToB5mhySsjbmebBWATsnJs1uPtY40l2jvpJpSMzb2vVQeRY8z6ZVizYu4m0TfE+yKIwN0a2+7bZC2QKmBWzecpLn3NKfral33ei9gN7lWxDdhsjeIVODpCT89uzIR75e1FZXVDfuuryNKXO1u5m4s4nudnbs3SDn8NPkJP8W0PtWhFibP6unVeTAT2Uqp4ZbaZ4biN4pYzwujjIqfAitMEEXCAQRoVHVqlfwPCbvHMVtsNsE45534V8FHeT5Ac68SSNjaXO2CtoubL6Y2VwGx2Sw9MKwW3FzfMA1xMeXE38TnuHgv/a57LLXS35DyH+01lDG3P/VunCbiYcd/fTOx/wDOE9Gg+3M+prXiw+GMbXPVAMp5aLlnCbS6WNJJWifkVdi2R8RnQKymjazM0WVscTuohZi/dpLiWfrHqqjlQo8gKYhpYwwXAJVOkINgup8IvYF47K6adRrDcnP7NqPWgVOFxSi7ND/CLHUFp+pLneJsjBtJaSXVrD0GMW47J5GQD5W8fI1l0tTJQy8Gbs+nUdE5JC2dmZm6RDKyMVcFWU5EHUGunWUnLuQwb4XCL/aFkBuJW+GtiflUc2PqcvtWPiby9zYW87fz7JunaBdzvlk5sJhjtYQi83bm7nVj4mtSKJsTAxmwSz3l5zFTLidjcTyW0F5byTxduJGBZfqNaIvFxeygXKS9QeGbGkqw/QB3lEZzK6syEYodVOVHgddgVP7RVmHE7Kad7SG7t5LiPtxIwLr9RrRl4uL2WVj9tHKvxCdWaPvHzDwNIYjTNnhIO41HzqmaWYxSDuO6+dd6uELh20ZuYV4Yr1ekIHc45N+D60DBqky0+U7t08OSNXxZJLjYpzbtbZI9gcIhA7cPSH6sSfzSVY53HLhuCLeCuNv7dkWQwn4KSJpm6d0Kqy/ISMga1Y8QhcL6g91ilDC4IF2a2ExvBcSS5lxC3ktenE5gTtoQCCAxGZBzyyzy79aafiUTi64Njt0ScVG9uXUXG/VMCwjaPjlm5O/IDwFZs07HuuDonw0gWUdxCrSzOJmQOmQ4e5sss6kNbHHcPOnJR0RdayXmzex+JYLiyXU+KxNbG4WZoVXrKVBByfXI5nlpz56UZ2P0znuBaQDt08EtHhkrQ2xFxv18UZ310mfEXHRjnw5828qVrcVgbERG65Kdgo5HvFxZKHfJEJMKs7kjrLclfRgT+KRwB37r294B+eafxRv7beiON1l6t1sPhZU5mJDE3kVJH7ZUatblncgQ6xhEl7fTZRpavw5nJnHOroOHPIWE7D55LxUNdG29leikuRGrSxk59617lw+Zpuw5vVBbKw76L20sn8t/tSboakaZD5Ioyd4ULdM5yEbk/ShfoqqTZh8dF7zxt5qjfw3SodI/c0/TYLrec36D39kN9ZbRnmsZyzuFOtc/WRMjndHGbgFbdM4mIOdul9vpnWPD8OtAes8xky8lGX5rbwGP63v/AAFm4k/6WhVNzm0QtmusCnfJZ26WAn+LLrD1GR9DTeMxOMfEby0P4QcPeM2Q+Ca8cmR15eFcyxxY4OabWWq9gcLFEFtc526knkBXcU0vFiD+9c7KzI8tWo1woVSSObhaYQ15uZ1R0OY1yqKLAxuc8GSnm2tY2MVJihytOrvRP4fCHyZjsFlW0J7ZGdcrG07rakfySF3j44uObSytA/Fa2w6GIjRstW9T7ZV2mG03AgAO51K5+ql4klxsENW88trPHPbu0csbcSOuoIp5zQ4EHYpcEg3Ceew22FptJbrbzusOJovXi0En6l/13VyddhzoDmb2fT8+63KasEgsd0fWcjRwcDAkeNaGF1TWR8N5slK2EufnatFp4yB2T1ga1+PH/cPNIcN/cV1LOnV4cte6qNREPuHmpwnnkVRuYuncNKCB3CuexFzZ5AeQWnSgxMtzKU+87eBAlvLgeASh3ccFzcxnqqveinvJ7z6fRygoNRJILAbD/KBUVP2tKUFbiQXKii9Ru8bq8bMjqc1ZeRBqiL6FTZHuz29bG8LVYr9ExGJeXFIeGTL+4a+oJrOlwyNxvGcp6beSaZVuGjtUZWu+jB2QG5sb+N+8IFcffMftSpw6oGzgUUVMfMFR3u+vDkQ/AYbeSt/VKxj24q9Nw6c9p4H4+BUalnIIB2n3i49tCjwPMtpaNyaG35cQ/U2p+mnlTsFBFEc257ygPnc7TYIQp1AXKii//9k=",\n\
+            "src": "'+src+'",\n\
             "alt": "Imagen",\n\
-            "titulo": "Este es el Titulo",\n\
-            "contenido": "Aqui se debe escribir todo el contenido del Thumbnail. Es la descripdion bien definida."\n\
+            "titulo": "'+titulo+'",\n\
+            "contenido": "'+contenido+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Media Object", inComponent:false, sortable: true, fn_sortable: load_mediaObject_sortable,
-                components: false, options: false, preferences: false};
+    var datos = {nombre:"Media Object", form:"form_mediaObject", fn_datos:"mediaObject_datos", inComponent:false, sortable: true, fn_sortable: load_mediaObject_sortable,fn_sortable_hijos: mediaObject_sortable_hijos,
+                fn_sortable_cargar_hijos: mediaObject_sortable_cargar_hijos, components: false, options: false, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);  
 }
-function load_mediaObject_sortable(){
-    $("#builder").children().last().find(".hijos-media").addClass("sortable");
+function load_mediaObject_sortable(componentId){
+    $("#" + componentId).find(".hijos-media:first").addClass("sortable");
+}
+function mediaObject_sortable_hijos(componentId){
+    return $("#" + componentId).children().last().find(".hijos-media:first").html();
+}
+function mediaObject_sortable_cargar_hijos(componentId,hijos){
+    $("#" + componentId).children().last().find(".hijos-media:first").append(hijos);
 }
 
 /** Table */
@@ -1544,22 +1593,31 @@ function simplePaginator_config(componentId, componentPadre){
 
 /** Image */
 function image_config(componentId, componentPadre){
+    var src= 'http://lorempixel.com/140/140/';
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        src= elem.find("input[name='src']").val();
+    }
     var json= '{\n\
         "nombre": "image",\n\
         "configuracion": {\n\
             "alt": "Imagen",\n\
-            "src": "http://lorempixel.com/140/140/",\n\
+            "src": "'+src+'",\n\
             "type": "img-rounded"\n\
         }\n\
     }';
         
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
-                components: false, options: true, fn_options:load_image_options, preferences: false};
+    var datos = {nombre:"Image", form:"form_image", fn_datos:"image_datos", inComponent:false, sortable: false, 
+                components: false, options: true, fn_options:load_image_options, reset_options:image_reset_options, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_image_options(){
     return '<li><a onclick="pull_right(event)">Right</a></li>\n\
             <li class="option-image active"><a onclick="image_type(event, &#39;rounded&#39;)">Rounded</a></li><li class="option-image"><a onclick="image_type(event, &#39;circle&#39;)">Circle</a></li><li class="option-image"><a onclick="image_type(event, &#39;thumbnail&#39;)">Thumbnail</a></li>';
+}
+function image_reset_options(componentId){
+    $("#" + componentId).find(".options").find('li').removeClass('active');
+    $("#" + componentId).find(".options").find("li:nth-child(2)").addClass("active");
 }
 
 /** Address */
@@ -1601,20 +1659,29 @@ function load_badge_options(){
 }
 
 /** Button Badge */
-function button_badge_config(componentId, componentPadre){
+function buttonBadge_config(componentId, componentPadre){
+    var label= "Button";
+    var badge= "14";
+    var size= "md";
+    if(componentId != 0 && componentId != null){
+        var elem= $("#modalConfiguracion");
+        label= elem.find("input[name='label']").val();
+        badge= elem.find("input[name='badge']").val();
+        size= elem.find("select[name='size']").val();
+    }
     var json= '{\n\
         "nombre": "button_badge",\n\
         "configuracion": {\n\
             "id": "",\n\
-            "style": "success",\n\
-            "size": "md",\n\
+            "style": "default",\n\
+            "size": "'+size+'",\n\
             "type": "button",\n\
-            "label": "Un Button",\n\
-            "badge": "15"\n\
+            "label": "'+label+'",\n\
+            "badge": "'+badge+'"\n\
         }\n\
     }';
-    var datos = {nombre:"Paginador Simple", inComponent:false, sortable: false, 
-                components: false, options:true, fn_options:load_button_badge_options, preferences: false};
+    var datos = {nombre:"Button Badge", form:"form_buttonBadge", fn_datos:"buttonBadge_datos", inComponent:false, sortable: false, 
+                components: false, options:true, fn_options:load_button_badge_options, reset_options:button_badge_reset_options, preferences: true};
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_button_badge_options(){
@@ -1625,6 +1692,10 @@ function load_button_badge_options(){
             <li class="option-style"><a onclick="style_button(event, &#39;info&#39;)">Info</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;warning&#39;)">Warning</a></li>\n\
             <li class="option-style"><a onclick="style_button(event, &#39;danger&#39;)">Danger</a></li>';
+}
+function button_badge_reset_options(componentId){
+    $("#" + componentId).find('.options').find('li').removeClass('active');
+    $("#" + componentId).find('.options').find('li:nth-child(2)').addClass('active');
 }
 
 /** Blockquote */
@@ -1867,6 +1938,24 @@ function pull_right(event){
    }
    else{
        componente.addClass("pull-right");
+       target.parent().addClass("active");
+   }
+}
+/**
+ * Agrega la clase pull-right en el nodo principal del componente
+ * utilizado por: panel, badge, image
+ */
+function vertical_group(event){
+   var target = $(event.target);
+   var div= target.parent().parent().parent().parent();
+   var view= div.children().last();
+   
+   if(target.parent().hasClass("active")){
+       view.find('.btn-group').removeClass("btn-group-vertical");
+       target.parent().removeClass("active");
+   }
+   else{
+       view.find('.btn-group').addClass("btn-group-vertical");
        target.parent().addClass("active");
    }
 }
