@@ -1,6 +1,6 @@
 {
     "base_url": "http://localhost/builder/",
-    "environment": "development",
+    "environment": "production",
     "calculate_performance": "FALSE",
     "configuration": "configuration/",
     "charset": "UTF-8",

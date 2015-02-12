@@ -4,6 +4,11 @@
 $(function() {
     load_sortable();
     //load_conexion();
+    if($.cookie('trabajo') == null){
+        $.cookie('trabajo', $("#builder").html(), { expires: 2, path: '/' });
+    }else{
+        levanta_modelo($.cookie('trabajo'));
+    }
 });
 
 var url= "http://edunola.com.ar/serviciosui/";
@@ -117,26 +122,32 @@ function form_cargar_modelo() {
     if (file.type.match(textType)) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            $("#builder").html(reader.result);
-            //Si esta en Vista Previa Oculto los botones
-            if(!building){
-                $(".config").hide();                    
-            }
-            else{
-                $(".config").show();
-            }
-            //Escondo el Modal
-            $('#modalModelo').modal('hide');
-            load_sortable();
+            levanta_modelo(reader.result);
         }
         reader.readAsText(file);
     } else {
         fileDisplayArea.innerText = "File not supported!";
     }
 }
+function levanta_modelo(html){
+    $("#builder").html(html);
+    //Si esta en Vista Previa Oculto los botones
+    if(!building){
+        $(".config").hide();                    
+    }
+    else{
+        $(".config").show();
+    }
+    //Escondo el Modal
+    $('#modalModelo').modal('hide');
+    load_sortable();
+}
 /** Limpia el builder */
 function clear(){
-    $("body").find('#builder').empty();
+    if(confirm('Esta seguro que desea eliminar su progreso? No podra recuperarlo si no lo ha descargado')){
+        $("body").find('#builder').empty();
+        $.removeCookie('trabajo', { path: '/' });
+    }
 }
 
 //FUNCIONES DE CREACION
@@ -270,6 +281,8 @@ function carga_ajax_nuevo(json, datos){
             //Incremento el ID
             incrementarId();            
             document.body.style.cursor = 'auto';
+            //Guarda el trabajo en la cookie
+            $.cookie('trabajo', $("#builder").html());
         },
         error: function(msg) {
             alert(msg);
@@ -317,6 +330,8 @@ function carga_ajax_existe(json, datos){
                 $(".config").hide();
             }
             document.body.style.cursor = 'auto';
+            //Guarda el trabajo en la cookie
+            $.cookie('trabajo', $("#builder").html());
         },
         error: function(msg) {
             alert(msg);
@@ -393,8 +408,9 @@ function load_row(){
     row += '</div>';    
     var datos = {nombre:"Grilla " + arguments.length, inComponent:false, sortable: false, components: false, options: false};    
     row= add_com_builder(row, datos);    
-    $("#builder").append(row);
-    $('html,body').animate({scrollTop: $("#builder").children().last().offset().top});
+    sortableActual.append(row);
+    //Paro sobre el componente
+    $('html,body').animate({scrollTop: sortableActual.children().last().offset().top});
     //Si esta en Vista Previa Oculto los botones
     if(!building){
         $(".config").hide();
@@ -402,6 +418,8 @@ function load_row(){
     incrementarId();
     //Actualiza el modelo Sortable
     load_sortable();
+    //Guarda el trabajo en la cookie
+    $.cookie('trabajo', $("#builder").html());
 }
 
 function configurar_y_llamar(json, datos, componentId, componentPadre){

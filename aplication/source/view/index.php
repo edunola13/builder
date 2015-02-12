@@ -150,6 +150,7 @@
       </div>  
       <div class="jsBuilder">
         <script src="<?php echo base()?>resources/js/jquery-ui.min.js"></script>
+        <script src="<?php echo base()?>resources/js/jquery.cookie.js"></script>
         <script src="<?php echo base()?>resources/js/funciones.js"></script>
         <script src="<?php echo base()?>resources/js/form_config.js"></script>
         <script id="events">

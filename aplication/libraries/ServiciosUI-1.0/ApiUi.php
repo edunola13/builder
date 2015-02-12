@@ -257,8 +257,8 @@ class ApiUi {
 	return 'error';
     }
     private function conexionComponente($nombre){
-        //$url = 'http://www.edunola.com.ar/serviciosui/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
-        $url= 'http://localhost/uiservices/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;        
+        $url = 'http://www.edunola.com.ar/serviciosui/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
+        //$url= 'http://localhost/uiservices/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;        
         return $this->conexionGet($url);
     }    
     private function conexionGet($url){

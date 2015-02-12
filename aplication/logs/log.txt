@@ -48,4 +48,20 @@
 ----------\n[2015-02-10 20:44:36.000000 127.0.0.1  - Unknown ] include() [<a href='function.include'>function.include</a>]: Failed opening 'C:\wamp\www\builder\aplication/source/view/form/paragraph.php' for inclusion (include_path='.;C:\php\pear')
 ----------\n[2015-02-11 16:32:37.000000 127.0.0.1  - Unknown ] Undefined offset: 0
 ----------\n[2015-02-11 16:33:00.000000 127.0.0.1  - Unknown ] Undefined property: Index::$params
+----------\n[2015-02-12 00:00:34.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-02-12 00:00:34.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-02-12 00:00:37.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-02-12 00:00:37.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-02-12 00:00:46.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-02-12 00:00:46.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] general_error
+----------\n[2015-02-12 00:01:33.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] error_http
+----------\n[2015-02-12 00:01:33.000000 ::1  - The requested page could not be found but may be available again in the future
+ ] general_error
 ----------\n
