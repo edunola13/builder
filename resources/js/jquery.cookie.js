@@ -53,17 +53,16 @@
 	}
 
 	var config = $.cookie = function (key, value, options) {
-
+                
 		// Write
-
 		if (value !== undefined && !$.isFunction(value)) {
 			options = $.extend({}, config.defaults, options);
-
+                        
 			if (typeof options.expires === 'number') {
 				var days = options.expires, t = options.expires = new Date();
 				t.setTime(+t + days * 864e+5);
 			}
-
+                        
 			return (document.cookie = [
 				encode(key), '=', stringifyCookieValue(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE

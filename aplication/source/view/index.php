@@ -161,6 +161,13 @@
                 actualizarSortable($(this));
                 return false;
             });
+            <?php if($params){?>
+                $(document).ready(function(){
+                    if(confirm('El servidor ha guardado sus avances. Desea continuar con ellos?')){
+                        cargar_trabajo();
+                    }
+                })
+            <?php }?>
         </script>
       </div>
   </body>

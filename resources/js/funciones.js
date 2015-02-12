@@ -4,12 +4,84 @@
 $(function() {
     load_sortable();
     //load_conexion();
-    if($.cookie('trabajo') == null){
-        $.cookie('trabajo', $("#builder").html(), { expires: 2, path: '/' });
-    }else{
-        levanta_modelo($.cookie('trabajo'));
-    }
 });
+
+function urlSend(){
+    var urlSend= "";
+    var urlAct= document.URL;
+    var preUrl= "";
+    if(urlAct.indexOf("theme/") != -1 || urlAct.indexOf("theme/") != -1){
+        preUrl= "../";
+    }
+    urlSend= preUrl + 'trabajo';
+    return urlSend;
+}
+
+function cargar_trabajo(){    
+    $.ajax({
+        type: "GET",
+        url: urlSend(),
+        dataType: "html",        
+        success: function (html) {
+            levanta_modelo(html);
+        }
+    });
+}
+
+function limpiar_trabajo(){
+    var trabajo= '';
+    $.ajax({
+        type: "POST",
+        url: urlSend(),
+        dataType: "html",
+        data: {'trabajo':trabajo},
+        success: function (html) {
+           
+        }
+    });
+}
+
+function guardar_trabajo(){
+    var trabajo= $("#builder").html();
+    $.ajax({
+        type: "POST",
+        url: urlSend(),
+        dataType: "html",
+        data: {'trabajo':trabajo},
+        success: function (html) {
+           
+        }
+    });
+}
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) {
+            var value= c.substring(nameEQ.length,c.length);
+            return decodeURIComponent(value);
+        }
+    }
+    return null;
+}
+
+function createCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    value= encodeURIComponent(value);
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function eliminarCookie(name){
+    createCookie(name,"",-1);
+}
 
 var url= "http://edunola.com.ar/serviciosui/";
 //var url= "http://localhost/uiservices/";
@@ -123,6 +195,8 @@ function form_cargar_modelo() {
         var reader = new FileReader();
         reader.onload = function(e) {
             levanta_modelo(reader.result);
+            //Escondo el Modal
+            $('#modalModelo').modal('hide');
         }
         reader.readAsText(file);
     } else {
@@ -137,16 +211,14 @@ function levanta_modelo(html){
     }
     else{
         $(".config").show();
-    }
-    //Escondo el Modal
-    $('#modalModelo').modal('hide');
+    }    
     load_sortable();
 }
 /** Limpia el builder */
 function clear(){
     if(confirm('Esta seguro que desea eliminar su progreso? No podra recuperarlo si no lo ha descargado')){
         $("body").find('#builder').empty();
-        $.removeCookie('trabajo', { path: '/' });
+        limpiar_trabajo();
     }
 }
 
@@ -282,7 +354,7 @@ function carga_ajax_nuevo(json, datos){
             incrementarId();            
             document.body.style.cursor = 'auto';
             //Guarda el trabajo en la cookie
-            $.cookie('trabajo', $("#builder").html());
+            guardar_trabajo();
         },
         error: function(msg) {
             alert(msg);
@@ -331,7 +403,7 @@ function carga_ajax_existe(json, datos){
             }
             document.body.style.cursor = 'auto';
             //Guarda el trabajo en la cookie
-            $.cookie('trabajo', $("#builder").html());
+            guardar_trabajo();
         },
         error: function(msg) {
             alert(msg);
@@ -419,7 +491,7 @@ function load_row(){
     //Actualiza el modelo Sortable
     load_sortable();
     //Guarda el trabajo en la cookie
-    $.cookie('trabajo', $("#builder").html());
+    createCookie('trabajo',$("#builder").html(),1);
 }
 
 function configurar_y_llamar(json, datos, componentId, componentPadre){
