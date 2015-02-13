@@ -13,7 +13,8 @@ class Index extends En_Controller{
         parent::__construct();
         //Cookie por un dia
         $id= session_id();
-        setcookie('PHPSESSID', $id, time()+3600*24*365, '/');
+        session_set_cookie_params(3600*24);
+        setcookie('PHPSESSID', $id, time()+3600*24, '/');
         session_start();
     }
     
