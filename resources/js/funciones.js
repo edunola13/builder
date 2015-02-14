@@ -6,6 +6,19 @@ $(function() {
     //load_conexion();
 });
 
+var url= "http://edunola.com.ar/serviciosui/";
+//var url= "http://localhost/uiservices/";
+
+//OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
+var building= true;
+var estilo= "";
+var nameId= "IdComponent";
+var actualId= 2;
+var sortableActual= $(".sort-selected");
+var cantMovimientos= 0;
+var actualizaMovimientos= 10;
+
+/** Calcula la url relativa segun donde me encuentre */
 function urlSend(){
     var urlSend= "";
     var urlAct= document.URL;
@@ -16,7 +29,7 @@ function urlSend(){
     urlSend= preUrl + 'trabajo';
     return urlSend;
 }
-
+/** Carga el trabajo almacenado en el Servidor */
 function cargar_trabajo(){    
     $.ajax({
         type: "GET",
@@ -27,7 +40,7 @@ function cargar_trabajo(){
         }
     });
 }
-
+/** Limpia el trabajo almacenado en el Servidor */
 function limpiar_trabajo(){
     var trabajo= '';
     $.ajax({
@@ -40,7 +53,7 @@ function limpiar_trabajo(){
         }
     });
 }
-
+/** Guarda el trabajo almacenado en el Servidor */
 function guardar_trabajo(){
     var trabajo= $("#builder").html();
     $.ajax({
@@ -53,7 +66,15 @@ function guardar_trabajo(){
         }
     });
 }
-
+/** Aumenta la cantidad de movimientos y guarda el trabajo si es momento de actualizar */
+function actualizarTrabajo(){
+    cantMovimientos++;
+    if(cantMovimientos >= actualizaMovimientos){
+        cantMovimientos= 0;
+        guardar_trabajo();
+    }
+}
+/** Lee una cookie */
 function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -67,7 +88,7 @@ function readCookie(name) {
     }
     return null;
 }
-
+/** Crea una cookie */
 function createCookie(name,value,days) {
     if (days) {
         var date = new Date();
@@ -78,20 +99,10 @@ function createCookie(name,value,days) {
     value= encodeURIComponent(value);
     document.cookie = name+"="+value+expires+"; path=/";
 }
-
+/** Elimina una cookie */
 function eliminarCookie(name){
     createCookie(name,"",-1);
 }
-
-var url= "http://edunola.com.ar/serviciosui/";
-//var url= "http://localhost/uiservices/";
-
-//OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
-var building= true;
-var estilo= "";
-var nameId= "component";
-var actualId= 2;
-var sortableActual= $(".sort-selected");
 
 /** Pasa al estado Vista Previa */
 function vista_previa(){
@@ -205,6 +216,18 @@ function form_cargar_modelo() {
 }
 function levanta_modelo(html){
     $("#builder").html(html);
+    var maxId= 1;
+    $("[id^=IdComponent]").each(function (index) {
+        var actual= $(this).attr('id').replace("IdComponent", "");
+        actual= parseInt(actual);
+        if(actual > maxId){
+            maxId= actual;
+        }
+    });
+    actualId= maxId + 1;
+    
+    $("#builder").find(".sort-selected").removeClass("sort-selected");
+    
     //Si esta en Vista Previa Oculto los botones
     if(!building){
         $(".config").hide();                    
@@ -239,7 +262,9 @@ function load_sortable(){
     $( ".sortable" ).sortable({
             connectWith: ".sortable",
             handle: ".move",
-            placeholder: "component-placeholder"
+            placeholder: "component-placeholder",
+            opacity: 0.5,
+            update: function( event, ui ) {actualizarTrabajo();}
         }).disableSelection();
 }
 
@@ -249,6 +274,7 @@ function duplicarElemento(elemento) {
     elemento.parent().append('<div class="com-builder">' + componente + '</div>');
     $('html,body').animate({scrollTop: elemento.parent().children().last().offset().top});
     load_sortable();
+    actualizarTrabajo();
 }
 /** Minimiza el componente */
 function minimizar(elemento){
@@ -268,6 +294,7 @@ function minimizar(elemento){
 function eliminar(elemento){
     if(confirm('Esta seguro que desea eliminar el Componente?')){
         elemento.remove();
+        actualizarTrabajo();
     }    
 }
 
@@ -286,9 +313,7 @@ function load_conexion(){
     });
 }
 
-/**
- * Agrega el HTML al componente para poder manipularlo en el builder
- */
+/** Agrega el HTML al componente para poder manipularlo en el builder */
 function add_com_builder(componente, datos){
     var com= '<div class="com-builder" id="' + datos["componentId"] + '"><button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button><button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>\n\
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a><button type="button" class="btn btn-default btn-xs config duplicate pull-right" title="Duplicate">Duplicate</button>';
@@ -307,9 +332,7 @@ function add_com_builder(componente, datos){
     return com;
 }
 
-/**
- * aumenta el numero de ID
- */
+/** aumenta el numero de ID */
 function incrementarId(){
     actualId++;
 }
@@ -353,8 +376,8 @@ function carga_ajax_nuevo(json, datos){
             //Incremento el ID
             incrementarId();            
             document.body.style.cursor = 'auto';
-            //Guarda el trabajo en la cookie
-            guardar_trabajo();
+            //Guarda el trabajo en la cookie si corresponde
+            actualizarTrabajo();
         },
         error: function(msg) {
             alert(msg);
@@ -402,8 +425,8 @@ function carga_ajax_existe(json, datos){
                 $(".config").hide();
             }
             document.body.style.cursor = 'auto';
-            //Guarda el trabajo en la cookie
-            guardar_trabajo();
+            //Guarda el trabajo en la cookie si corresponde
+            actualizarTrabajo();
         },
         error: function(msg) {
             alert(msg);
@@ -1153,6 +1176,7 @@ function paragraph_config(componentId, componentPadre){
     if(componentId != 0 && componentId != null){
         var elem= $("#modalConfiguracion");
         texto= elem.find("textarea[name='texto']").val();
+        texto= texto.replace(new RegExp('\\n','g'),'');
         type= elem.find("select[name='type']").val();
     }
     var componentes= '"componentes": [';

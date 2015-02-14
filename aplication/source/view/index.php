@@ -7,7 +7,7 @@
     <title>Builder HTML</title>
 
     <!-- Servicios UI - CSS-->
-    <?php echo Tags::theme($this->theme);?>
+    <?php Tags::theme($this->theme);?>
      
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,77 +19,78 @@
   </head>
   <body>
       <link class="estiloBuilder" href="<?php echo base()?>resources/css/estilo.css" rel="stylesheet">
-      <?php echo Tags::navigation_bar("Builder", base(), 'navbar-fixed-top')?>
-        <?php echo Tags::nav_bar_left();?>
-            <?php echo Tags::nav_item_drop_down("Grillas");?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 12", "load_row(12)"); ?>                
-                <?php echo Tags::menu_item("item_onclick", "Grilla 6-6", "load_row(6,6)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 4-8", "load_row(4,8)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 8-4", "load_row(8,4)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 5-7", "load_row(5,7)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 7-5", "load_row(7,5)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 3-9", "load_row(3,9)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 9-3", "load_row(9,3)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 2-10", "load_row(2,10)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 10-2", "load_row(10,2)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 4-4-4", "load_row(4,4,4)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 3-6-3", "load_row(3,6,3)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 2-8-2", "load_row(2,8,2)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 3-3-3-3", "load_row(3,3,3,3)"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Grilla 2-4-4-2", "load_row(2,4,4,2)"); ?>
-            <?php echo Tags::end_nav_item_drop_down();?>
-            <?php echo Tags::nav_item_drop_down("Compuestos");?>
-                <?php echo Tags::menu_item("item_onclick", "Form", "formulario_configuracion('form')"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Login", "login_config()"); ?>
-                <?php echo Tags::menu_item('divider');?>
-                <?php echo Tags::menu_item("item_onclick", "Drop Down Menu", "drop_down_menu_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Navigation Menu", "navigation_menu_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Navigation Bar", "navigation_bar_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Breadcrumb", "breadcrumb_config()"); ?>
-                <?php echo Tags::menu_item('divider');?>
-                <?php echo Tags::menu_item("item_onclick", "List", "list_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "List A", "listA_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Media Object", "mediaObject_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button Group", "button_group_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button Toolbar", "button_toolbar_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Paginator", "paginator_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Panel", "panel_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Paragraph", "paragraph_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Table", "table_config()"); ?>
-            <?php echo Tags::end_nav_item_drop_down();?>
-            <?php echo Tags::nav_item_drop_down("Estaticos");?>
-                <?php echo Tags::menu_item("item_onclick", "Address", "address_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Alert Message", "alertMessage_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Badge", "badge_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button", "button_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Button Badge", "buttonBadge_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>                
-                <?php echo Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Form Search", "searchForm_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Iframe", "iframe_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Image", "image_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Jumbotron", "jumbotron_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Paginator", "simplePaginator_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Progress Bar", "progressBar_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Footer", "simple_footer_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Simple Header", "simpleHeader_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Thumbnail", "thumbnail_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Title", "title_config()"); ?>
-                <?php echo Tags::menu_item("item_onclick", "Well", "well_config()"); ?>
-            <?php echo Tags::end_nav_item_drop_down();?>
-        <?php echo Tags::end_nav_bar_left();?>
+      <?php Tags::navigation_bar("Builder", base(), 'navbar-fixed-top')?>
+        <?php Tags::nav_bar_left();?>
+            <?php Tags::nav_item_drop_down("Grillas");?>
+                <?php Tags::menu_item("item_onclick", "Grilla 12", "load_row(12)"); ?>                
+                <?php Tags::menu_item("item_onclick", "Grilla 6-6", "load_row(6,6)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 4-8", "load_row(4,8)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 8-4", "load_row(8,4)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 5-7", "load_row(5,7)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 7-5", "load_row(7,5)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 3-9", "load_row(3,9)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 9-3", "load_row(9,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 2-10", "load_row(2,10)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 10-2", "load_row(10,2)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 4-4-4", "load_row(4,4,4)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 3-6-3", "load_row(3,6,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 2-8-2", "load_row(2,8,2)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 3-3-3-3", "load_row(3,3,3,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grilla 2-4-4-2", "load_row(2,4,4,2)"); ?>
+            <?php Tags::end_nav_item_drop_down();?>
+            <?php Tags::nav_item_drop_down("Compuestos");?>
+                <?php Tags::menu_item("item_onclick", "Form", "formulario_configuracion('form')"); ?>
+                <?php Tags::menu_item("item_onclick", "Media Object", "mediaObject_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Panel", "panel_config()"); ?>                
+                <?php Tags::menu_item("item_onclick", "Table", "table_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Simple Footer", "simple_footer_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
+            <?php Tags::end_nav_item_drop_down(); ?>
+            <?php Tags::nav_item_drop_down("Navegacion");?>
+                <?php Tags::menu_item("item_onclick", "Drop Down Menu", "drop_down_menu_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Navigation Menu", "navigation_menu_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Navigation Bar", "navigation_bar_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Breadcrumb", "breadcrumb_config()"); ?>
+                <?php Tags::menu_item('divider'); ?>
+                <?php Tags::menu_item("item_onclick", "List", "list_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "List A", "listA_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Button", "button_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Badge", "badge_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Button Badge", "buttonBadge_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Button Group", "button_group_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Button Toolbar", "button_toolbar_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Simple Paginator", "simplePaginator_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Paginator", "paginator_config()"); ?>               
+            <?php Tags::end_nav_item_drop_down();?>
+            <?php Tags::nav_item_drop_down("Estaticos");?>
+                <?php Tags::menu_item("item_onclick", "Simple Header", "simpleHeader_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Title", "title_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Address", "address_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Paragraph", "paragraph_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Well", "well_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Alert Message", "alertMessage_config()"); ?>                
+                <?php Tags::menu_item("item_onclick", "Blockquote", "blockquote_config()"); ?>                
+                <?php Tags::menu_item("item_onclick", "Progress Bar", "progressBar_config()"); ?>                
+                <?php Tags::menu_item("item_onclick", "Iframe", "iframe_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Image", "image_config()"); ?>                
+                <?php Tags::menu_item("item_onclick", "Form Search", "searchForm_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Login", "login_config()"); ?>
+                <?php Tags::menu_item("item_onclick", "Jumbotron", "jumbotron_config()"); ?> 
+                <?php Tags::menu_item("item_onclick", "Thumbnail", "thumbnail_config()"); ?>
+            <?php Tags::end_nav_item_drop_down();?>
+        <?php Tags::end_nav_bar_left();?>
       
-        <?php echo Tags::nav_bar_right();?>
-            <?php echo Tags::nav_item("Construir", "javascript:builder();", "active")?>
-            <?php echo Tags::nav_item("Vista Previa", "javascript:vista_previa();");?>
-            <?php echo Tags::nav_item_drop_down("Mas Opciones"); ?>
-                <?php echo Tags::menu_item("item", "Descargar HTML", "javascript:descargar_html();"); ?>
-                <?php echo Tags::menu_item("item", "Descargar Modelo", "javascript:descargar_modelo();"); ?>
-                <?php echo Tags::menu_item("item", "Cargar Modelo", "javascript:cargar_modelo();"); ?>
-                <?php echo Tags::menu_item("item", "Limpiar", "javascript:clear();"); ?>
-            <?php echo Tags::end_nav_item_drop_down(); ?>
-        <?php echo Tags::end_nav_bar_right();?>
-      <?php echo Tags::end_navigation_bar();?>
+        <?php Tags::nav_bar_right();?>
+            <?php Tags::nav_item("Construir", "javascript:builder();", "active")?>
+            <?php Tags::nav_item("Vista Previa", "javascript:vista_previa();");?>
+            <?php Tags::nav_item_drop_down("Mas Opciones"); ?>
+                <?php Tags::menu_item("item", "Descargar HTML", "javascript:descargar_html();"); ?>
+                <?php Tags::menu_item("item", "Descargar Modelo", "javascript:descargar_modelo();"); ?>
+                <?php Tags::menu_item("item", "Cargar Modelo", "javascript:cargar_modelo();"); ?>
+                <?php Tags::menu_item("item", "Limpiar", "javascript:clear();"); ?>
+            <?php Tags::end_nav_item_drop_down(); ?>
+        <?php Tags::end_nav_bar_right();?>
+      <?php Tags::end_navigation_bar();?>
 
       <div class="container sortable sort-selected" id="builder">
         <div class="com-builder" id="component1">            
@@ -150,7 +151,6 @@
       </div>  
       <div class="jsBuilder">
         <script src="<?php echo base()?>resources/js/jquery-ui.min.js"></script>
-        <script src="<?php echo base()?>resources/js/jquery.cookie.js"></script>
         <script src="<?php echo base()?>resources/js/funciones.js"></script>
         <script src="<?php echo base()?>resources/js/form_config.js"></script>
         <script id="events">
