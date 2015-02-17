@@ -93,7 +93,7 @@
       <?php Tags::end_navigation_bar();?>
 
       <div class="container sortable sort-selected" id="builder">
-        <div class="com-builder" id="component1">            
+        <div class="com-builder" id="IdComponent1">            
             <button type="button" class="btn btn-danger btn-xs config delete pull-right" title="Delete">X</button>
             <button type="button" class="btn btn-default btn-xs config minimize pull-right" title="Minimizar">-</button>
             <a href="#" class="btn btn-success btn-xs config move pull-right" role="button" title="Move">Move</a>

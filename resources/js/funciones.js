@@ -177,9 +177,15 @@ function descargar_html(){
     builder= $("body").find('builder');
     builder.html(builderHtml);
     builder.find(".config").remove();
-	builder.find(".minimizado").removeClass("minimizado");
+    builder.find(".minimizado").removeClass("minimizado");
     builder.find(".com-builder").removeClass("com-builder");
     builder.find(".sortable").removeClass("sortable ui-sortable");
+    builder.find(".sort-selected").removeClass("sort-selected");
+        
+    //Eligiendo las clases view elimino a su padre
+    $(".view").unwrap();
+    //Eligiendo al view y luego a todos sus hijos puedo eliminar a view
+    $(".view").contents().unwrap();
     
     texto.push('<body>' + '<div class="container">' + builder.html() + '</div>\n');
     texto.push($("body").find(".jsEstilo").html() + '</body>\n');
