@@ -335,4 +335,8 @@
 ----------\n[2015-02-17 13:12:13.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
 ----------\n[2015-02-17 13:12:14.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
 ----------\n[2015-02-17 17:06:10.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
+----------\n[2015-02-17 17:12:50.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
+----------\n[2015-02-17 17:12:56.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
+----------\n[2015-02-17 17:12:58.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
+----------\n[2015-02-17 17:13:07.000000 ::1  - Level Error: 8 ] A session had already been started - ignoring session_start()
 ----------\n

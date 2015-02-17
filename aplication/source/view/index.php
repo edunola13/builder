@@ -19,7 +19,7 @@
   </head>
   <body>
       <link class="estiloBuilder" href="<?php echo base()?>resources/css/estilo.css" rel="stylesheet">
-      <?php Tags::navigation_bar("Builder", base(), 'navbar-fixed-top')?>
+      <?php Tags::navigation_bar("Builder", base(), FALSE, 'navbar-fixed-top')?>
         <?php Tags::nav_bar_left();?>
             <?php Tags::nav_item_drop_down("Grillas");?>
                 <?php Tags::menu_item("item_onclick", "Grilla 12", "load_row(12)"); ?>                

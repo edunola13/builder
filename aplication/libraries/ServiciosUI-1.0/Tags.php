@@ -572,9 +572,11 @@ class Tags {
         $valores= array('config.type' => $type, 'config.label' => $label, 'config.disabled' => ($disabled ? 'si' : 'no'), 'config.href' => $href);
         $api->componente('nav_item_list', $valores);
     }    
-    public static function navigation_bar($logo, $href, $position='', $inverse=FALSE){
+    public static function navigation_bar($logo, $href, $containerFluid = TRUE, $position='', $inverse=FALSE){
         $api= ApiUi::getInstance();
         $valores= array('config.seccion' => 'cabecera', 'config.logo' => $logo, 'config.href' => $href, 'config.position' => $position);
+        $valores['config.containerFluid']= 'si';
+        if(!$containerFluid)$valores['config.containerFluid']='no';
         $valores['config.inverse']= '';
         if($inverse)$valores['config.inverse']='navbar-inverse';
         $api->componente('navigation_bar', $valores);
