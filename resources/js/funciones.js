@@ -6,8 +6,8 @@ $(function() {
     //load_conexion();
 });
 
-var url= "http://edunola.com.ar/serviciosui/";
-//var url= "http://localhost/uiservices/";
+//var url= "http://edunola.com.ar/serviciosui/";
+var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -1505,7 +1505,8 @@ function navigation_bar_config(componentId, componentPadre){
         "nombre": "navigation_bar",\n\
         "configuracion": {\n\
             "logo": "Logotipo",\n\
-            "href": "#"\n\
+            "href": "#",\n\
+            "containerFluid": "si"\n\
         },';
 
     json += componentes + '}';
@@ -1515,7 +1516,11 @@ function navigation_bar_config(componentId, componentPadre){
     configurar_y_llamar(json, datos, componentId, componentPadre);
 }
 function load_navigation_bar_options(){
-    return '<li><a onclick="inverse(event)">Inverse</a></li>';
+    return '<li><a onclick="inverse(event)">Inverse</a></li>\n\
+            <li class="active"><a onclick="containerFluid(event)">Container Fluid</a></li>\n\
+            <li class="option-fixed active"><a onclick="fixedTo(event, &#39;nada&#39;)">No Fixed</a></li>\n\
+            <li class="option-fixed"><a onclick="fixedTo(event, &#39;top&#39;)">Fixed To Top</a></li>\n\
+            <li class="option-fixed"><a onclick="fixedTo(event, &#39;bottom&#39;)">Fixed To Bottom</a></li>';
 }
 
 /** Breadcrumb */
@@ -2298,6 +2303,56 @@ function inverse(event){
    }
    else{
        componente.addClass("navbar-inverse");
+       target.parent().addClass("active");
+   }
+}
+/**
+ * Agrega la clase container o container fluid a la barra de navegacion
+ * utilizado por: navigation_bar
+ */
+function containerFluid(event){
+   var target = $(event.target);
+   var div= target.parent().parent().parent().parent();
+   var view= div.children().last();
+   var componente= view.children().first();
+   //Primer hijo del componente
+   componente= componente.children().first();
+   if(target.parent().hasClass("active")){
+       componente.removeClass("container-fluid");
+       componente.addClass("container");
+       target.parent().removeClass("active");
+   }
+   else{
+       componente.addClass("container-fluid");
+       componente.removeClass("container");
+       target.parent().addClass("active");
+   }
+}
+/**
+ * Agrega la clase fixed to top o bottom en el componente
+ * utilizado por: navigation_bar
+ */
+function fixedTo(event, fixed){
+   var target = $(event.target);
+   var div= target.parent().parent().parent().parent();
+   var view= div.children().last();
+   var componente= view.children().first();
+   
+   if(fixed == "top"){
+       componente.removeClass("navbar-fixed-bottom");
+       componente.addClass("navbar-fixed-top");
+       target.parent().parent().find(".option-fixed").removeClass("active");
+       target.parent().addClass("active");
+   }
+   else if(fixed == "bottom"){
+       componente.removeClass("navbar-fixed-top");
+       componente.addClass("navbar-fixed-bottom");
+       target.parent().parent().find(".option-fixed").removeClass("active");
+       target.parent().addClass("active");
+   }else{
+       componente.removeClass("navbar-fixed-top");
+       componente.removeClass("navbar-fixed-bottom");
+       target.parent().parent().find(".option-fixed").removeClass("active");
        target.parent().addClass("active");
    }
 }
