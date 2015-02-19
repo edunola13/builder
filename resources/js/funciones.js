@@ -3,11 +3,11 @@
  */
 $(function() {
     load_sortable();
-    //load_conexion();
+    load_conexion();
 });
 
-//var url= "http://edunola.com.ar/serviciosui/";
-var url= "http://localhost/uiservices/";
+var url= "http://edunola.com.ar/serviciosui/";
+//var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -55,14 +55,18 @@ function limpiar_trabajo(){
 }
 /** Guarda el trabajo almacenado en el Servidor */
 function guardar_trabajo(){
-    var trabajo= $("#builder").html();
+    var trabajo= " " + $("#builder").html();
+    $("#mensaje").html('Save your progress in the server.');
     $.ajax({
         type: "POST",
         url: urlSend(),
         dataType: "html",
         data: {'trabajo':trabajo},
         success: function (html) {
-           
+            $("#mensaje").html('');
+        },
+        error: function(){
+            $("#mensaje").html('');
         }
     });
 }
@@ -183,9 +187,9 @@ function descargar_html(){
     builder.find(".sort-selected").removeClass("sort-selected");
         
     //Eligiendo las clases view elimino a su padre
-    $(".view").unwrap();
+    builder.find(".view").unwrap();
     //Eligiendo al view y luego a todos sus hijos puedo eliminar a view
-    $(".view").contents().unwrap();
+    builder.find(".view").contents().unwrap();
     
     texto.push('<body>' + '<div class="container">' + builder.html() + '</div>\n');
     texto.push($("body").find(".jsEstilo").html() + '</body>\n');
@@ -249,6 +253,35 @@ function clear(){
         $("body").find('#builder').empty();
         limpiar_trabajo();
     }
+}
+
+/** Calcula la url relativa segun donde me encuentre */
+function urlSendTheme(){
+    var urlSend= "";
+    var urlAct= document.URL;
+    var preUrl= "";
+    if(urlAct.indexOf("theme/") != -1 || urlAct.indexOf("theme/") != -1){
+        preUrl= "../";
+    }
+    urlSend= preUrl
+    return urlSend;
+}
+/** Cambia el theme */
+function theme(name){
+    document.body.style.cursor = 'wait';
+    $.ajax({
+        type: "GET",
+        url: urlSendTheme() + "theme/" + name,
+        dataType: "html",
+        success: function (html) {
+           $("head").find("link").remove();
+           $("head").append(html);
+           document.body.style.cursor = 'auto';
+        },
+        error: function(){
+           document.body.style.cursor = 'auto'; 
+        }
+    });
 }
 
 //FUNCIONES DE CREACION
@@ -378,9 +411,7 @@ function carga_ajax_nuevo(json, datos){
             //Si esta en Vista Previa Oculto los botones
             if(!building){
                $(".config").hide();
-            }
-            //Incremento el ID
-            incrementarId();            
+            }          
             document.body.style.cursor = 'auto';
             //Guarda el trabajo en la cookie si corresponde
             actualizarTrabajo();
@@ -503,11 +534,16 @@ function formulario_configuracion(form, componentId, fn_datos){
  */
 function load_row(){
     var row= '<div class="row">';
+    var name="";
     for (x=0;x<arguments.length;x++){
+        name+= arguments[x] + '-';
         row += '<div class="col col-md-' + arguments[x] + ' sortable"></div>';
     }
+    name= name.substring(0, name.length-1);
     row += '</div>';    
-    var datos = {nombre:"Grilla " + arguments.length, inComponent:false, sortable: false, components: false, options: false};    
+    var datos = {nombre:"Grilla " + name, inComponent:false, sortable: false, components: false, options: false};
+    datos["componentId"]= nameId + actualId;
+    incrementarId();
     row= add_com_builder(row, datos);    
     sortableActual.append(row);
     //Paro sobre el componente
@@ -516,7 +552,6 @@ function load_row(){
     if(!building){
         $(".config").hide();
     }
-    incrementarId();
     //Actualiza el modelo Sortable
     load_sortable();
     //Guarda el trabajo en la cookie
@@ -531,6 +566,7 @@ function configurar_y_llamar(json, datos, componentId, componentPadre){
     
     if(componentId == '0' || componentId == null){
         datos["componentId"]= nameId + actualId;
+        incrementarId();
         carga_ajax_nuevo(json, datos);
     }
     else{        

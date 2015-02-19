@@ -15,7 +15,6 @@ class Index extends En_Controller{
         $id= session_id();
         session_set_cookie_params(3600*24);
         setcookie('PHPSESSID', $id, time()+3600*24, '/');
-        session_start();
     }
     
     public function doGet(){

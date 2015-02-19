@@ -4,41 +4,38 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Builder HTML</title>
-
-    <!-- Servicios UI - CSS-->
-    <?php Tags::theme($this->theme);?>
-     
+    <title>Builder HTML</title>     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <?php Tags::theme($this->theme);?>
   </script>
   </head>
   <body>
       <link class="estiloBuilder" href="<?php echo base()?>resources/css/estilo.css" rel="stylesheet">
       <?php Tags::navigation_bar("Builder", base(), FALSE, 'navbar-fixed-top')?>
         <?php Tags::nav_bar_left();?>
-            <?php Tags::nav_item_drop_down("Grillas");?>
-                <?php Tags::menu_item("item_onclick", "Grilla 12", "load_row(12)"); ?>                
-                <?php Tags::menu_item("item_onclick", "Grilla 6-6", "load_row(6,6)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 4-8", "load_row(4,8)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 8-4", "load_row(8,4)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 5-7", "load_row(5,7)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 7-5", "load_row(7,5)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 3-9", "load_row(3,9)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 9-3", "load_row(9,3)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 2-10", "load_row(2,10)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 10-2", "load_row(10,2)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 4-4-4", "load_row(4,4,4)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 3-6-3", "load_row(3,6,3)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 2-8-2", "load_row(2,8,2)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 3-3-3-3", "load_row(3,3,3,3)"); ?>
-                <?php Tags::menu_item("item_onclick", "Grilla 2-4-4-2", "load_row(2,4,4,2)"); ?>
+            <?php Tags::nav_item_drop_down("Grids");?>
+                <?php Tags::menu_item("item_onclick", "Grid 12", "load_row(12)"); ?>                
+                <?php Tags::menu_item("item_onclick", "Grid 6-6", "load_row(6,6)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 4-8", "load_row(4,8)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 8-4", "load_row(8,4)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 5-7", "load_row(5,7)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 7-5", "load_row(7,5)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 3-9", "load_row(3,9)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 9-3", "load_row(9,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 2-10", "load_row(2,10)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 10-2", "load_row(10,2)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 4-4-4", "load_row(4,4,4)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 3-6-3", "load_row(3,6,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 2-8-2", "load_row(2,8,2)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 3-3-3-3", "load_row(3,3,3,3)"); ?>
+                <?php Tags::menu_item("item_onclick", "Grid 2-4-4-2", "load_row(2,4,4,2)"); ?>
             <?php Tags::end_nav_item_drop_down();?>
-            <?php Tags::nav_item_drop_down("Compuestos");?>
+            <?php Tags::nav_item_drop_down("Composed");?>
                 <?php Tags::menu_item("item_onclick", "Form", "formulario_configuracion('form')"); ?>
                 <?php Tags::menu_item("item_onclick", "Media Object", "mediaObject_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Panel", "panel_config()"); ?>                
@@ -46,7 +43,7 @@
                 <?php Tags::menu_item("item_onclick", "Simple Footer", "simple_footer_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Fixed Footer", "fixed_footer_config()"); ?>
             <?php Tags::end_nav_item_drop_down(); ?>
-            <?php Tags::nav_item_drop_down("Navegacion");?>
+            <?php Tags::nav_item_drop_down("Navigation");?>
                 <?php Tags::menu_item("item_onclick", "Drop Down Menu", "drop_down_menu_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Navigation Menu", "navigation_menu_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Navigation Bar", "navigation_bar_config()"); ?>
@@ -62,7 +59,7 @@
                 <?php Tags::menu_item("item_onclick", "Simple Paginator", "simplePaginator_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Paginator", "paginator_config()"); ?>               
             <?php Tags::end_nav_item_drop_down();?>
-            <?php Tags::nav_item_drop_down("Estaticos");?>
+            <?php Tags::nav_item_drop_down("Static");?>
                 <?php Tags::menu_item("item_onclick", "Simple Header", "simpleHeader_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Title", "title_config()"); ?>
                 <?php Tags::menu_item("item_onclick", "Address", "address_config()"); ?>
@@ -78,16 +75,29 @@
                 <?php Tags::menu_item("item_onclick", "Jumbotron", "jumbotron_config()"); ?> 
                 <?php Tags::menu_item("item_onclick", "Thumbnail", "thumbnail_config()"); ?>
             <?php Tags::end_nav_item_drop_down();?>
+            <?php Tags::nav_item_drop_down("Themes");?>
+                <?php Tags::menu_item("item_onclick", "Base", "theme('base')"); ?>
+                <?php Tags::menu_item("item_onclick", "Cerulean", "theme('cerulean')"); ?>
+                <?php Tags::menu_item("item_onclick", "Cosmo", "theme('cosmo')"); ?>
+                <?php Tags::menu_item("item_onclick", "Journal", "theme('journal')"); ?>
+                <?php Tags::menu_item("item_onclick", "Paper", "theme('paper')"); ?>
+                <?php Tags::menu_item("item_onclick", "Readable", "theme('readable')"); ?>                
+                <?php Tags::menu_item("item_onclick", "Simplex", "theme('simplex')"); ?>                
+                <?php Tags::menu_item("item_onclick", "Spacelab", "theme('spacelab')"); ?>                
+                <?php Tags::menu_item("item_onclick", "United", "theme('united')"); ?>
+                <?php Tags::menu_item("item_onclick", "Yeti", "theme('yeti')"); ?>
+            <?php Tags::end_nav_item_drop_down();?>
         <?php Tags::end_nav_bar_left();?>
       
         <?php Tags::nav_bar_right();?>
-            <?php Tags::nav_item("Construir", "javascript:builder();", "active")?>
-            <?php Tags::nav_item("Vista Previa", "javascript:vista_previa();");?>
-            <?php Tags::nav_item_drop_down("Mas Opciones"); ?>
-                <?php Tags::menu_item("item", "Descargar HTML", "javascript:descargar_html();"); ?>
-                <?php Tags::menu_item("item", "Descargar Modelo", "javascript:descargar_modelo();"); ?>
-                <?php Tags::menu_item("item", "Cargar Modelo", "javascript:cargar_modelo();"); ?>
-                <?php Tags::menu_item("item", "Limpiar", "javascript:clear();"); ?>
+            <?php Tags::nav_item("Builded", "javascript:builder();", "active")?>
+            <?php Tags::nav_item("Preview", "javascript:vista_previa();");?>
+            <?php Tags::nav_item_drop_down("More Options"); ?>
+                <?php Tags::menu_item("item", "Save in Server", "javascript:guardar_trabajo();"); ?>
+                <?php Tags::menu_item("item", "Download HTML", "javascript:descargar_html();"); ?>
+                <?php Tags::menu_item("item", "Download Model", "javascript:descargar_modelo();"); ?>
+                <?php Tags::menu_item("item", "Load Modelo", "javascript:cargar_modelo();"); ?>
+                <?php Tags::menu_item("item", "Clean", "javascript:clear();"); ?>
             <?php Tags::end_nav_item_drop_down(); ?>
         <?php Tags::end_nav_bar_right();?>
       <?php Tags::end_navigation_bar();?>
@@ -108,20 +118,23 @@
       </div>
 
 
+      <!-- Mensajes -->
+      <div id="mensaje" title="Information Message"></div>
+      
       <!-- Modal -->
       <div class="modal fade" id="modalModelo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Carga de Modelo</h4>
+            <h4 class="modal-title" id="myModalLabel">Load Model</h4>
         </div>
         <div class="modal-body">
             <input id="fileInput" name="modelo" class="input-file" type="file">
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" onclick="form_cargar_modelo()">Cargar</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-default" onclick="form_cargar_modelo()">Load</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
         </div>
       </div>
@@ -133,13 +146,13 @@
         <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" onclick="cancelar_configuracion()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Configuración</h4>
+            <h4 class="modal-title" id="myModalLabel">Configuration</h4>
         </div>
         <div class="modal-body">
             
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelar_configuracion()">Cancelar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelar_configuracion()">Cancel</button>
         </div>
         </div>
       </div>
@@ -163,7 +176,7 @@
             });
             <?php if($params){?>
                 $(document).ready(function(){
-                    if(confirm('El servidor ha guardado sus avances. Desea continuar con ellos?')){
+                    if(confirm('the server has kept its progress. Want to continue with them?')){
                         cargar_trabajo();
                     }
                 })

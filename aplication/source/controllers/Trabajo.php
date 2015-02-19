@@ -8,8 +8,6 @@ class Trabajo extends En_Controller{
     
     public function __construct() {
         parent::__construct();
-        //Creo que un dia
-        session_start();
     }
     
     public function doGet(){
