@@ -360,7 +360,7 @@ function add_com_builder(componente, datos){
         com+= '<div class="btn-group config options pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Options<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_options"]() +'</ul></div>';
     }
     if(datos["components"]){
-        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_components"]() +'</ul></div>';
+        com+= '<div class="btn-group config pull-right"><button type="button" class="btn btn-default btn-xs dropdown-toggle " data-toggle="dropdown">Components<span class="caret"></span></button><ul class="dropdown-menu" role="menu">' + datos["fn_components"](datos["componentId"]) +'</ul></div>';
     }
     if(datos["preferences"]){
         com+= '<button type="button" class="btn btn-default btn-xs config pull-right" onclick="formulario_configuracion(\'' + datos["form"] + '\',\'' + datos["componentId"] + '\',' + datos["fn_datos"] + ')">Personalize</button>';
@@ -620,14 +620,14 @@ function form_sortable_cargar_hijos(componentId,hijos){
         $("#" + componentId).children().last().find(".hijos-fieldset legend").remove();
     }
 }
-function load_form_components(){
-    return '<li><a onclick="input_config(0,\'' + nameId + actualId + '\')">Input</a></li>\n\
-            <li><a onclick="textArea_config(0,\'' + nameId + actualId + '\')">Text Area</a></li>\n\
-            <li><a onclick="select_config(0,\'' + nameId + actualId + '\')">Select</a></li>\n\
-            <li><a onclick="checkbox_config(0,\'' + nameId + actualId + '\')">Checkbox</a></li>\n\
-            <li><a onclick="radio_config(0,\'' + nameId + actualId + '\')">Radio</a></li>\n\
-            <li><a onclick="button_config(0,\'' + nameId + actualId + '\')">Button</a></li>\n\
-            <li><a onclick="buttons_config(0,\'' + nameId + actualId + '\')">Buttons</a></li>';
+function load_form_components(componentId){
+    return '<li><a onclick="input_config(0,\'' + componentId + '\')">Input</a></li>\n\
+            <li><a onclick="textArea_config(0,\'' + componentId + '\')">Text Area</a></li>\n\
+            <li><a onclick="select_config(0,\'' + componentId + '\')">Select</a></li>\n\
+            <li><a onclick="checkbox_config(0,\'' + componentId + '\')">Checkbox</a></li>\n\
+            <li><a onclick="radio_config(0,\'' + componentId + '\')">Radio</a></li>\n\
+            <li><a onclick="button_config(0,\'' + componentId + '\')">Button</a></li>\n\
+            <li><a onclick="buttons_config(0,\'' + componentId + '\')">Buttons</a></li>';
 }
 
 /** Carga del componente Login */
@@ -652,21 +652,19 @@ function login_config(componentId, componentPadre){
                 "action": "url",\n\
                 "title": "' + title + '",\n\
                 "labelButton": "' + labelButton + '" \n\
-        },\n\
-        "datos": {\n\
-            "user": {\n\
-                "placeholder": "' + placeholderUser + '",\n\
-                "name": "email"\n\
-            },\n\
-            "pass": {\n\
-                "placeholder": "' + placeholderPass + '",\n\
-                "name": "pass"\n\
-            },\n\
-            "check": {\n\
-                "name": "check",\n\
-                "value": "check",\n\
-                "label": "' + labelCheck + '"\n\
-            }\n\
+                "user": {\n\
+                    "placeholder": "' + placeholderUser + '",\n\
+                    "name": "email"\n\
+                },\n\
+                "pass": {\n\
+                    "placeholder": "' + placeholderPass + '",\n\
+                    "name": "pass"\n\
+                },\n\
+                "check": {\n\
+                    "name": "check",\n\
+                    "value": "check",\n\
+                    "label": "' + labelCheck + '"\n\
+                }\n\
         }\n\
     }';
         
@@ -743,7 +741,7 @@ function textArea_config(componentId, componentPadre){
 
 /** Select */
 function select_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     for(var i= 1; i < 4; i++){
         componentes += '{\n\
             "nombre": "select_option",\n\
@@ -807,7 +805,7 @@ function checkbox(componentId){
         }
         size= elem.find("select[name='size']").val();
     }
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     var cant= 2;
     for(var i= 0; i < 2; i++){
         componentes += '{\n\
@@ -860,7 +858,7 @@ function radio(componentId){
         }
         size= elem.find("select[name='size']").val();
     }
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     var cant= 2;
     for(var i= 0; i < 2; i++){
         componentes += '{\n\
@@ -934,7 +932,7 @@ function button_reset_options(componentId){
 
 /** Buttons */
 function buttons_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     var cant= 2;
     for(var i= 0; i < 2; i++){
         if(i < cant - 1){
@@ -976,7 +974,7 @@ function button_group_config(componentId, componentPadre){
             "size": "md",\n\
             "label": "Un Button Group"\n\
         },\n\
-        "componentes":[\n\
+        "childComponents":[\n\
             {"nombre": "button",\n\
             "configuracion": {\n\
                 "label": "Boton1",\n\
@@ -1010,14 +1008,14 @@ function load_button_group_options(){
 function button_toolbar_config(componentId, componentPadre){
     var json= '{\n\
         "nombre": "button_toolbar",\n\
-        "componentes":[\n\
+        "childComponents":[\n\
             {"nombre": "button_group",\n\
             "configuracion": {\n\
                 "vertical": "no",\n\
                 "size": "md",\n\
                 "label": "Un Button Group"\n\
             },\n\
-            "componentes":[\n\
+            "childComponents":[\n\
                 {"nombre": "button",\n\
                 "configuracion": {\n\
                     "label": "Boton1",\n\
@@ -1043,7 +1041,7 @@ function button_toolbar_config(componentId, componentPadre){
                 "size": "md",\n\
                 "label": "Un Button Group"\n\
             },\n\
-            "componentes":[\n\
+            "childComponents":[\n\
                 {"nombre": "button",\n\
                 "configuracion": {\n\
                     "label": "Boton1",\n\
@@ -1076,7 +1074,7 @@ function load_button_toolbar_options(){
 
 /** Paginator */
 function paginator_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     componentes += '{\n\
                 "nombre": "pagina",\n\
                 "configuracion": {\n\
@@ -1129,7 +1127,7 @@ function load_paginator_options(){
 
 /** List */
 function list_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     componentes += '{\n\
             "nombre": "li",\n\
             "configuracion": {\n\
@@ -1170,7 +1168,7 @@ function list_config(componentId, componentPadre){
 
 /** List a */
 function listA_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     componentes += '{\n\
             "nombre": "li",\n\
             "configuracion": {\n\
@@ -1221,7 +1219,7 @@ function paragraph_config(componentId, componentPadre){
         texto= texto.replace(new RegExp('\\n','g'),'');
         type= elem.find("select[name='type']").val();
     }
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     componentes += '{\n\
             "nombre": "'+type+'",\n\
             "configuracion": {\n\
@@ -1260,7 +1258,7 @@ function drop_down_menu_config(componentId, componentPadre){
         style= elem.find("select[name='style']").val();
         size= elem.find("select[name='size']").val();
     }
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     var cant= 3;
     for(var i= 1; i <= cant; i++){
         componentes += '{\n\
@@ -1310,7 +1308,7 @@ function drop_down_menu_reset_options(componentId){
 
 /** Navigation Menu */
 function navigation_menu_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     componentes += '{\n\
             "nombre": "nav_item",\n\
             "configuracion": {\n\
@@ -1331,7 +1329,7 @@ function navigation_menu_config(componentId, componentPadre){
     }
       
     //Armo el item drop down
-    var componentes2= '"componentes": [';
+    var componentes2= '"childComponents": [';
     var cant2= 3;
     for(var i2= 1; i2 <= cant2; i2++){
         componentes2 += '{\n\
@@ -1391,12 +1389,12 @@ function load_navigation_menu_options(){
 /** Navigation Bar */
 function navigation_bar_config(componentId, componentPadre){
     //Componentes del navigation Bar
-    var componentes= '"componentes": [';    
+    var componentes= '"childComponents": [';    
     /**
      * Empieza componente Nav Bar Left
      */
     //Componentes de Nav Bar Left
-    var componentes1= '"componentes": [';
+    var componentes1= '"childComponents": [';
     componentes1 += '{\n\
             "nombre": "nav_item",\n\
             "configuracion": {\n\
@@ -1417,7 +1415,7 @@ function navigation_bar_config(componentId, componentPadre){
     }  
       
     //Componentes del drop down del Nav Bar Left
-    var componentes2= '"componentes": [';
+    var componentes2= '"childComponents": [';
     var cant2= 3;
     for(var i2= 1; i2 <= cant2; i2++){
         componentes2 += '{\n\
@@ -1479,7 +1477,7 @@ function navigation_bar_config(componentId, componentPadre){
     /**
      * Empieaz componente Nav Bar Right
      */
-    var componentes3= '"componentes": [';
+    var componentes3= '"childComponents": [';
     componentes3 += '{\n\
             "nombre": "nav_item",\n\
             "configuracion": {\n\
@@ -1489,7 +1487,7 @@ function navigation_bar_config(componentId, componentPadre){
         },';
     
     //Componentes del drop down del Nav Bar Right
-    var componentes4= '"componentes": [';
+    var componentes4= '"childComponents": [';
     var cant3= 3;
     for(var i3= 1; i3 <= cant3; i3++){
         componentes4 += '{\n\
@@ -1561,7 +1559,7 @@ function load_navigation_bar_options(){
 
 /** Breadcrumb */
 function breadcrumb_config(componentId, componentPadre){
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     var cant= 2;
     for(var i= 1; i <= cant; i++){
         componentes += '{\n\
@@ -1661,10 +1659,10 @@ function mediaObject_sortable_cargar_hijos(componentId,hijos){
 /** Table */
 function table_config(componentId, componentPadre){
     //Componentes de Table
-    var componentes= '"componentes": [';
+    var componentes= '"childComponents": [';
     
     //Componentes de Head
-    var compsHead= '"componentes": [';
+    var compsHead= '"childComponents": [';
     
     var cantHead= 4;
     for(var i= 1; i <= cantHead; i++){
@@ -1692,7 +1690,7 @@ function table_config(componentId, componentPadre){
     //Itero Filas
     var cantRows= 4;
     for(var i2=1; i2 <= cantRows; i2++){
-        var compsRow= '"componentes": [';
+        var compsRow= '"childComponents": [';
         
         for(var i3= 1; i3 <= cantHead; i3++){
             compsRow += '{\n\
