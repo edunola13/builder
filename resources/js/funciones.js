@@ -6,6 +6,10 @@ $(function() {
     load_conexion();
 });
 
+$( window ).bind( 'beforeunload', function() {
+    return "You lose your progress";
+} );
+
 var url= "http://edunola.com.ar/serviciosui/";
 //var url= "http://localhost/uiservices/";
 
