@@ -17,6 +17,9 @@ class Trabajo extends En_Controller{
     }
     
     public function doPost(){
+        $id= session_id();
+        session_set_cookie_params(3600*24);
+        setcookie('PHPSESSID', $id, time()+3600*24, '/');
         $_SESSION['trabajo']= $_POST['trabajo'];
     }
 }
