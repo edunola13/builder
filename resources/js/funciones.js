@@ -3,7 +3,7 @@
  */
 $(function() {
     load_sortable();
-    load_conexion();
+    //load_conexion();
 });
 
 $( window ).bind( 'beforeunload', function() {
