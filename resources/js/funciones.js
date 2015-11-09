@@ -10,8 +10,8 @@ $( window ).bind( 'beforeunload', function() {
     return "You lose your progress";
 } );
 
-var url= "http://edunola.com.ar/serviciosui/";
-//var url= "http://localhost/uiservices/";
+//var url= "http://edunola.com.ar/serviciosui/";
+var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR
 var building= true;
@@ -389,7 +389,7 @@ function carga_ajax_nuevo(json, datos){
     document.body.style.cursor = 'wait';
     $.ajax({
         type: "POST",
-        url: url + "componente",
+        url: url + "uiprint/component/bootstrap3",
         data: json,
         contentType: "application/json",
         dataType: "html",
@@ -436,7 +436,7 @@ function carga_ajax_existe(json, datos){
     document.body.style.cursor = 'wait';
     $.ajax({
         type: "POST",
-        url: url + "componente",
+        url: url + "uiprint/component/bootstrap3",
         data: json,
         contentType: "application/json",
         dataType: "html",
@@ -484,7 +484,7 @@ function carga_ajax_preferences(json, viewElement){
     document.body.style.cursor = 'wait';
     $.ajax({
         type: "POST",
-        url: url + "componente",
+        url: url + "uiprint/component/bootstrap3",
         data: json,
         contentType: "application/json",
         dataType: "html",
@@ -591,7 +591,7 @@ function form_config(componentId, componentPadre){
     var label= elem.find("input[name='label']").val(); 
      
     var json= '{\n\
-           "nombre": "formulario",\n\
+           "nombre": "form",\n\
            "configuracion": {\n\
                 "id": "' + id + '",\n\
                 "method": "' + method + '",\n\
@@ -655,7 +655,7 @@ function login_config(componentId, componentPadre){
                 "method": "POST",\n\
                 "action": "url",\n\
                 "title": "' + title + '",\n\
-                "labelButton": "' + labelButton + '" \n\
+                "labelButton": "' + labelButton + '", \n\
                 "user": {\n\
                     "placeholder": "' + placeholderUser + '",\n\
                     "name": "email"\n\
@@ -962,7 +962,7 @@ function buttons_config(componentId, componentPadre){
     }
     componentes += ']';
     var json= '{\n\
-        "nombre": "botonera",';
+        "nombre": "keypad",';
     json += componentes + '}';
 
     var datos = {nombre:"Buttons Form", inComponent:false, sortable: false, components: false, options: false, preferences:false};    
@@ -1080,7 +1080,7 @@ function load_button_toolbar_options(){
 function paginator_config(componentId, componentPadre){
     var componentes= '"childComponents": [';
     componentes += '{\n\
-                "nombre": "pagina",\n\
+                "nombre": "pager_item",\n\
                 "configuracion": {\n\
                     "href": "#",\n\
                     "state": "disabled",\n\
@@ -1091,7 +1091,7 @@ function paginator_config(componentId, componentPadre){
     for(var i= 1; i <= cant; i++){
         if(i == 1){
             componentes += '{\n\
-                "nombre": "pagina",\n\
+                "nombre": "pager_item",\n\
                 "configuracion": {\n\
                     "label": "' + i + '",\n\
                     "href": "#",\n\
@@ -1101,7 +1101,7 @@ function paginator_config(componentId, componentPadre){
         }
         else{
             componentes += '{\n\
-                "nombre": "pagina",\n\
+                "nombre": "pager_item",\n\
                 "configuracion": {\n\
                     "label": "' + i + '",\n\
                     "href": "#"\n\
@@ -1110,7 +1110,7 @@ function paginator_config(componentId, componentPadre){
         }
     }
     componentes += '{\n\
-                "nombre": "pagina",\n\
+                "nombre": "pager_item",\n\
                 "configuracion": {\n\
                     "href": "#",\n\
                     "last": "si"\n\
@@ -1118,7 +1118,7 @@ function paginator_config(componentId, componentPadre){
             }';
     componentes += ']';
     var json= '{\n\
-        "nombre": "paginador",';
+        "nombre": "pager",';
     json += componentes + '}';
 
     var datos = {nombre:"Paginator", inComponent:false, sortable: false, 
@@ -1233,7 +1233,7 @@ function paragraph_config(componentId, componentPadre){
     
     componentes += ']';
     var json= '{\n\
-        "nombre": "parrafo",\n\
+        "nombre": "paragraph",\n\
         "configuracion": {\n\
             "align": "center"\n\
         },';
@@ -1751,7 +1751,7 @@ function searchForm_config(componentId, componentPadre){
 /** Simple Paginator */
 function simplePaginator_config(componentId, componentPadre){
     var json= '{\n\
-        "nombre": "paginador_simple",\n\
+        "nombre": "simple_pager",\n\
         "configuracion": {\n\
             "previous": {\n\
                 "href": "#",\n\
