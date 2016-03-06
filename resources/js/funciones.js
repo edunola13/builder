@@ -10,7 +10,7 @@ $( window ).bind( 'beforeunload', function() {
     return "You lose your progress";
 } );
 
-//var url= "http://edunola.com.ar/serviciosui/";
+//var url= "http://edunola.com.ar/uiservices/";
 var url= "http://localhost/uiservices/";
 
 //OPERTACIONES QUE PUEDE REALIZAR EL USUARIO MEDIANTE EL NAVIGATION BAR

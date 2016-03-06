@@ -48,12 +48,12 @@ class ApiUi {
         include PATH_JAVASCRIPT . $nom_componente . '.php';
     }  
     private function conexionTheme($nombre){
-        $url = 'http://www.edunola.com.ar/serviciosui/theme?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
+        $url = 'http://www.edunola.com.ar/uiservices/theme?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
         //$url= 'http://localhost/uiservices/theme?nombre=' . $nombre . '&proyecto=' . self::$proyecto;        
         return $this->conexionGet($url);
     }     
     private function conexionJavaScript($nombre){
-        $url = 'http://www.edunola.com.ar/serviciosui/javascript?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
+        $url = 'http://www.edunola.com.ar/uiservices/javascript?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
         //$url= 'http://localhost/uiservices/javascript?nombre=' . $nombre . '&proyecto=' . self::$proyecto;        
         return $this->conexionGet($url);
     }  
@@ -257,7 +257,7 @@ class ApiUi {
 	return 'error';
     }
     private function conexionComponente($nombre){
-        $url = 'http://www.edunola.com.ar/serviciosui/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
+        $url = 'http://www.edunola.com.ar/uiservices/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;
         //$url= 'http://localhost/uiservices/componenteDefinition?nombre=' . $nombre . '&proyecto=' . self::$proyecto;        
         return $this->conexionGet($url);
     }    
